@@ -58,4 +58,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function games()
+    {
+        return $this->belongsToMany(Game::class)->withPivot(['id', 'user_id']);
+    }
 }

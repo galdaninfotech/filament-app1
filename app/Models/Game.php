@@ -23,7 +23,7 @@ class Game extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot(['id', 'user_id']);
     }
 
     public function numbers()
@@ -33,6 +33,6 @@ class Game extends Model
 
     public function prizes()
     {
-        return $this->belongsToMany(Prize::class)->withPivot(['id', 'prize_amount', 'quantity', 'comment']);
+        return $this->belongsToMany(Prize::class)->withPivot(['id', 'prize_amount', 'quantity', 'active', 'comment']);
     }
 }
