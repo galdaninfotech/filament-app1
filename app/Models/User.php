@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Game::class)->withPivot(['id', 'user_id']);
     }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
 }

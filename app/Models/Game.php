@@ -35,4 +35,5 @@ class Game extends Model
     {
         return $this->belongsToMany(Prize::class)->withPivot(['id', 'prize_amount', 'quantity', 'active', 'comment']);
     }
+
 }

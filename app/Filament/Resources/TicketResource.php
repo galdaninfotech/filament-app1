@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PrizeResource\Pages;
-use App\Filament\Resources\PrizeResource\RelationManagers;
-use App\Models\Prize;
+use App\Filament\Resources\TicketResource\Pages;
+use App\Filament\Resources\TicketResource\RelationManagers;
+use App\Models\Ticket;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,20 +13,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PrizeResource extends Resource
+class TicketResource extends Resource
 {
-    protected static ?string $model = Prize::class;
+    protected static ?string $model = Ticket::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\TextInput::make('user_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\Textarea::make('object')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('status')
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\Textarea::make('comment')
+                    ->required()
                     ->columnSpanFull(),
             ]);
     }
@@ -35,7 +41,16 @@ class PrizeResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable()
+                    ->label('User'),
+                Tables\Columns\TextColumn::make('status')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('comment')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -69,9 +84,9 @@ class PrizeResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPrizes::route('/'),
-            'create' => Pages\CreatePrize::route('/create'),
-            'edit' => Pages\EditPrize::route('/{record}/edit'),
+            'index' => Pages\ListTickets::route('/'),
+            'create' => Pages\CreateTicket::route('/create'),
+            'edit' => Pages\EditTicket::route('/{record}/edit'),
         ];
     }
 }
