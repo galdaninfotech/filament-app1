@@ -38,6 +38,24 @@ class GameSeeder extends Seeder
             'declared_at' => now(),
         ]);
 
+        DB::table('game_number')->insert([
+            'game_id' => 2,
+            'number_id' => 44,
+            'declared_at' => now(),
+        ]);
+
+        DB::table('game_number')->insert([
+            'game_id' => 2,
+            'number_id' => 64,
+            'declared_at' => now(),
+        ]);
+
+        DB::table('game_number')->insert([
+            'game_id' => 2,
+            'number_id' => 84,
+            'declared_at' => now(),
+        ]);
+
 
         // Game Prizes =====================================================================
         DB::table('game_prize')->insert([
