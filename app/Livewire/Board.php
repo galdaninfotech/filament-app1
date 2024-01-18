@@ -25,37 +25,19 @@ class Board extends Component
                     ->whereNotIn('number', $this->drawnNumbers)
                     ->pluck('number');
 
-        // dd($numbersCollection);
-
         $numbersArray = $numbersCollection->toArray();
-        // dd($numbersArray);
         $numbersArray = Arr::shuffle($numbersArray);
-        // dd($numbersArray);
-
-
         $newNumber = Arr::first($numbersArray);
-        // dd($newNumber);
-
 
         $this->newNumber = $newNumber;
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $newNumber);
-        // dd($this->drawnNumbers);
-    }
 
-    public function draw2() {
-        $numbers = DB::table('numbers')
-                    ->whereNotIn('number', $this->drawnNumbers)
-                    ->get();
+        DB::table('game_number')->insert([
+            'game_id' => $this->activeGame,
+            'number_id' => $this->newNumber,
+        ]);
 
-        // dd($numbers);
-
-        // $array = Arr::shuffle($numbers);
-        $shuffled = $numbers->shuffle();
-        $shuffled->toArray();
-        $newNumber = Arr::first($shuffled);
-
-        $this->newNumber = $newNumber;
-        $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $newNumber);
+        $this->dispatch('new-number', newNumber: $newNumber);
     }
 
     public function render()
