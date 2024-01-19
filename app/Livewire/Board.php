@@ -25,7 +25,6 @@ class Board extends Component
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
 
-        // $this->count = DB::table('game_number')->where('game_id', $this->activeGame->id)->count();
     }
 
     public function draw() {
@@ -52,7 +51,6 @@ class Board extends Component
         $numbersCollection = DB::table('game_number')->where('game_id', $this->activeGame->id)->pluck('number_id');
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
-        // $this->count = DB::table('game_number')->where('game_id', $this->activeGame->id)->count();
 
         $this->dispatch('new-number', newNumber: $newNumber);
     }

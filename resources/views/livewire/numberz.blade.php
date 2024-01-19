@@ -4,11 +4,6 @@
     <br>
     <br>
 
-    <button wire:click="draw" @click="$dispatch('new-number')">Draw Number</button>
-
-    <br>
-    <br>
-
     New Number : {{ $newNumber }}
 
     <br>
@@ -26,6 +21,6 @@
     </ul>
 
     <br>
-
+    <div x-on:new-number="{{ $newNumber }}"></div>
 
 </div>
