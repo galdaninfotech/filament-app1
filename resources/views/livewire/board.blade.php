@@ -18,9 +18,9 @@
     <h5>Drawn Numbers:</h5>
     <ul class="flex gap-2"> 
         @if(isset($drawnNumbers[0]))
-            @foreach($drawnNumbers as $number)
+            @foreach($drawnNumbers[0] as $number)
 
-                <li>{{ $number}},</li>
+                <li>{{ $number }},</li>
             @endforeach
         @endif
     </ul>
