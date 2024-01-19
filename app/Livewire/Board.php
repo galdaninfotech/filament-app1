@@ -23,11 +23,9 @@ class Board extends Component
 
         $numbersCollection = DB::table('game_number')->where('game_id', 2)->pluck('number_id');
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
-        // dd($this->drawnNumbers[0]);
-        // dd($numbersCollection);
+        $this->count = $numbersCollection->count();
 
-        $this->count = DB::table('game_number')->where('game_id', $this->activeGame->id)->count();
-
+        // $this->count = DB::table('game_number')->where('game_id', $this->activeGame->id)->count();
     }
 
     public function draw() {
@@ -37,32 +35,24 @@ class Board extends Component
                     ->whereNotIn('number', $this->drawnNumbers[0])
                     ->pluck('number');
 
+        // Convert to array, shuffle, get the first number and set $this->newNumber
         $numbersArray = $numbersCollection->toArray();
         $numbersArray = Arr::shuffle($numbersArray);
         $newNumber = Arr::first($numbersArray);
-
         $this->newNumber = $newNumber;
-        // $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $newNumber);
 
-        // dd($this->newNumber);
-
+        //Insert into DB
         DB::table('game_number')->insert([
             'game_id' => $this->activeGame->id,
             'number_id' => $this->newNumber,
             'declared_at' => now(),
         ]);
 
-        // $numbersCollection = GameNumber::select('number_id')
-        //     ->where('game_id', $this->activeGame->id)
-        //     ->pluck('number_id');
-        // $this->drawnNumbers = $numbersCollection->toArray();
-
-        // $numbersCollection = Number::with('games')->get();
-        $numbersCollection = DB::table('game_number')->where('game_id', 2)->pluck('number_id');
-        // dd($numbersCollection);
+        //Update $this->drawnNumbers & $this->count
+        $numbersCollection = DB::table('game_number')->where('game_id', $this->activeGame->id)->pluck('number_id');
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
-
-        $this->count = DB::table('game_number')->where('game_id', $this->activeGame->id)->count();
+        $this->count = $numbersCollection->count();
+        // $this->count = DB::table('game_number')->where('game_id', $this->activeGame->id)->count();
 
         $this->dispatch('new-number', newNumber: $newNumber);
     }
