@@ -1,21 +1,25 @@
 <div>
-    <h1>Number Board</h1>
+
+    Game: {{ $activeGame->name }}
+    <br>
+    <br>
+
     <button wire:click="draw">Draw Number</button>
 
-    {{ $activeGame->name }}
+    <br>
+    <br>
+
+    New Number : {{ $newNumber }}
 
     <br>
-    <h5>New Number : </h5>
+    <h5>Count: {{ $count }}</h5>
 
-    @if(isset($newNumber))
-        {{ $newNumber }}
-    @endif
-
-
+    <br>
     <h5>Drawn Numbers:</h5>
     <ul class="flex gap-2"> 
-        @if(isset($drawnNumbers))
+        @if(isset($drawnNumbers[0]))
             @foreach($drawnNumbers as $number)
+
                 <li>{{ $number}},</li>
             @endforeach
         @endif
@@ -23,10 +27,5 @@
 
     <br>
 
-    <ul class="flex gap-2"> 
-        @foreach($allNumbers as $number)
-            <li>{{ $number->number }}, </li>
-        @endforeach
-    </ul>
 
 </div>
