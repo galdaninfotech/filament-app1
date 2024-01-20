@@ -7,7 +7,7 @@ return [
     /*
      * Set a custom dashboard configuration
      */
-    'websocket-dashboard' => [
+    'dashboard' => [
         'port' => env('LARAVEL_WEBSOCKETS_PORT', 6001),
     ],
 

@@ -26,7 +26,8 @@ class Numberz extends Component
 
     }
 
-    #[On('new-number')] 
+    // #[On('new-number')] 
+    #[On('echo:channel-new-number,NewNumber')]
     public function updateNumber($newNumber) {
         dd($newNumber);
         $numbersCollection = DB::table('game_number')->where('game_id', 2)->pluck('number_id');
