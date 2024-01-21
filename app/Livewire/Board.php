@@ -53,8 +53,8 @@ class Board extends Component
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
 
-        $this->dispatch('new-number', newNumber: $newNumber);
-        NewNumber::dispatch();
+        // $this->dispatch('new-number', newNumber: $newNumber);
+        NewNumber::dispatch($newNumber);
     }
 
     public function render()

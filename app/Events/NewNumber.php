@@ -32,7 +32,7 @@ class NewNumber implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-new-number'),
+            new Channel('channel-new-number'),
         ];
     }
 }
