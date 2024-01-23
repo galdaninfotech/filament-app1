@@ -16,7 +16,7 @@ class Ticket extends Model
     protected $searchableFields = ['*'];
 
     protected $casts = [
-        'object' => 'array',
+        'object' => 'json',
     ];
 
     public function user()

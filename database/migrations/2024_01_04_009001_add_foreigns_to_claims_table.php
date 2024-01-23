@@ -18,12 +18,12 @@ return new class extends Migration {
                 ->onUpdate('CASCADE')
                 ->onDelete('CASCADE');
 
-            $table
-                ->foreign('winner_id')
-                ->references('id')
-                ->on('winners')
-                ->onUpdate('CASCADE')
-                ->onDelete('CASCADE');
+            // $table
+            //     ->foreign('winner_id')
+            //     ->references('id')
+            //     ->on('winners')
+            //     ->onUpdate('CASCADE')
+            //     ->onDelete('CASCADE');
         });
     }
 

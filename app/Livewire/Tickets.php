@@ -21,6 +21,30 @@ class Tickets extends Component
         $this->user = Auth::user();
         $this->tickets = Ticket::whereBelongsTo($this->user)->get();
         // dd($this->tickets);
+        // dd($this->user->id);
+        $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
+        // dd($tickets[0]->object);
+        // dd(Ticket::find(1)->object[0][0]['value']);
+
+    }
+
+    public function updateChecked($ticket_id, $object_id){
+        // dd($ticket_id.'ggggggggg'.$object_id);
+        $object_id = str_pad($object_id, 2, '0', STR_PAD_LEFT);
+        $row = str_split($object_id)[0];
+        $column = str_split($object_id)[1];
+
+        $ticket = Ticket::where('id', $ticket_id)->get();
+        $ticketObject = $ticket[0]->object;
+        if($ticketObject[$row][$column]['meta_checked'] = 0) {
+            $ticketObject[$row][$column]['meta_checked'] = 1;
+        }
+        else {
+            $ticketObject[$row][$column]['meta_checked'] = 0;
+        }
+        $ticket[0]->object = $ticketObject;
+        $ticket[0]->save();
+
     }
 
     public function generateTambolaTicket(){
