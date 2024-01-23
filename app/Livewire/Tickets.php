@@ -8,43 +8,66 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\On; 
 
+use App\Models\Prize;
 use App\Models\Ticket;
+use App\Models\Claim;
 use App\Models\User;
 
 
 class Tickets extends Component
 {
+    public $game_prizes = [];
+    public $prizeSelected;
     public $tickets = [];
     public $user;
 
     public function mount() {
         $this->user = Auth::user();
         $this->tickets = Ticket::whereBelongsTo($this->user)->get();
-        // dd($this->tickets);
-        // dd($this->user->id);
         $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
-        // dd($tickets[0]->object);
-        // dd(Ticket::find(1)->object[0][0]['value']);
 
+        $this->game_prizes = DB::table('game_prize')
+            ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
+            ->select('game_prize.*', 'prizes.name')
+            ->get();
+        // dd($this->game_prizes);
     }
 
     public function updateChecked($ticket_id, $object_id){
-        // dd($ticket_id.'ggggggggg'.$object_id);
+        //break object_id in two [row][column]
         $object_id = str_pad($object_id, 2, '0', STR_PAD_LEFT);
         $row = str_split($object_id)[0];
         $column = str_split($object_id)[1];
 
+        //get ticket by id and ticket object from it
         $ticket = Ticket::where('id', $ticket_id)->get();
         $ticketObject = $ticket[0]->object;
-        if($ticketObject[$row][$column]['meta_checked'] = 0) {
+
+        //toggle checked 
+        if($ticketObject[$row][$column]['meta_checked'] == 0) {
             $ticketObject[$row][$column]['meta_checked'] = 1;
         }
         else {
             $ticketObject[$row][$column]['meta_checked'] = 0;
         }
+
+        //save to db
         $ticket[0]->object = $ticketObject;
         $ticket[0]->save();
 
+        $this->render();
+
+    }
+
+    public function claimPrize($ticket_id) {
+        // dd($this->prizeSelected);
+        $claim = Claim::create([
+            'ticket_id'     => $ticket_id,
+            'game_prize_id' => $this->prizeSelected,
+            'status'        => 'Open',
+            'comment'       => 'Some comment here..'
+        ]);
+        // dd($id);
     }
 
     public function generateTambolaTicket(){
