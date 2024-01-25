@@ -12,7 +12,7 @@ use App\Models\Prize;
 use App\Models\Ticket;
 use App\Models\Claim;
 use App\Models\User;
-
+use App\Classes\Table;
 
 class Tickets extends Component
 {
@@ -31,6 +31,32 @@ class Tickets extends Component
             ->select('game_prize.*', 'prizes.name')
             ->get();
         // dd($this->game_prizes);
+    }
+
+    public function generateTicket($noOfTickets) {
+        $table = new Table();
+        $table->generate();
+
+        $tickets = array_slice($table->getTickets(), 0, 2);
+        // dd($tickets);
+
+        // $tickets = Ticket::whereBelongsTo($this->user)->get();
+        foreach ($tickets as $ticket) {
+            $this->user->tickets()->create([
+                'user_id' => 1,
+                'object' => $ticket->numbers,
+                'status' => 'active',
+                'comment' => 'Some comments here..'
+            ]);
+        }
+        // $tickets = $this->user->tickets()->create([
+        //     'user_id' => 1,
+        //     'object' => $tambola,
+        //     'status' => 'active',
+        //     'comment' => 'Some comments here..'
+        // ]);
+        
+        $this->tickets = Ticket::whereBelongsTo($this->user)->get();
     }
 
     public function updateChecked($ticket_id, $object_id){

@@ -1,6 +1,6 @@
 <div>
     {{-- The whole world belongs to you. --}}
-    <button wire:click="generateTambolaTicket" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+    <button wire:click="generateTicket({{ $noOfTickets = 1 }})" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
         {{ __('Buy Tickets') }}
     </button>
     <br>
@@ -44,7 +44,7 @@
                                         <div>
                                             @if ( $ticket->object[$j][$k]['value'] != '' )
                                                 <div class="checkable_div {{ $class }}">
-                                                    <input wire:click="updateChecked({{ $ticket->id }}, {{ $ticket->object[$j][$k]['id'] }})" type="checkbox" class="hidden" name="{{ $ticket->object[$j][$k]['id'] }}" {{ $checked }}>
+                                                    <input wire:click="updateChecked({{ $ticket->id }}, {{ $ticket->object[$j][$k]['id'] }})" type="checkbox" class="xhidden" name="{{ $ticket->object[$j][$k]['id'] }}" {{ $checked }}>
                                                     {{-- @if ( $ticket->object[$j][$k]['meta_checked'] == 1 )
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />

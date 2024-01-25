@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Classes\Table;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $table = new Table();
+    $table->generate();
+    // dd($table);
+    dd($table->prettyPrint());
+    dd($table->getTickets());
+    // return view('welcome');
 });
 
 Route::middleware([
