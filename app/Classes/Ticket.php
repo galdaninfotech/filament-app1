@@ -16,8 +16,9 @@ class Ticket
     public function addToBucket($k, $v)
     {
         //$this->bucket[$k][] = $v;
-        $this->bucket[$k][] = ['checked' => 0, 'value' => $v];
+        $this->bucket[$k][] = ['id' => 0, 'checked' => 0, 'value' => $v];
         //$this->bucket[$k][] = ['checked' => 0, 'value' => $v, 'ticket_id' => $this->ticketId];
+        
     }
 
     public function bucketCount()

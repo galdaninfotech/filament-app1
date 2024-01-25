@@ -70,11 +70,11 @@ class Tickets extends Component
         $ticketObject = $ticket[0]->object;
 
         //toggle checked 
-        if($ticketObject[$row][$column]['meta_checked'] == 0) {
-            $ticketObject[$row][$column]['meta_checked'] = 1;
+        if($ticketObject[$row][$column]['checked'] == 0) {
+            $ticketObject[$row][$column]['checked'] = 1;
         }
         else {
-            $ticketObject[$row][$column]['meta_checked'] = 0;
+            $ticketObject[$row][$column]['checked'] = 0;
         }
 
         //save to db
@@ -140,7 +140,7 @@ class Tickets extends Component
                 else{
                     $tambola[$row][$col]['value']='';   
                 }
-                $tambola[$row][$col]['meta_checked']=0;
+                $tambola[$row][$col]['checked']=0;
             }
         }
 

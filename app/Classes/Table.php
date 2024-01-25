@@ -118,20 +118,54 @@ class Table
         }
     }
 
+    // public function generate()
+    // {
+    //     $buckets = $this->generateBuckets();
+    //     $this->distribute($buckets);
+        
+    //     // Assign a random ticketId to each ticket
+    //     foreach ($this->tickets as $ticket) {
+    //         $ticket->setTicketId($this->random_string(8));
+    //     }
+
+    //     // If the number of tickets is different from 6, remove extra tickets
+    //     // $this->tickets = array_slice($this->tickets, 0, 2);
+
+    //     for ($i = 0; $i < 3; $i++) {
+    //         for ($k = 0; $k < 9; $k++) {
+    //             if (isset($ticket->numbers[$i][$k]['value'])) {
+    //                 $value = $ticket->numbers[$i][$k]['value'];
+    //                 $ticket->numbers[$i][$k]['id'] = $value;
+    //             }
+    //         }
+    //     }
+
+    // }
+
     public function generate()
     {
-        $buckets = $this->generateBuckets();
+        $buckets = $this->generateBuckets($numberOfTickets = 6);
         $this->distribute($buckets);
-        
+
         // Assign a random ticketId to each ticket
         foreach ($this->tickets as $ticket) {
             $ticket->setTicketId($this->random_string(8));
+
+            // Set 'id' based on the 'value' in numbers array
+            for ($i = 0; $i < 3; $i++) {
+                for ($k = 0; $k < 9; $k++) {
+                    if (isset($ticket->numbers[$i][$k]['value'])) {
+                        $value = $ticket->numbers[$i][$k]['value'];
+                        $ticket->numbers[$i][$k]['id'] = $i.''.$k;
+                    }
+                }
+            }
         }
 
         // If the number of tickets is different from 6, remove extra tickets
-        // $this->tickets = array_slice($this->tickets, 0, 2);
-
+        $this->tickets = array_slice($this->tickets, 0, $numberOfTickets);
     }
+
 
     public function getTickets()
     {

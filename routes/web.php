@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Classes\Table;
+use App\Classes\Test;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,12 +14,19 @@ use App\Classes\Table;
 |
 */
 
+
 Route::get('/', function () {
+
     $table = new Table();
     $table->generate();
-    // dd($table);
-    dd($table->prettyPrint());
-    dd($table->getTickets());
+
+    $tickets = $table->getTickets();
+    var_dump(Test::verify($tickets));
+    // $table = new Table();
+    // $table->generate();
+    // // dd($table);
+    // dd($table->prettyPrint());
+    // dd($table->getTickets());
     // return view('welcome');
 });
 
