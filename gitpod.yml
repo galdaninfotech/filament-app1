@@ -1,0 +1,66 @@
+#image: ubuntu:latest
+#image:
+    #file: .gitpod.Dockerfile
+    #context: ./docker-content
+
+#additionalRepositories:
+mainConfiguration: https://github.com/galdaninfotech/filament-app1
+
+github:
+    prebuilds:
+        master: true
+        branches: true
+        pullRequests: true
+        pullRequestsFromForks: true
+        addCheck: false
+        addComment: false
+        addBadge: true
+
+gitConfig:
+    alias.st: status
+    core.autocrlf: input
+    
+tasks:
+    - name: websockets
+      before: |
+          #cd ../backend
+      init: |
+          echo npm install
+      command: |
+          echo php artisan websockets:serve
+
+
+      # changing of working directory is not required as these tasks will
+      # by default by executed in `/workspaces/demo-multi-repo-frontend`
+    - name: frontend
+      before: |
+          #cd ../backend
+      init: |
+          #echo npm install
+      command: |
+          #echo npm run dev
+          #mkdir -p /workspace/registry
+
+
+    - name: Database
+      init: |
+          #echo npm install
+      env:
+          DB_HOST: localhost:3306
+          DB_DATABASE: /workspace/filament-app1/laravelzz
+          DB_USER: root
+ports:
+    - name: Website
+      port: 8000
+      onOpen: open-preview
+      
+    - name: VNC
+      description: full GUI Virtual Desktop
+      #port: 6080
+      #onOpen: open-browser
+
+vscode:
+    extensions:
+        - svelte.svelte-vscode
+        - bradlc.vscode-tailwindcss@0.6.11
+        - https://example.com/abc/releases/extension-0.26.0.vsix
