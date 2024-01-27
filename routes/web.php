@@ -17,17 +17,19 @@ use App\Classes\Test;
 
 Route::get('/', function () {
 
-    $table = new Table();
-    $table->generate();
+    // $table = new Table();
+    // $table->generate();
 
-    $tickets = $table->getTickets();
-    var_dump(Test::verify($tickets));
+    // $tickets = $table->getTickets();
+    // var_dump(Test::verify($tickets));
+
     // $table = new Table();
     // $table->generate();
     // // dd($table);
     // dd($table->prettyPrint());
     // dd($table->getTickets());
-    // return view('welcome');
+    
+    return view('welcome');
 });
 
 Route::middleware([
