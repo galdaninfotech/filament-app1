@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Classes\Table;
 use App\Classes\Test;
+
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,4 +43,18 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+
+
+
+Route::get('send-email', function(){
+    $mailData = [
+        "name" => "Test NAME",
+        "email" => "email.email.com",
+        "message" => "message"
+    ];
+
+    Mail::to("hello@example.com")->send(new TestMail($mailData));
+
+    // dd("Mail Sent Successfully!");
 });
