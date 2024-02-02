@@ -14,14 +14,14 @@ class NewNumber implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $newNumber;
+    public $message;
 
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -34,5 +34,10 @@ class NewNumber implements ShouldBroadcast
         return [
             new Channel('channel-new-number'),
         ];
+    }
+
+    public function broadcastAs()
+    {
+        return 'new-number';
     }
 }
