@@ -56,6 +56,7 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 var channel = pusher.subscribe('my-channel');
 channel.bind('my-event', function(data) {
   console.log(JSON.stringify(data));
+  document.getElementById('new-number').innerHTML = 'New Number : ' + data;
 });
 
 var channel2 = pusher.subscribe('channel-new-number');
