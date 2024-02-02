@@ -38,10 +38,10 @@ return [
             'options' => [
                 'cluster' => 'ap2',
                 'useTLS' => true,
-                'encrypted' => true,
-                'host' => '127.0.0.1',
-                'port' => 6001,
-                'scheme' => 'http'
+                // 'encrypted' => true,
+                // 'host' => '127.0.0.1',
+                // 'port' => 6001,
+                // 'scheme' => 'http'
             ],
             'client_options' => [
                 // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html

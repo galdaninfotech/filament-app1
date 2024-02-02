@@ -4,7 +4,7 @@
         Game: {{ $activeGame->name }}
         <br>
         <br>
-        <div zzwire:poll.keep-alive="updateNumber">
+        <div id="new-number">
         New Number: {{ $newNumber }}
         </div>
         <br>

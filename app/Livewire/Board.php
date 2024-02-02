@@ -16,6 +16,7 @@ class Board extends Component
     public $drawnNumbers = [];
     public $newNumber;
     public $activeGame;
+    public $currentGameStatus = 'Starting shortly..';
     public $count = 0;
 
     public function mount() {

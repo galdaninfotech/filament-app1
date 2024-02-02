@@ -14,11 +14,16 @@ use App\Models\Claim;
 use App\Models\User;
 use App\Classes\Table;
 
+use App\Events\MyEvent;
+use App\Events\NewNumber;
+
 class Tickets extends Component
 {
     public $game_prizes = [];
+    public $ticketSelected;
     public $prizeSelected;
     public $tickets = [];
+    public $currentGameStatus = 'Starting shortly..';
     public $user;
 
     public function mount() {
@@ -60,6 +65,11 @@ class Tickets extends Component
     }
 
     public function updateChecked($ticket_id, $object_id){
+        event(new MyEvent('hello world!!!!!!!!!!!!!!!!!!!!!!!!!!'));
+        // broadcast(new MyEvent('hello world'));
+        // broadcast(new NewNumber('ggggg'));
+        // event(new MyEvent('hello world'));
+
         //break object_id in two [row][column]
         $object_id = str_pad($object_id, 2, '0', STR_PAD_LEFT);
         $row = str_split($object_id)[0];
@@ -85,15 +95,21 @@ class Tickets extends Component
 
     }
 
-    public function claimPrize($ticket_id) {
-        // dd($this->prizeSelected);
+    public function updateTicketSelected($ticketSelected){
+        $this->ticketSelected = $ticketSelected;
+    }
+
+    public function claimPrize() {
         $claim = Claim::create([
-            'ticket_id'     => $ticket_id,
+            'ticket_id'     => $this->ticketSelected,
             'game_prize_id' => $this->prizeSelected,
             'status'        => 'Open',
             'comment'       => 'Some comment here..'
         ]);
-        // dd($id);
+        
+        // Set status
+        $this->currentGameStatus = 'Game Paused';
+        // dd($claim);
     }
 
     public function generateTambolaTicket(){

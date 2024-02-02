@@ -38,43 +38,7 @@
                 </div>
             @endif
 
-            <x-modal name="test" title="Modal1">
-                <x-slot:body>
-                    <section class="px-8 bg-white dark:bg-gray-900">
-                        <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-                            <x-validation-errors class="mb-4" />
-
-                            @if (session('status'))
-                                <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-                                    {{ session('status') }}
-                                </div>
-                            @endif
-
-                            <form method="POST" action="{{ route('login') }}">
-                                @csrf
-
-                                <div>
-                                    <x-label for="email" value="{{ __('Email') }}" />
-                                    <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-                                </div>
-
-                                <div class="mt-4">
-                                    <x-label for="password" value="{{ __('Password') }}" />
-                                    <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-                                </div>
-
-                                <div class="flex items-center justify-end mt-4">
-                                    <x-button class="ms-4"> {{ __('Log in') }} </x-button>
-                                </div>
-                            </form>
-                        </div>
-                      </section>
-                    </x-slot>
-            </x-modal>
-
-            <button x-data @click="$dispatch('open-modal',{name:'test'})" 
-                class="text-white px-3 py-1 bg-blue-500 rounded text-xs"> Modal Test
-            </button>
+            
 
 
             

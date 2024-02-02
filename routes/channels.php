@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 Broadcast::channel('channel-new-number', []);
+Broadcast::channel('my-channel', []);
