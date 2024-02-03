@@ -31,7 +31,7 @@ class Board extends Component
     }
 
     public function draw() {
-        if($this->count >= 100) { return; }
+        if($this->count >= 90) { return; }
 
         $numbersCollection = Number::select('number')
                     ->whereNotIn('number', $this->drawnNumbers[0])
@@ -56,8 +56,10 @@ class Board extends Component
         $this->count = $numbersCollection->count();
 
         // $this->dispatch('new-number', newNumber: $newNumber);
-        MyEvent::dispatch($newNumber);
-        // event(new MyEvent($newNumber));
+        // MyEvent::dispatch($newNumber);
+        dd('kkkkkkkkkkkkkk');
+        $this->mount();
+        event(new MyEvent($newNumber));
     }
 
     public function render()

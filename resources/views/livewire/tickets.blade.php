@@ -1,34 +1,22 @@
 <div>
     {{-- The whole world belongs to you. --}}
-    <button wire:click="generateTicket({{ $noOfTickets = 1 }})"
-        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-        {{ __('Buy Tickets') }}
-    </button>
 
-    {{-- Modal --}}
-   
-    <button x-data @click="$dispatch('open-modal',{name:'claim'})" class="text-white px-3 py-1 bg-blue-500 rounded text-xs"> 
-        Claim
-    </button>
-    {{-- end Modal --}}
-
-    <br>
+    Status: {{ $currentGameStatus }}
+    
     {{-- {{ dd($tickets) }} --}}
-    <div class="grid grid-col-1">
+    <div class="grid place-items-center">
+        <button wire:click="generateTicket({{ $noOfTickets = 1 }})"
+            class="w-1/6 p-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+            {{ __('Buy Tickets') }}
+        </button>
+        <br>
         @if (isset($tickets[0]))
             @foreach ($tickets as $ticket)
                 <div class="mb-10"><br>
                     <div class="ticket-header w-full flex">
-                        <div style="margin-right: 90px;" class="left mr-10">Ticket No: {{ $ticket->id }}</div>
+                        <div style="margin-right: 180px;" class="left mr-10">Ticket No: {{ $ticket->id }}</div>
                         <div class="right">
-                            <select wire:model="prizeSelected">
-                                <option value=""> Select Prize </option>
-                                @foreach ($game_prizes as $prize)
-                                    <option value="{{ $prize->id }}" @selected(old($prize->name) == $prize->name)>
-                                        {{ $prize->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            
                             <button 
                                 x-data @click="$dispatch('open-modal',{name:'claim'})"
                                 wire:click="updateTicketSelected({{ $ticket->id }})"
@@ -41,12 +29,15 @@
                     @for ($j = 0; $j < 3; $j++)
                         <div class="row flex gap-x-2 gap-y-2 mt-2">
                             @for ($k = 0; $k < 9; $k++)
-                                <div class="column w-10 h-10 bg-gray-300 flex justify-center items-center">
+                                <div x-data="{ checked: false }"
+                                    x-on:click="checked = ! checked"
+                                    :class="checked ? 'column checked w-9 h-9 flex justify-center items-center' 
+                                    : 'column unchecked w-9 h-9 flex justify-center items-center'">
                                     @isset($ticket->object[$j][$k]['checked'], $ticket->object[$j][$k]['value'])
                                         @if ($ticket->object[$j][$k]['checked'] == 1)
                                             @php
                                                 $checked = 'checked';
-                                                $class = 'number_ticked before-old';
+                                                $class = 'number_ticked before-old checked';
                                             @endphp
                                         @else
                                             @php
@@ -59,12 +50,14 @@
                                                 <div class="checkable_div {{ $class }}">
                                                     <input
                                                         wire:click="updateChecked({{ $ticket->id }}, {{ $ticket->object[$j][$k]['id'] }})"
-                                                        type="checkbox" class="xhidden"
+                                                        type="checkbox" class="hidden"
                                                         name="{{ $ticket->object[$j][$k]['id'] }}" {{ $checked }}>
                                                 @else
                                                     <div>
                                             @endif
-                                            {{ $ticket->object[$j][$k]['value'] }}
+                                            <span wire:click="updateChecked({{ $ticket->id }}, {{ $ticket->object[$j][$k]['id'] }})"> 
+                                                {{ $ticket->object[$j][$k]['value'] }} 
+                                            </span>
                                         </div>
                                     </div>
                                 @endisset

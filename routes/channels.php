@@ -13,5 +13,12 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('channel-new-number', []);
-Broadcast::channel('my-channel', []);
+// Broadcast::channel('channel-new-number', []);
+// Broadcast::channel('my-channel', []);
+
+Broadcast::channel('channel-new-number', function(){
+    return true;
+});
+Broadcast::channel('my-channel', function(){
+    return true;
+});

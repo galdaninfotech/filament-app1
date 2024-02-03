@@ -56,7 +56,12 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 var channel = pusher.subscribe('my-channel');
 channel.bind('my-event', function(data) {
   console.log(JSON.stringify(data));
-  document.getElementById('new-number').innerHTML = 'New Number : ' + data;
+  document.getElementById('new-number').innerHTML = 'New Number : ' + data.message;
+  // $wire.mount();
+  // window.Live
+  // console.log(window.Livewire.all());
+  // console.log(window.Livewire.getByName('numberz').mount());
+  // console.log(window.Livewire.dispatch('new-number'));
 });
 
 var channel2 = pusher.subscribe('channel-new-number');

@@ -65,9 +65,11 @@ class Tickets extends Component
     }
 
     public function updateChecked($ticket_id, $object_id){
-        event(new MyEvent('hello world!!!!!!!!!!!!!!!!!!!!!!!!!!'));
+        $message = 'mmmmmmmmmmmmmmmmmm';
+        // event(new MyEvent($message));
+        event(new MyEvent('hello world'));
         // broadcast(new MyEvent('hello world'));
-        // broadcast(new NewNumber('ggggg'));
+        // event(new NewNumber(45));
         // event(new MyEvent('hello world'));
 
         //break object_id in two [row][column]
@@ -91,7 +93,7 @@ class Tickets extends Component
         $ticket[0]->object = $ticketObject;
         $ticket[0]->save();
 
-        $this->render();
+        $this->mount();
 
     }
 
@@ -100,6 +102,7 @@ class Tickets extends Component
     }
 
     public function claimPrize() {
+        dd('$claim');
         $claim = Claim::create([
             'ticket_id'     => $this->ticketSelected,
             'game_prize_id' => $this->prizeSelected,
@@ -107,9 +110,10 @@ class Tickets extends Component
             'comment'       => 'Some comment here..'
         ]);
         
-        // Set status
+        dd($claim);
+        // Set status (fire an event)
         $this->currentGameStatus = 'Game Paused';
-        // dd($claim);
+        $this->render();
     }
 
     public function generateTambolaTicket(){

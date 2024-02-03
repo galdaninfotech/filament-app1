@@ -32,9 +32,9 @@ return [
 
         'pusher' => [
             'driver' => 'pusher',
-            'key' => 'local',
-            'secret' => 'local',
-            'app_id' => 'local',
+            'app_id' => env('PUSHER_APP_ID'),
+            'key' => env('PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_APP_SECRET'),
             'options' => [
                 'cluster' => 'ap2',
                 'useTLS' => true,
