@@ -17,6 +17,7 @@
 
         <!-- Styles -->
         @livewireStyles
+        @laravelPWA
 
     </head>
     <body class="font-sans antialiased">
