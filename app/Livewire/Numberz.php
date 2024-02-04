@@ -17,6 +17,7 @@ class Numberz extends Component
     public $count = 0;
     public $newNumber;
     public $drawnNumbers = [];
+    public $currentGameStatus = 'Starting shortly..';
 
     public function mount() {
         $this->activeGame = DB::table('games')->where('status', 1)->first();

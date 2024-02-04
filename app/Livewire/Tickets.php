@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\On; 
 
+use Illuminate\Support\Facades\Session;
+
 use App\Models\Prize;
 use App\Models\Ticket;
 use App\Models\Claim;
@@ -16,6 +18,7 @@ use App\Classes\Table;
 
 use App\Events\MyEvent;
 use App\Events\NewNumber;
+use App\Events\ClaimReceived;
 
 class Tickets extends Component
 {
@@ -23,7 +26,6 @@ class Tickets extends Component
     public $ticketSelected;
     public $prizeSelected;
     public $tickets = [];
-    public $currentGameStatus = 'Starting shortly..';
     public $user;
 
     public function mount() {
@@ -65,12 +67,6 @@ class Tickets extends Component
     }
 
     public function updateChecked($ticket_id, $object_id){
-        $message = 'mmmmmmmmmmmmmmmmmm';
-        // event(new MyEvent($message));
-        event(new MyEvent('hello world'));
-        // broadcast(new MyEvent('hello world'));
-        // event(new NewNumber(45));
-        // event(new MyEvent('hello world'));
 
         //break object_id in two [row][column]
         $object_id = str_pad($object_id, 2, '0', STR_PAD_LEFT);
@@ -102,7 +98,6 @@ class Tickets extends Component
     }
 
     public function claimPrize() {
-        dd('$claim');
         $claim = Claim::create([
             'ticket_id'     => $this->ticketSelected,
             'game_prize_id' => $this->prizeSelected,
@@ -110,9 +105,11 @@ class Tickets extends Component
             'comment'       => 'Some comment here..'
         ]);
         
-        dd($claim);
+        // dd($claim);
         // Set status (fire an event)
-        $this->currentGameStatus = 'Game Paused';
+        $this->dispatch('received-claim');
+        Session::flash('message', 'Success! Claim sent. Game is paused for processing..');
+        event(new ClaimReceived(['Game Paused']));
         $this->render();
     }
 

@@ -56,7 +56,10 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 var channel = pusher.subscribe('my-channel');
 channel.bind('my-event', function(data) {
   console.log(JSON.stringify(data));
-  document.getElementById('new-number').innerHTML = 'New Number : ' + data.message;
+  document.getElementById('new-number').innerHTML = 'New Number : ' + data.message[0];
+  document.getElementById('count').innerHTML = 'Number Count : ' + data.message[1];
+  let numbers = data.message[2][0];
+  updatenumbersDrawn(numbers);
   // $wire.mount();
   // window.Live
   // console.log(window.Livewire.all());
@@ -64,8 +67,21 @@ channel.bind('my-event', function(data) {
   // console.log(window.Livewire.dispatch('new-number'));
 });
 
-var channel2 = pusher.subscribe('channel-new-number');
-channel2.bind('new-number', function(data) {
+
+function updatenumbersDrawn(numbers) {
+  let newNumber = numbers[numbers.length - 1];
+  var ul = document.getElementById("drawn-numbers-sequance");
+  var li = document.createElement("li");
+  li.appendChild(document.createTextNode(newNumber));
+  li.setAttribute("class", "w-10 h-10 bg-gray-300 flex justify-center items-center"); // added line
+  ul.appendChild(li);
+
+  let el = document.querySelector('#all-numbers > li.number-box:nth-child('+ newNumber +')');
+  el.setAttribute("class", "number-box drawn w-10 h-10 bg-gray-300 flex justify-center items-center")
+}
+
+var channel = pusher.subscribe('claim-channel');
+channel.bind('claim-event', function(data) {
   console.log(JSON.stringify(data));
-  document.getElementById('new-number').innerHTML = 'New Number : ' + data;
+  document.getElementById('game-status').innerHTML = 'Game Status : ' + data.message[0];
 });

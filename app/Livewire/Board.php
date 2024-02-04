@@ -57,9 +57,7 @@ class Board extends Component
 
         // $this->dispatch('new-number', newNumber: $newNumber);
         // MyEvent::dispatch($newNumber);
-        dd('kkkkkkkkkkkkkk');
-        $this->mount();
-        event(new MyEvent($newNumber));
+        event(new MyEvent([$newNumber, $this->count, $this->drawnNumbers]));
     }
 
     public function render()
