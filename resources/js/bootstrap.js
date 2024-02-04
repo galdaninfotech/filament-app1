@@ -60,11 +60,15 @@ channel.bind('my-event', function(data) {
   document.getElementById('count').innerHTML = 'Number Count : ' + data.message[1];
   let numbers = data.message[2][0];
   updatenumbersDrawn(numbers);
-  // $wire.mount();
-  // window.Live
-  // console.log(window.Livewire.all());
-  // console.log(window.Livewire.getByName('numberz').mount());
-  // console.log(window.Livewire.dispatch('new-number'));
+
+   // Play the corresponding audio file
+   var audio = new Audio('/storage/58.mp3');
+
+  // Play the audio
+  audio.play().catch(error => {
+    // Autoplay was prevented, handle the error (e.g., show a play button)
+    console.error('Autoplay prevented:', error.message);
+});
 });
 
 
@@ -80,6 +84,7 @@ function updatenumbersDrawn(numbers) {
   el.setAttribute("class", "number-box drawn w-10 h-10 bg-gray-300 flex justify-center items-center")
 }
 
+//Listen for game status channel
 var channel = pusher.subscribe('claim-channel');
 channel.bind('claim-event', function(data) {
   console.log(JSON.stringify(data));
