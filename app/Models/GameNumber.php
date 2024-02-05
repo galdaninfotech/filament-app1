@@ -11,7 +11,7 @@ class GameNumber extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['game_is', 'number-id'];
+    protected $fillable = ['game_id', 'number_id'];
 
     protected $searchableFields = ['*'];
 

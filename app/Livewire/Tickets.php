@@ -27,14 +27,17 @@ class Tickets extends Component
     public $prizeSelected;
     public $tickets = [];
     public $user;
+    public  $activeGame;
 
     public function mount() {
         $this->user = Auth::user();
+        $this->activeGame = DB::table('games')->where('status', 1)->first();
         $this->tickets = Ticket::whereBelongsTo($this->user)->get();
         $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
 
         $this->game_prizes = DB::table('game_prize')
             ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
+            ->where('game_prize.quantity', '>', '0')
             ->select('game_prize.*', 'prizes.name')
             ->get();
         // dd($this->game_prizes);
@@ -111,6 +114,30 @@ class Tickets extends Component
         Session::flash('message', 'Success! Claim sent. Game is paused for processing..');
         event(new ClaimReceived(['Game Paused']));
         $this->render();
+
+        // set game_prize inactive
+        // $prizes = DB::table('game_prize')
+        //         ->where('game_id', '=', $this->activeGame)
+        //         ->where('prize_id', '=', $this->prizeSelected)->select('quantity')->get();
+        // dd($prizes);
+
+        $prizes = DB::table('game_prize')
+            ->where('game_id', '=', $this->activeGame->id)
+            ->where('prize_id', '=', $this->prizeSelected)
+            ->get();
+        // dd($prizes[0]->quantity);
+        $quantity = $prizes[0]->quantity;
+        // dd($this->activeGame->id);
+        if($quantity > 0){
+            $prizes = DB::table('game_prize')
+                ->where('game_id', '=', $this->activeGame->id)
+                ->where('prize_id', '=', $this->prizeSelected)
+                ->update([
+                    'quantity' => $quantity - 1,
+                ]);
+        }
+
+            
     }
 
     public function generateTambolaTicket(){

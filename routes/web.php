@@ -19,18 +19,14 @@ use Illuminate\Support\Facades\Mail;
 
 
 Route::get('/', function () {
-
-    // $table = new Table();
-    // $table->generate();
-
-    // $tickets = $table->getTickets();
-    // var_dump(Test::verify($tickets));
-
-    // $table = new Table();
-    // $table->generate();
-    // // dd($table);
-    // dd($table->prettyPrint());
-    // dd($table->getTickets());
+    // $prizes = DB::table('game_prize')
+    //             ->where('game_id', '=', 2)
+    //             ->where('prize_id', '=', 3)
+    //             ->update([
+    //                 'active' => 0
+    //             ]);
+    // dd($prizes);
+        
     
     return view('welcome');
 });
