@@ -11,7 +11,7 @@ class Ticket extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['user_id', 'object', 'status', 'comment'];
+    protected $fillable = ['game_id', 'user_id', 'object', 'status', 'comment'];
 
     protected $searchableFields = ['*'];
 

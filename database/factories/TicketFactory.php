@@ -27,6 +27,7 @@ class TicketFactory extends Factory
             'status' => $this->faker->word(),
             'comment' => $this->faker->text(),
             'user_id' => \App\Models\User::factory(),
+            'game_id' => \App\Models\Game::factory(),
         ];
     }
 }

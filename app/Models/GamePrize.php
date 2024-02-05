@@ -9,7 +9,7 @@ class GamePrize extends Pivot
 {
     use HasFactory;
 
-    protected $fillable = ['game_id', 'prize_id'];
+    protected $fillable = ['game_id', 'prize_id', 'prize_amount', 'quantity', 'active', 'comment'];
 
     public function game()
     {

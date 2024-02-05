@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('game_id');
             $table->foreignId('user_id');
             $table->json('object');
             $table->string('status');

@@ -23,8 +23,10 @@ class WinnerFactory extends Factory
     public function definition(): array
     {
         return [
+            'game_id' => \App\Models\Game::factory(),
             'game_prize_id' => $this->faker->randomNumber(),
-            'claim_id' => $this->faker->randomNumber(),
+            'ticket_id' => \App\Models\Ticket::factory(),
+            'claim_id' => \App\Models\Game::factory(),
         ];
     }
 }
