@@ -18,6 +18,7 @@
                 <div class="mb-10">
                     <div class="ticket-header w-full flex">
                         <div style="margin-right: 180px;" class="left mr-10">Ticket No: {{ $ticket->id }}</div>
+                        <div style="margin-right: 180px;" class="left mr-10">Claims : {{ $ticket->claims }}</div>
                         <div class="right">
                             <button 
                                 x-data
@@ -80,7 +81,7 @@
 
     {{-- Modal Dialog --}}
 
-    <x-modal name="claim" title="Claims" ticketId="{{ $ticket->id }}">
+    <x-modal name="claim" title="Claims" ticketId="">
         <x-slot:body>
             <section class="px-8 bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">

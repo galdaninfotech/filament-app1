@@ -32,8 +32,12 @@ class Tickets extends Component
     public function mount() {
         $this->user = Auth::user();
         $this->activeGame = DB::table('games')->where('status', 1)->first();
-        $this->tickets = Ticket::whereBelongsTo($this->user)->get();
-        $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
+        $this->tickets = Ticket::whereBelongsTo($this->user)
+                            ->where('game_id', '=', $this->activeGame->id)
+                            ->with('claims')
+                            ->get();
+        // dd($this->tickets[0]->claims[0]->comment);
+        // $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
 
         $this->game_prizes = DB::table('game_prize')
             ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
@@ -51,9 +55,11 @@ class Tickets extends Component
         // dd($tickets);
 
         // $tickets = Ticket::whereBelongsTo($this->user)->get();
+        dd($this->user->id);
         foreach ($tickets as $ticket) {
             $this->user->tickets()->create([
-                'user_id' => 1,
+                'game_id' => $this->activeGame->id,
+                'user_id' => $this->user->id,
                 'object' => $ticket->numbers,
                 'status' => 'active',
                 'comment' => 'Some comments here..'
@@ -113,21 +119,13 @@ class Tickets extends Component
         $this->dispatch('received-claim');
         Session::flash('message', 'Success! Claim sent. Game is paused for processing..');
         event(new ClaimReceived(['Game Paused']));
-        $this->render();
 
-        // set game_prize inactive
-        // $prizes = DB::table('game_prize')
-        //         ->where('game_id', '=', $this->activeGame)
-        //         ->where('prize_id', '=', $this->prizeSelected)->select('quantity')->get();
-        // dd($prizes);
-
+        // get quantity of prize and decrement it 
         $prizes = DB::table('game_prize')
             ->where('game_id', '=', $this->activeGame->id)
             ->where('prize_id', '=', $this->prizeSelected)
             ->get();
-        // dd($prizes[0]->quantity);
         $quantity = $prizes[0]->quantity;
-        // dd($this->activeGame->id);
         if($quantity > 0){
             $prizes = DB::table('game_prize')
                 ->where('game_id', '=', $this->activeGame->id)
@@ -136,6 +134,9 @@ class Tickets extends Component
                     'quantity' => $quantity - 1,
                 ]);
         }
+
+        $this->mount();
+        $this->render();
 
             
     }
