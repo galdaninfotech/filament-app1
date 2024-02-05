@@ -14,6 +14,25 @@
         <h5 id="game-status">Game Status : {{ $currentGameStatus }}</h5>
         <br>
         <br>
+
+        @if(isset($gamePrizes))
+            <x-bladewind::table>
+                <x-slot name="header">
+                    <th>Prize</th>
+                    <th>Prize Amount</th>
+                    <th>Remaining</th>
+                </x-slot>
+                @foreach($gamePrizes as $prize)
+                    <tr>
+                        <td> {{ $prize->name }} </td>
+                        <td> {{ $prize->prize_amount }} </td>
+                        <td> {{ $prize->quantity }} </td>
+                    </tr>
+                @endforeach
+            </x-bladewind::table>
+        @endif
+
+        
         
         <h5>Drawn Numbers:</h5>
         <ul id="drawn-numbers-sequance" class="w-full flex gap-2 flex-wrap justify-between">
@@ -30,6 +49,7 @@
     </div>
 
     <!-- All Numbers Table -->
+    <h5>All Numbers:</h5>
     @php
     $drawnNumbers = $drawnNumbers[0]->sort();
     $drawnNumbers = $drawnNumbers->values();

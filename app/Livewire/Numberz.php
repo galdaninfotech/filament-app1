@@ -18,6 +18,7 @@ class Numberz extends Component
     public $newNumber;
     public $drawnNumbers = [];
     public $currentGameStatus = 'Starting shortly..';
+    public $gamePrizes = [];
 
     public function mount() {
         $this->activeGame = DB::table('games')->where('status', 1)->first();
@@ -25,6 +26,12 @@ class Numberz extends Component
         $numbersCollection = DB::table('game_number')->where('game_id', 2)->pluck('number_id');
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
+
+        $this->gamePrizes = DB::table('game_prize')
+                    ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
+                    ->where('game_prize.quantity', '>', '0')
+                    ->select('game_prize.*', 'prizes.name')
+                    ->get();
 
     }
 
