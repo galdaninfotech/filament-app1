@@ -17,17 +17,25 @@
             @foreach ($tickets as $ticket)
                 <div class="mb-10">
                     <div class="ticket-header w-full flex">
-                        <div style="margin-right: 180px;" class="left mr-10">Ticket No: {{ $ticket->id }}</div>
-                        <div style="margin-right: 180px;" class="left mr-10">Claims : {{ $ticket->claims }}</div>
-                        <div class="right">
-                            <button 
-                                x-data
-                                @click="$dispatch('open-modal', { name: 'claim' })"
-                                wire:click="updateTicketSelected({{ $ticket->id }})"
-                                class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
-                            >
-                                {{ __('Claim Prize') }}
-                            </button>
+                        <div class="grid grid-cols-2 gap-1">
+                            <table class="text-[11px] divide-y divide-gray-400 divide-dotted">
+                                @foreach($ticket->claims as $claim)
+                                    <tr class="grid grid-cols-2">
+                                    <td>Prize Claimed ID : </td><td>{{ $claim->game_prize_id }}</td>
+                                    <td>Status : </td><td>{{ $claim->status }}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                            <div class="right">
+                                <button 
+                                    x-data
+                                    @click="$dispatch('open-modal', { name: 'claim' })"
+                                    wire:click="updateTicketSelected({{ $ticket->id }})"
+                                    class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                                >
+                                    {{ __('Claim Prize') }}
+                                </button>
+                            </div>
                         </div>
                     </div>
                     @for ($j = 0; $j < 3; $j++)

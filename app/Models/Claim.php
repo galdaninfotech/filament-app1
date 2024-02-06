@@ -37,4 +37,9 @@ class Claim extends Model
     {
         return $this->belongsTo(Winner::class);
     }
+
+    public function gamePrize()
+    {
+        return $this->belongsTo(GamePrize::class);
+    }
 }
