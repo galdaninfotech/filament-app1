@@ -18,7 +18,7 @@
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/css/fireworks.css', 'resources/js/fireworks.js', 'resources/js/app.js'])
 
         <!-- Styles -->
         @livewireStyles
@@ -46,8 +46,15 @@
             </main>
         </div>
 
+        <x-fireworks></x-fireworks>
+
         @stack('modals')
 
         @livewireScripts
+
+        <!-- fireworks -->
+        <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/fscreen%401.0.1.js'></script>
+        <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/Stage%400.1.4.js'></script>
+        <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/MyMath.js'></script>
     </body>
 </html>

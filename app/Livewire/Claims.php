@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Claim;
+use App\Events\WinnerEvent;
 
 class Claims extends Component
 {
@@ -23,6 +24,7 @@ class Claims extends Component
             ->join('tickets', 'claims.ticket_id', '=', 'tickets.id')
             ->join('users', 'tickets.user_id', '=', 'users.id')
             ->join('games', 'tickets.game_id', '=', 'games.id')
+            ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
             ->where('games.id', '=', $this->activeGame->id)
             ->where('tickets.user_id', '=', $this->user->id)
             ->select(
@@ -34,7 +36,8 @@ class Claims extends Component
                 'claims.created_at', 
                 'game_prize.*',
                 'tickets.object',
-                'users.name',
+                'users.name as user_name',
+                'prizes.name as prize_name',
             )
             ->get();
             
@@ -47,6 +50,7 @@ class Claims extends Component
             ->join('tickets', 'claims.ticket_id', '=', 'tickets.id')
             ->join('users', 'tickets.user_id', '=', 'users.id')
             ->join('games', 'tickets.game_id', '=', 'games.id')
+            ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
             ->where('games.id', '=', $this->activeGame->id)
             ->where('tickets.user_id', '=', $this->user->id)
             ->where('claims.id', '=', $claim_id)
@@ -59,7 +63,8 @@ class Claims extends Component
                 'claims.created_at', 
                 'game_prize.*',
                 'tickets.object',
-                'users.name',
+                'users.name as user_name',
+                'prizes.name as prize_name',
             )
             ->get();
 
@@ -69,6 +74,29 @@ class Claims extends Component
         //     'is_winner' => 1
         // ]);
         // dd($this->selectedClaimWithDetails);
+    }
+
+    public function updateClaimWinner($claim_id) {
+        $claim = Claim::find($claim_id)
+        ->update([
+            'status' => 'Winner',
+            'is_winner' => 1,
+        ]);
+        
+        if($claim) {
+            // dd($claim_id);
+            event(new WinnerEvent($claim_id));
+            $this->render();
+            return 'success';
+        }
+        
+    }
+
+    public function updateClaimBoggy($claim_id) {
+        $claim = Claim::find($claim_id)
+            ->update([
+                'is_boogy' => 1
+            ]);
     }
 
     public function render()

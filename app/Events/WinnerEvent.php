@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewNumber implements ShouldBroadcastNow
+class WinnerEvent implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -32,12 +32,12 @@ class NewNumber implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('channel-new-number'),
+            new Channel('winner-channel'),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'new-number';
+        return 'winner-event';
     }
 }
