@@ -16,8 +16,7 @@ use Illuminate\Support\Facades\Broadcast;
 // Broadcast::channel('channel-new-number', []);
 // Broadcast::channel('my-channel', []);
 
-
-Broadcast::channel('my-channel', function(){
+Broadcast::channel('numbers-channel', function(){
     return true;
 });
 
@@ -25,6 +24,6 @@ Broadcast::channel('claim-channel', function(){
     return true;
 });
 
-Broadcast::channel('channel-new-number', function(){
+Broadcast::channel('winner-channel', function(){
     return true;
 });

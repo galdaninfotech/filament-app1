@@ -21,6 +21,7 @@
                             <table class="text-[11px] divide-y divide-gray-400 divide-dotted">
                                 @foreach($ticket->claims as $claim)
                                     <tr class="grid grid-cols-2">
+                                    <td>Claim ID : </td><td class="claim-id">{{ $claim->id }}</td>
                                     <td>Prize Claimed ID : </td><td>{{ $claim->game_prize_id }}</td>
                                     <td>Status : </td><td>{{ $claim->status }}</td>
                                     </tr>
@@ -123,4 +124,6 @@
     </x-modal>
 
     {{-- end Modal Dialog --}}
+
+        
 </div>

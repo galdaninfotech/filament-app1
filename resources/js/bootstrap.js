@@ -3,58 +3,18 @@
  * to our Laravel back-end. This library automatically handles sending the
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
-
+import { startFireworks } from './fireworks.js';
 import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
-// import Echo from 'laravel-echo';
-
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: import.meta.env.PUSHER_APP_KEY,
-//     cluster: import.meta.env.PUSHER_APP_CLUSTER ?? 'mt1',
-//     wsHost: import.meta.env.PUSHER_HOST ? import.meta.env.PUSHER_HOST : `ws-${import.meta.env.PUSHER_APP_CLUSTER}.pusher.com`,
-//     wsPort: import.meta.env.PUSHER_PORT ?? 80,
-//     wssPort: import.meta.env.PUSHER_PORT ?? 443,
-//     forceTLS: (import.meta.env.PUSHER_SCHEME ?? 'https') === 'https',
-//     enabledTransports: ['ws', 'wss'],
-// });
-
-// import Echo from 'laravel-echo'
-
-// window.Echo = new Echo({
-//   broadcaster: 'pusher',
-//   key: 'c64c2df76cdf6f1f4e73',
-//   cluster: 'ap2',
-//   forceTLS: true
-// });
-
-// var channel = Echo.channel('my-channel');
-// channel.listen('.my-event', function(data) {
-//   alert(JSON.stringify(data));
-//   console.log(JSON.stringify(data));
-// });
-
-// Enable pusher logging - don't include this in production
-// Pusher.logToConsole = true;
-
 var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
   cluster: 'ap2'
 });
 
-var channel = pusher.subscribe('my-channel');
-channel.bind('my-event', function(data) {
+var channel1 = pusher.subscribe('numbers-channel');
+channel1.bind('numbers-event', function(data) {
   console.log(JSON.stringify(data));
   document.getElementById('new-number').innerHTML = 'New Number : ' + data.message[0];
   document.getElementById('count').innerHTML = 'Number Count : ' + data.message[1];
@@ -62,7 +22,7 @@ channel.bind('my-event', function(data) {
   updatenumbersDrawn(numbers);
 
    // Play the corresponding audio file
-   var audio = new Audio('/storage/58.mp3');
+   var audio = new Audio('/storage/58-micmonster.mp3');
 
   // Play the audio
   audio.play().catch(error => {
@@ -84,9 +44,25 @@ function updatenumbersDrawn(numbers) {
   el.setAttribute("class", "number-box drawn w-10 h-10 bg-gray-300 flex justify-center items-center")
 }
 
-//Listen for game status channel
-var channel = pusher.subscribe('claim-channel');
-channel.bind('claim-event', function(data) {
+// //Listen for game status channel
+var channel2 = pusher.subscribe('claim-channel');
+channel2.bind('claim-event', function(data) {
   console.log(JSON.stringify(data));
   document.getElementById('game-status').innerHTML = 'Game Status : ' + data.message[0];
 });
+
+// //Listen for winner event
+var channel3 = pusher.subscribe('winner-channel');
+channel3.bind('winner-event', function(data) {
+  // let el = document.querySelectorAll('td.claim-id')
+  // for(var i = 0; i => el.length; i++){
+  //   // alert(el.length);
+  //   if(el.innerText == data){
+  //     startFireworks();
+  //   }
+  // }
+  startFireworks();
+  console.log(JSON.stringify(data));
+  // document.getElementById('game-status').innerHTML = 'Game Status : ' + data.message[0];
+});
+

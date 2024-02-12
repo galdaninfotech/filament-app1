@@ -8,8 +8,7 @@ use App\Models\Game;
 use App\Models\GameNumber;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
-use App\Events\NewNumber;
-use App\Events\MyEvent;
+use App\Events\NumbersEvent;
 
 class Board extends Component
 {
@@ -55,9 +54,8 @@ class Board extends Component
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
 
-        // $this->dispatch('new-number', newNumber: $newNumber);
-        // MyEvent::dispatch($newNumber);
-        event(new MyEvent([$newNumber, $this->count, $this->drawnNumbers]));
+        event(new NumbersEvent([$newNumber, $this->count, $this->drawnNumbers]));
+        // dd($var);
     }
 
     public function render()

@@ -1,4 +1,4 @@
-@props(['name', 'title', 'ticketId'])
+@props(['name', 'title'])
 
 <div x-data="{ 
         isShowing : false , 
