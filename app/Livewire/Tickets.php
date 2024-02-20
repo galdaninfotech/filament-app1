@@ -55,7 +55,7 @@ class Tickets extends Component
         // dd($tickets);
 
         // $tickets = Ticket::whereBelongsTo($this->user)->get();
-        dd($this->user->id);
+        // dd($this->user->id);
         foreach ($tickets as $ticket) {
             $this->user->tickets()->create([
                 'game_id' => $this->activeGame->id,
@@ -139,6 +139,12 @@ class Tickets extends Component
         $this->render();
 
             
+    }
+
+    public function setAutoMode() {
+        $user = DB::table('users')
+              ->where('id', $this->user->id)
+              ->update(['automode' => 1]);
     }
 
     public function generateTambolaTicket(){

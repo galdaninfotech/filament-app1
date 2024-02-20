@@ -4,7 +4,9 @@
     <br>
     <br>
 
-    <button wire:click="draw" @click="$dispatch('new-number')" class="bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+    <button wire:click="draw" @click="$dispatch('new-number')" 
+        style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
+        class="fi-btn-label bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
         {{ __('Draw Number') }}
     </button>
 

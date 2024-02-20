@@ -19,7 +19,7 @@
             <div class="flex justify-center">
                 <div
                     role="tablist"
-                    class="inline-flex justify-center bg-slate-200 p-1 mb-4 min-[480px]:mb-12"
+                    class="inline-flex justify-center bg-slate-200 p-1 mb-4 min-[480px]:mb-12 rounded-2xl"
                     @keydown.right.prevent.stop="$focus.wrap().next()"
                     @keydown.left.prevent.stop="$focus.wrap().prev()"
                     @keydown.home.prevent.stop="$focus.first()"
