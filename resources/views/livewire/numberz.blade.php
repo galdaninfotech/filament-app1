@@ -58,6 +58,16 @@
                         @click="activeTab = 3"
                         @focus="activeTab = 3"
                     >PRIZES</button>
+                    <button
+                        id="tab-4"
+                        class="flex-1 text-sm font-medium h-8 px-4 rounded-2xl whitespace-nowrap focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300 transition-colors duration-150 ease-in-out"
+                        :class="activeTab === 4 ? 'bg-white text-slate-900' : 'text-slate-600 hover:text-slate-900'"
+                        :tabindex="activeTab === 4 ? 0 : -1"
+                        :aria-selected="activeTab === 4"
+                        aria-controls="tabpanel-3"
+                        @click="activeTab = 4"
+                        @focus="activeTab = 4"
+                    >CLAIMS</button>
                 </div>
             </div>
 
@@ -167,6 +177,64 @@
                                             </tr>
                                         @endforeach
                                     </x-bladewind::table>
+                                @endif
+                                {{-- end Game Prizes --}}
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Panel #4 -->
+                    <article
+                        id="tabpanel-4"
+                        class="w-full bg-white rounded-2xl shadow-xl min-[480px]:flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        role="tabpanel" 
+                        tabindex="0"
+                        aria-labelledby="tab-4"
+                        x-show="activeTab === 4"
+                        x-transition:enter="transition ease-[cubic-bezier(0.68,-0.3,0.32,1)] duration-700 transform order-first"
+                        x-transition:enter-start="opacity-0 -translate-y-8"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-[cubic-bezier(0.68,-0.3,0.32,1)] duration-300 transform absolute"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 translate-y-12"                        
+                    >
+                        <div class="flex flex-col justify-center p-5 pl-3">
+                            <div class="text-slate-500 text-sm mb-2 flex flex-col items-center">
+                                {{-- Game Prizes --}}
+                                @if(isset($activeClaims))
+                                    @foreach($activeClaims as $claim)
+                                        <div class="mb-6">
+                                            <div class="flex items-center justify-between space-x-6">
+                                                <div> {{ $claim->user_name }} </div>
+                                                <div> Status: {{ $claim->status }} </div>
+                                            </div>
+                                            <div class="ticket">
+                                                @php $ticket = json_decode($claim->object, true); @endphp
+                                                @foreach ($ticket as $row)
+                                                    <div class="row flex gap-1 mt-2">
+                                                        @foreach ($row as $cell)
+                                                            <div class="column w-8 h-8 flex justify-center items-center">
+                                                                @if (is_array($cell))
+                                                                    @if($cell['checked'] == 1)
+                                                                        @php
+                                                                            $class = 'checked';
+                                                                        @endphp
+                                                                    @else
+                                                                        @php
+                                                                            $class = 'unchecked';
+                                                                        @endphp
+                                                                    @endif
+                                                                    <span class="w-full h-full text-xs p-2 {{$class}}"> {{ $cell['value'] }} </span>
+                                                                @elseif (is_int($cell))
+                                                                    <span class="cell w-full h-full text-xs p-2 {{$class}}">  </span>
+                                                                @endif
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 @endif
                                 {{-- end Game Prizes --}}
                             </div>

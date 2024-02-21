@@ -41,7 +41,7 @@ class Claims extends Component
             )
             ->get();
             
-        // dd($results);
+        // dd($this->claimsz);
     }
 
     public function updateSelectedClaimWithDetails($claim_id) {

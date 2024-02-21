@@ -19,6 +19,7 @@ class Numberz extends Component
     public $drawnNumbers = [];
     public $currentGameStatus = 'Starting shortly..';
     public $gamePrizes = [];
+    public $activeClaims = [];
 
     public function mount() {
         $this->activeGame = DB::table('games')->where('status', 1)->first();
@@ -28,10 +29,35 @@ class Numberz extends Component
         $this->count = $numbersCollection->count();
 
         $this->gamePrizes = DB::table('game_prize')
-                    ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
+                    ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')
                     ->where('game_prize.quantity', '>', '0')
+                    ->where('game_prize.game_id', '=', $this->activeGame->id)
                     ->select('game_prize.*', 'prizes.name')
                     ->get();
+
+        // dd( $this->gamePrizes);
+                    
+        $this->activeClaims = DB::table('claims')
+            ->join('game_prize', 'claims.game_prize_id', '=', 'game_prize.prize_id')
+            ->join('tickets', 'claims.ticket_id', '=', 'tickets.id')
+            ->join('users', 'tickets.user_id', '=', 'users.id')
+            ->join('games', 'tickets.game_id', '=', 'games.id')
+            ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
+            ->where('games.id', '=', $this->activeGame->id)
+            ->select(
+                'claims.id as claim_id', 
+                'claims.ticket_id', 
+                'claims.game_prize_id', 
+                'claims.status', 
+                'claims.comment', 
+                'claims.created_at', 
+                'game_prize.*',
+                'tickets.object',
+                'users.name as user_name',
+                'prizes.name as prize_name',
+            )
+            ->get();
+        // dd( $this->activeClaims);
 
     }
 

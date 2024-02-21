@@ -96,7 +96,7 @@
         @endif
     </div>
 
-
+    
     {{-- Modal Dialog --}}
 
     <x-modal name="claim" title="Claims" ticketId="">
@@ -115,7 +115,7 @@
                         @csrf
                         <select wire:model="prizeSelected" class="block mt-1 w-full rounded-md" required>
                             <option value=""> Select Prize </option>
-                            @foreach ($game_prizes as $prize)
+                            @foreach ($gamePrizes as $prize)
                                 <option value="{{ $prize->id }}" @selected(old($prize->name) == $prize->name)>
                                     {{ $prize->name }}
                                 </option>
