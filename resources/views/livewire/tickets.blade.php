@@ -9,7 +9,7 @@
                 {{ __('Buy Tickets') }}
             </button>
 
-            <button wire:click="autoMode({{ $autoMode = false }})"
+            <button wire:click="setAutoMode"
                 class="p-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
                 {{ __('Auto Mode') }}
             </button>
@@ -95,8 +95,7 @@
             @endforeach            
         @endif
     </div>
-
-
+    
     {{-- Modal Dialog --}}
 
     <x-modal name="claim" title="Claims" ticketId="">
@@ -104,18 +103,16 @@
             <section class="px-8 bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
                     <x-validation-errors class="mb-4" />
-
                     @if (session('status'))
                         <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
                             {{ session('status') }}
                         </div>
                     @endif
-
                     <form wire:submit="claimPrize()" x-on:received-claim.window="isShowing = false">
                         @csrf
                         <select wire:model="prizeSelected" class="block mt-1 w-full rounded-md" required>
                             <option value=""> Select Prize </option>
-                            @foreach ($game_prizes as $prize)
+                            @foreach ($gamePrizes as $prize)
                                 <option value="{{ $prize->id }}" @selected(old($prize->name) == $prize->name)>
                                     {{ $prize->name }}
                                 </option>
@@ -133,6 +130,5 @@
     </x-modal>
 
     {{-- end Modal Dialog --}}
-
         
 </div>

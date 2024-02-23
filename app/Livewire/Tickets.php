@@ -22,7 +22,7 @@ use App\Events\ClaimReceived;
 
 class Tickets extends Component
 {
-    public $game_prizes = [];
+    public $gamePrizes = [];
     public $ticketSelected;
     public $prizeSelected;
     public $tickets = [];
@@ -36,14 +36,13 @@ class Tickets extends Component
                             ->where('game_id', '=', $this->activeGame->id)
                             ->with('claims')
                             ->get();
-        // dd($this->tickets[0]->claims[0]->comment);
-        // $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
 
-        $this->game_prizes = DB::table('game_prize')
-            ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
-            ->where('game_prize.quantity', '>', '0')
-            ->select('game_prize.*', 'prizes.name')
-            ->get();
+        $this->gamePrizes = DB::table('game_prize')
+                ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')
+                ->where('game_prize.quantity', '>', '0')
+                ->where('game_prize.game_id', '=', $this->activeGame->id)
+                ->select('game_prize.*', 'prizes.name')
+                ->get();
         // dd($this->game_prizes);
     }
 
@@ -55,7 +54,7 @@ class Tickets extends Component
         // dd($tickets);
 
         // $tickets = Ticket::whereBelongsTo($this->user)->get();
-        dd($this->user->id);
+        // dd($this->user->id);
         foreach ($tickets as $ticket) {
             $this->user->tickets()->create([
                 'game_id' => $this->activeGame->id,
@@ -139,6 +138,12 @@ class Tickets extends Component
         $this->render();
 
             
+    }
+
+    public function setAutoMode() {
+        $user = DB::table('users')
+              ->where('id', $this->user->id)
+              ->update(['automode' => 1]);
     }
 
     public function generateTambolaTicket(){
