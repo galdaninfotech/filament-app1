@@ -40,8 +40,6 @@ class Claims extends Component
                 'prizes.name as prize_name',
             )
             ->get();
-            
-        // dd($this->claimsz);
     }
 
     public function updateSelectedClaimWithDetails($claim_id) {

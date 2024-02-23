@@ -34,8 +34,6 @@ class Numberz extends Component
                     ->where('game_prize.game_id', '=', $this->activeGame->id)
                     ->select('game_prize.*', 'prizes.name')
                     ->get();
-
-        // dd( $this->gamePrizes);
                     
         $this->activeClaims = DB::table('claims')
             ->join('game_prize', 'claims.game_prize_id', '=', 'game_prize.prize_id')

@@ -94,21 +94,6 @@ class Board extends Component
             }
         }
 
-        // //get ticket by id and ticket object from it
-        // $ticket = Ticket::where('id', $ticket_id)->get();
-        // $ticketObject = $ticket[0]->object;
-
-        // //toggle checked 
-        // if($ticketObject[$row][$column]['checked'] == 0) {
-        //     $ticketObject[$row][$column]['checked'] = 1;
-        // }
-        // else {
-        //     $ticketObject[$row][$column]['checked'] = 0;
-        // }
-
-        // //save to db
-        // $ticket[0]->object = $ticketObject;
-        // $ticket[0]->save();
     }
 
     public function render()

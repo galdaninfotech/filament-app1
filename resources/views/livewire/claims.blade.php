@@ -39,7 +39,6 @@
         </table>
     </div>
     <!-- end Claims Table -->
-    
 
     {{-- Modal Dialog --}}
     <x-modal name="claim-modal" title="Claims" claim_id="55555">
@@ -47,13 +46,11 @@
             <section class="px-8 bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 mx-auto max-w-screen-md">
                     <x-validation-errors class="mb-4" />
-
                     @if (session('status'))
                         <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
                             {{ session('status') }}
                         </div>
                     @endif
-
                     <div>
                         @csrf
                         @if (isset($selectedClaimWithDetails))

@@ -36,8 +36,6 @@ class Tickets extends Component
                             ->where('game_id', '=', $this->activeGame->id)
                             ->with('claims')
                             ->get();
-        // dd($this->tickets[0]->claims[0]->comment);
-        // $tickets = DB::table('tickets')->where('user_id', $this->user->id)->get();
 
         $this->gamePrizes = DB::table('game_prize')
                 ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')

@@ -240,10 +240,8 @@
                             </div>
                         </div>
                     </article>
-
                 </div>
             </div>
-
         </div>
         <!-- End: Tabs component -->
     </div>

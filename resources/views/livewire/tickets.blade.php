@@ -95,7 +95,6 @@
             @endforeach            
         @endif
     </div>
-
     
     {{-- Modal Dialog --}}
 
@@ -104,13 +103,11 @@
             <section class="px-8 bg-white dark:bg-gray-900">
                 <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
                     <x-validation-errors class="mb-4" />
-
                     @if (session('status'))
                         <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
                             {{ session('status') }}
                         </div>
                     @endif
-
                     <form wire:submit="claimPrize()" x-on:received-claim.window="isShowing = false">
                         @csrf
                         <select wire:model="prizeSelected" class="block mt-1 w-full rounded-md" required>
@@ -133,6 +130,5 @@
     </x-modal>
 
     {{-- end Modal Dialog --}}
-
         
 </div>
