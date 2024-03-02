@@ -31,7 +31,9 @@ class WinnerEvent implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
+        // dd($this->message[0]);
         return [
+            new PrivateChannel('winner-channel.'.$this->message[0]),
             new Channel('winner-channel'),
         ];
     }

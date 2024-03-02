@@ -16,7 +16,7 @@ function fadeScreenToBlack() {
     store.setState({ soundEnabled: true });
     document.getElementById("app").style.display = "block";
     document.getElementById("start").style.display = "none";
-    setTimeout(stopFireworks, 21000);
+    setTimeout(stopFireworks, 16000);
   }
   
   // Function to play fireworks

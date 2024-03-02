@@ -14,18 +14,22 @@
         <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
         <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
-        
+
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/css/fireworks.css', 'resources/js/fireworks.js', 'resources/js/app.js'])
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
         <!-- Styles -->
+        @filamentStyles
         @livewireStyles
         @laravelPWA
 
     </head>
     <body class="font-sans antialiased">
+        @include('sweetalert::alert')
         <x-banner />
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">

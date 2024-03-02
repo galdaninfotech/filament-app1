@@ -9,8 +9,11 @@ export default defineConfig({
                 'resources/css/fireworks.css',
                 'resources/js/app.js',
                 'resources/js/fireworks.js',
+                `resources/css/filament/admin/theme.css`,
             ],
-            refresh: true,
+            refresh: [
+                'app/Livewire/**',
+            ],
         }),
     ],
 });

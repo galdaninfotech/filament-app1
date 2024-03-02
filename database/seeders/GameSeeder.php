@@ -18,7 +18,9 @@ class GameSeeder extends Seeder
             'name' => 'Daily Game One',
             'start' => now(),
             'end' => now(),
-            'status' => 0,
+            'ticket_price' => 50,
+            'active' => false,
+            'status' => 'End',
             'comment' => 'Some comments here..',
         ]);
 
@@ -26,35 +28,36 @@ class GameSeeder extends Seeder
             'name' => 'Daily Game Two',
             'start' => now(),
             'end' => now(),
-            'status' => 1,
+            'ticket_price' => 100,
+            'active' => true,
             'comment' => 'Some comments here..',
         ]);
 
 
         // Game Numbers =====================================================================
-        DB::table('game_number')->insert([
-            'game_id' => 2,
-            'number_id' => 24,
-            'declared_at' => now(),
-        ]);
+        // DB::table('game_number')->insert([
+        //     'game_id' => 2,
+        //     'number_id' => 24,
+        //     'declared_at' => now(),
+        // ]);
 
-        DB::table('game_number')->insert([
-            'game_id' => 2,
-            'number_id' => 44,
-            'declared_at' => now(),
-        ]);
+        // DB::table('game_number')->insert([
+        //     'game_id' => 2,
+        //     'number_id' => 44,
+        //     'declared_at' => now(),
+        // ]);
 
-        DB::table('game_number')->insert([
-            'game_id' => 2,
-            'number_id' => 64,
-            'declared_at' => now(),
-        ]);
+        // DB::table('game_number')->insert([
+        //     'game_id' => 2,
+        //     'number_id' => 64,
+        //     'declared_at' => now(),
+        // ]);
 
-        DB::table('game_number')->insert([
-            'game_id' => 2,
-            'number_id' => 84,
-            'declared_at' => now(),
-        ]);
+        // DB::table('game_number')->insert([
+        //     'game_id' => 2,
+        //     'number_id' => 84,
+        //     'declared_at' => now(),
+        // ]);
 
 
         // Game Prizes =====================================================================

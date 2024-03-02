@@ -9,6 +9,14 @@ export default {
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        
+        "./resources/**/*.blade.php",
+        "./resources/**/*.js",
+        "./resources/**/*.vue",
+
+        './app/Filament/**/*.php',
+        './resources/views/filament/**/*.blade.php',
+        './vendor/filament/**/*.blade.php',
     ],
 
     theme: {
@@ -19,5 +27,11 @@ export default {
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [
+        forms, typography],
+
+    presets: [
+        require('tailwindcss/defaultConfig'),
+        // filamentPreset,
+    ],
 };

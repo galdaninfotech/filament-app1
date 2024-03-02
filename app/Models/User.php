@@ -29,6 +29,7 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'automode',
     ];
 
     /**
@@ -74,5 +75,12 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@example.com');
+    }
+
+    public function hasPermissionToSubscribeToChannel($channelName)
+    {
+        // Logic to check if the user has permission to subscribe to the channel
+        // For example, you might check if the user has a permission record for this channel
+        return true;
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MyEvent implements ShouldBroadcastNow
+class ClaimEvent implements ShouldBroadCastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -32,12 +32,12 @@ class MyEvent implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('my-channel'),
+            new Channel('claim-channel'),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'my-event';
+        return 'claim-event';
     }
 }

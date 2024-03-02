@@ -5,12 +5,12 @@
         <table class="table-auto text-sm w-full">
             <thead>
                 <tr class="bg-gray-400 text-white p-4">
-                    <th class="py-2 text-gray-900">ID</th>
+                    <th class="py-2 text-gray-900">#</th>
                     <th class="py-2">Prize</th>
                     <th class="py-2">Ticket</th>
                     <th class="py-2">Status</th>
                     <th class="py-2">Comment</th>
-                    <th class="py-2">Claimed At</th>
+                    <th class="py-2">Time</th>
                     <th class="py-2">Action</th>
                 </tr>
             </thead>
@@ -28,9 +28,9 @@
                                 x-data
                                 wire:click="updateSelectedClaimWithDetails({{ $claim->claim_id }})"
                                 @click="$dispatch('open-modal', { name: 'claim-modal' })"
-                                class="text-black bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                                class="button-sm"
                             >
-                                {{ __('View Claim') }}
+                                {{ __('View') }}
                             </button>
                         </td>
                     </tr>
@@ -76,13 +76,13 @@
                                 <div class="flex items-center justify-between space-x-6">
                                     <button x-data
                                         wire:click="updateClaimWinner({{ $selectedClaimWithDetails[0]->claim_id }})"
-                                        class="p-2"
+                                        class="button p-2"
                                     >
                                         {{ __('Winner') }}
                                     </button>
                                     <button x-data
                                         wire:click="updateClaimBoggy({{ $selectedClaimWithDetails[0]->claim_id }})"
-                                        class="p-2"
+                                        class="button p-2"
                                     >
                                         {{ __('Boggy') }}
                                     </button>

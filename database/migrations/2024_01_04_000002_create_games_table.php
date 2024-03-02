@@ -15,7 +15,9 @@ return new class extends Migration {
             $table->string('name');
             $table->dateTimeTz('start');
             $table->dateTimeTz('end');
-            $table->boolean('status');
+            $table->integer('ticket_price')->default(0);
+            $table->boolean('active')->default(false); //Active playing game
+            $table->string('status')->default('Starting Shortly'); //Starting Shortly, Started, On, Paused, End
             $table->text('comment');
 
             $table->timestamps();

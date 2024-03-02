@@ -1,17 +1,44 @@
 <div>
-    {{-- The whole world belongs to you. --}}
-    
-    {{-- {{ dd($tickets) }} --}}
+    <script>
+        const userId = {{ Auth::user()->id }};
+    </script>
+
+
+
     <div class="grid place-items-center">
-        <div class="flext items-start">
-            <button wire:click="generateTicket({{ $noOfTickets = 1 }})"
+        <div class="flext items-start mt-1">
+            <button 
+                wire:click="generateTicket({{ $noOfTickets = 1 }})"
                 class="p-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
                 {{ __('Buy Tickets') }}
             </button>
 
-            <button wire:click="setAutoMode"
-                class="p-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-                {{ __('Auto Mode') }}
+            <button wire:click="toggleAutoMode" 
+                    wire:click="$refresh"
+                    wire:loading.attr="disabled"
+                    class="flext items-start relative p-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+
+                <!-- Show icon based on Auto Mode state -->
+                @if($autoMode == 1)
+                    <!-- Auto Mode is enabled, display icon indicating enabled state -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                @else
+                    <!-- Auto Mode is disabled, display icon indicating disabled state -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                @endif
+
+                <!-- Show loading indicator while toggling -->
+                <svg wire:loading wire:target="toggleAutoMode" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 animate-spin" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V2.5"></path>
+                </svg>
+                
+                <!-- Text indicating Auto Mode -->
+                <span class="ml-12">{{ __('Auto') }}</span>
             </button>
         </div>
 
@@ -97,7 +124,6 @@
     </div>
     
     {{-- Modal Dialog --}}
-
     <x-modal name="claim" title="Claims" ticketId="">
         <x-slot:body>
             <section class="px-8 bg-white dark:bg-gray-900">
@@ -112,9 +138,9 @@
                         @csrf
                         <select wire:model="prizeSelected" class="block mt-1 w-full rounded-md" required>
                             <option value=""> Select Prize </option>
-                            @foreach ($gamePrizes as $prize)
-                                <option value="{{ $prize->id }}" @selected(old($prize->name) == $prize->name)>
-                                    {{ $prize->name }}
+                            @foreach ($remainingPrizes as $prize)
+                                <option value="{{ $prize->game_prize_id }}" @selected(old($prize->prize_name) == $prize->prize_name)>
+                                    {{ $prize->prize_name }}
                                 </option>
                             @endforeach
                         </select>

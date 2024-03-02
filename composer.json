@@ -19,8 +19,11 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
+        "mckenziearts/laravel-notify": "^2.4",
         "mkocansey/bladewind": "^2.4",
+        "munafio/chatify": "^1.6",
         "pusher/pusher-php-server": "^7.2",
+        "realrashid/sweet-alert": "^7.1",
         "silviolleite/laravelpwa": "^2.0"
     },
     "require-dev": {

@@ -1,35 +1,50 @@
 <div>
+<div class="px-4 py-4 ">
+        <h5 id="game-status">Game : {{ $activeGame->name }}</h5>
 
-    Game: {{ $activeGame->name }}
-    <br>
-    <br>
+        <h5 id="game-status">Game Status : {{ $currentGameStatus }}</h5>
+        <br>
 
-    <button wire:click="draw" @click="$dispatch('new-number')" 
-        style="--c-400:var(--primary-400);--c-500:var(--primary-500);--c-600:var(--primary-600);"
-        class="fi-btn-label bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-        {{ __('Draw Number') }}
-    </button>
+        <button wire:click="draw" @click="$dispatch('new-number')" class="fi-btn-label button">
+            {{ __('New Number') }}
+        </button>
 
-    <br>
-    <br>
+        <button wire:click="setPrizes" class="fi-btn-label button">
+            {{ __('Set Prizes') }}
+        </button>
 
-    New Number : {{ $newNumber }}
+        <h5 id="new-number"> New Number: {{ $newNumber }} </h5>
 
-    <br>
-    <h5>Count: {{ $count }}</h5>
+        <h5 id="count"> Numbers Count: {{ $count }}</h5>
 
-    <br>
-    <h5>Drawn Numbers:</h5>
-    <ul class="flex gap-2 flex-wrap"> 
-        @if(isset($drawnNumbers[0]))
-            @foreach($drawnNumbers[0] as $number)
+    </div>
 
-                <li>{{ $number }},</li>
-            @endforeach
-        @endif
-    </ul>
 
-    <br>
+    <div class="px-4 py-4 ">
+        {{-- Drwan Numbers in sequence --}}
+        <h2>Numbers in Sequence:</h2>
+        <ul id="drawn-numbers-sequance" class="w-full flex gap-2 flex-wrap justify-between mt-2 mb-6">
+            @if(isset($drawnNumbers[0]))
+                @foreach($drawnNumbers[0] as $number)
+                    <li class="w-10 h-10 bg-gray-300 flex justify-center items-center">{{ $number }}</li>
+                @endforeach
+            @endif
+        </ul>
+        {{-- end Drwan Numbers --}}
 
+        {{-- All Numbers Table --}}
+        <h2 class="pt-4">All Numbers:</h2>
+        @php
+            $drawnNumbers = $drawnNumbers[0]->sort();
+            $drawnNumbers = $drawnNumbers->values();
+            // dd($drawnNumbers);
+        @endphp
+        <ul id="all-numbers" class="w-full flex gap-2 flex-wrap justify-between mt-2 mb-6">
+            @for ($i = 1; $i <= 90; $i++)
+                <li class="number-box {{ $drawnNumbers->contains($i) ? 'drawn w-10 h-10 bg-gray-300 flex justify-center items-center' : 'w-10 h-10 bg-gray-300 flex justify-center items-center' }}">{{ $i }}</li>
+            @endfor
+        </ul>
+        {{-- end All Numbers Table --}}
+    </div>
 
 </div>

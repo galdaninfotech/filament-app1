@@ -12,10 +12,11 @@ return new class extends Migration {
     {
         Schema::create('winners', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('game_id');
             $table->foreignId('game_prize_id');
-            $table->foreignId('ticket_id');
-            $table->foreignId('claim_id');
+            $table->foreignId('game_id');
+            $table->foreignId('user_id')->nullable();  //nullable because we populate this table as winners declared
+            $table->foreignId('ticket_id')->nullable();
+            $table->foreignId('claim_id')->nullable();
 
             $table->timestamps();
         });

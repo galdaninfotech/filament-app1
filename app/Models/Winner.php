@@ -11,7 +11,7 @@ class Winner extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ['game_id', 'game_prize_id', 'ticket_id', 'claim_id'];
+    protected $fillable = ['game_prize_id', 'game_id', 'user_id', 'ticket_id', 'claim_id'];
 
     protected $searchableFields = ['*'];
 

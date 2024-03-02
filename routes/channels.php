@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-
+use App\Models\Claim;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Broadcast Channels
@@ -12,9 +13,6 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
-// Broadcast::channel('channel-new-number', []);
-// Broadcast::channel('my-channel', []);
 
 Broadcast::channel('numbers-channel', function(){
     return true;
@@ -27,3 +25,8 @@ Broadcast::channel('claim-channel', function(){
 Broadcast::channel('winner-channel', function(){
     return true;
 });
+
+Broadcast::channel('winner-channel.{userId}', function ($user, $userId) {
+    return $user->id === $userId;
+});
+
