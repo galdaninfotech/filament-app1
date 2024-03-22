@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\On;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use TomatoPHP\LaravelAgora\Services\Agora;
 
 class Numberz extends Component
 {
@@ -32,6 +32,8 @@ class Numberz extends Component
     public function mount() {
         // notify()->success('Laravel Notify is awesome!');
         // Alert::toast('Success Title', 'Success Message from Numberz');
+        Agora::make(id: 1)->uId(rand(999, 1999))->token();
+        Agora::make(id: 1)->uId(rand(999, 1999))->join()->token();
 
         $this->user = Auth::user();
         $this->activeGame = DB::table('games')->where('active', true)->first();

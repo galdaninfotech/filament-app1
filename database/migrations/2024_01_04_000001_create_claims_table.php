@@ -14,11 +14,10 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->foreignId('ticket_id');
             $table->foreignId('game_prize_id');
-            $table->string('status');
+            $table->string('status'); // Open, Winner, Boggy
             $table->text('comment');
             $table->boolean('is_winner')->default(0);
             $table->boolean('is_boogy')->default(0);
-            // $table->unsignedBigInteger('winner_id');
 
             $table->timestamps();
         });

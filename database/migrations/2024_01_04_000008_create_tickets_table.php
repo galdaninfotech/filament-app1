@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('game_id');
             $table->foreignId('user_id');
             $table->json('object');
-            $table->string('status');
+            $table->string('status'); // Active, Disqualified, Old
             $table->text('comment');
 
             $table->timestamps();

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('id');
             $table->foreignId('prize_id');
             $table->foreignId('game_id');
+            $table->string('name');
             $table->integer('prize_amount');
             $table->integer('quantity');
             $table->boolean('active');

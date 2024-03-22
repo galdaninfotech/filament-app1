@@ -15,47 +15,32 @@ class PrizeSeeder extends Seeder
     {
         DB::table('prizes')->insert([
             'name' => 'Full House',
-            'description' => 'Some description here..',
+            'description' => 'Full House',
         ]);
 
         DB::table('prizes')->insert([
             'name' => 'Top Line',
-            'description' => 'Some description here..',
+            'description' => 'Top Line',
         ]);
 
         DB::table('prizes')->insert([
             'name' => 'Middle Line',
-            'description' => 'Some description here..',
+            'description' => 'Middle Line',
         ]);
 
         DB::table('prizes')->insert([
             'name' => 'Bottom Line',
-            'description' => 'Some description here..',
-        ]);
-
-        DB::table('prizes')->insert([
-            'name' => 'Star',
-            'description' => 'Some description here..',
-        ]);
-
-        DB::table('prizes')->insert([
-            'name' => 'Center, Laddu',
-            'description' => 'Some description here..',
-        ]);
-
-        DB::table('prizes')->insert([
-            'name' => 'Early Five',
-            'description' => 'Some description here..',
+            'description' => 'Bottom Line',
         ]);
 
         DB::table('prizes')->insert([
             'name' => 'Lucky Seven',
-            'description' => 'Some description here..',
+            'description' => 'Lucky Seven',
         ]);
 
         DB::table('prizes')->insert([
-            'name' => 'Corners',
-            'description' => 'Some description here..',
+            'name' => 'Ticket Corners',
+            'description' => 'line1 = first & last, line3 = first & last',
         ]);
     }
 }

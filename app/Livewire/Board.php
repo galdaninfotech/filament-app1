@@ -24,31 +24,45 @@ class Board extends Component
     public $currentGameStatus;
     public $count = 0;
     public $user;
-    public $gamePrizes;
+    // public $gamePrizes;
+    public $isPrizesSet = false;
+    public $noOfPrizes;
+    public $noOfPrizeTypes;
+    public $noOfLoggedInUsers;
+    public $noOfPlayers;
+    public $noOfTicketsSold;
+    public $totalPrizeAmount;
 
     public function mount() {
         $this->user = Auth::user();
         $this->allNumbers = DB::table('numbers')->get();
         $this->activeGame = DB::table('games')->where('active', true)->first();
         $this->currentGameStatus = $this->activeGame->status;
+        $this->noOfPrizes = DB::table('winners')->count();
+        $this->noOfPrizeTypes = DB::table('game_prize')->count();
 
-        //TODOs remove hardcoding of game_id $this->activeGame->id
         $numbersCollection = DB::table('game_number')->where('game_id', $this->activeGame->id)->pluck('number_id');
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
 
-        // $this->gamePrizes = DB::table('game_prize')
-        //         ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')
-        //         ->where('game_prize.quantity', '>', '0')
-        //         ->where('game_prize.game_id', '=', $this->activeGame->id)
-        //         ->select('game_prize.*', 'prizes.name')
-        //         ->get();
+        $this->noOfPlayers = DB::table('tickets')
+            ->where('game_id', $this->activeGame->id)
+            ->get()
+            ->unique('user_id')
+            ->count();
 
-        // dd($this->allPrizes);
+        // Get Logged in users
+        $activeSessions = DB::table('sessions')->where('last_activity', '>', now()->subMinutes(5))->get();
+        $loggedInUserIds = $activeSessions->pluck('user_id')->unique();
+        $this->noOfLoggedInUsers = User::whereIn('id', $loggedInUserIds)->count();
+
+        $this->noOfTicketsSold = DB::table('tickets')->where('game_id',  $this->activeGame->id)->count();
+        $this->totalPrizeAmount = DB::table('game_prize')->where('game_id',  $this->activeGame->id)->sum('prize_amount');
+
     }
 
     public function draw() {
-        if($this->count >= 90) { return; }
+        if($this->count >= 90) { dd('All Numbers Out!'); }
 
         // dd($this->currentGameStatus);
         // update active game status
@@ -125,6 +139,10 @@ class Board extends Component
     }
 
     public function setPrizes(){
+        // dd(Winner::first());
+        if(Winner::first())
+            dd('Prizes Alreadt Set!!');
+
         $gamePrizes = DB::table('game_prize')
                 ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')
                 ->where('game_prize.quantity', '>', '0')
@@ -147,6 +165,18 @@ class Board extends Component
                 ]);
             }
         }
+        $this->isPrizesSet = true; // not using this property, safely delete
+        $this->mount();
+    }
+
+    public function pauseGame(){
+        $game = Game::where('active', true)->first();
+        $game->update([
+            'status' => 'Paused',
+        ]);
+
+        $this->currentGameStatus = 'Paused';
+        //send GamePausedEvent
     }
 
     // public function populateWinnersTable(){

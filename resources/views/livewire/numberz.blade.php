@@ -42,28 +42,27 @@ https://codepen.io/MillerTime/pen/NevqWJ
 
 
 -->
-{{-- {{ dd($allPrizes) }} --}}
+<div class="px-4 md:px-6">
+    <livewire:video />
+</div>
 
 
+    <div class="px-6 py-2 ">
+        {{-- Session message --}}
+        @if(Session::has('status'))
+            <x-bladewind::alert type="success"> {{ Session::get('status') }} </x-bladewind.alert>
+        @endif
 
-    <div class="px-6 py-6 ">
-        <h5 id="active-game">Game : {{ $activeGame->name }}</h5>
+        <h5 id="active-game"> {{ $activeGame->name }}</h5>
 
         <h5 id="game-status">Game Status : {{ $currentGameStatus }}</h5>
 
-        <!-- <div id="new-number">
-            New Number: {{ $newNumber }}
-        </div>
-
-        <h5 id="count">Numbers Count : {{ $count }}</h5>
-        <h5 id="count">Number Of Prizes : {{ $allPrizes->count() }}</h5>
-        -->
     </div>
 
     <x-recent-numbers :numbers="$drawnNumbers[0]"></x-recent-numbers>
 
     {{-- Tabs --}}
-    <div class="w-full max-w-6xl mx-auto px-4 md:px-6 py-6">
+    <div class="w-full max-w-6xl mx-auto px-4 md:px-6 py-2">
         <!-- Tabs component -->
         <div x-data="{ activeTab: 1 }">
             <!-- Buttons -->
@@ -119,7 +118,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                         >
                         <span>PRIZES</span>
                         <span class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
-                        {{ $allPrizes->count() }} </span>
+                        {{$allPrizes->count()}}</span>
                         <span>/WINNERS</span>
                         <span id="winners-count" class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
                         {{ $allWinners->count() }}</span>
@@ -207,7 +206,6 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                         <li class="number-box {{ $drawnNumbers->contains($i) ? 'drawn w-10 h-10 bg-gray-300 flex justify-center items-center' : 'w-10 h-10 bg-gray-300 flex justify-center items-center' }}">{{ $i }}</li>
                                     @endfor
                                 </ul>
-                                {{-- end All Numbers Table --}}
 
                                 <br>
                             </div>
@@ -217,7 +215,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #3 -->
                     <article
                         id="tabpanel-3"
-                        class="w-full bg-white rounded-2xl shadow-xl min-[480px]:flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full bg-white rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-3"
@@ -235,16 +233,20 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                 @if(isset($allPrizes))
                                     <x-bladewind::table>
                                         <x-slot name="header">
+                                            <th>#</th>
                                             <th>Prize</th>
                                             <th>Amount</th>
                                             <th>Winner</th>
                                         </x-slot>
+                                        @php $index = 1; @endphp
                                         @foreach($allPrizes as $prize)
                                             <tr data-prize="{{ $prize->prize_name }}">
+                                                <td> {{ $index }} </td>
                                                 <td> {{ $prize->prize_name }} </td>
                                                 <td> {{ $prize->prize_amount }} </td>
                                                 <td> {{ $prize->user_name }} </td>
                                             </tr>
+                                            @php $index++; @endphp
                                         @endforeach
                                     </x-bladewind::table>
                                 @endif
@@ -256,7 +258,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #4 -->
                     <article
                         id="tabpanel-4"
-                        class="w-full bg-white rounded-2xl shadow-xl min-[480px]:flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="claim-list w-full bg-white rounded-2xl shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-4"
@@ -268,46 +270,48 @@ https://codepen.io/MillerTime/pen/NevqWJ
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 translate-y-12"
                     >
-                        <div class="flex flex-col justify-center p-5 pl-3">
-                            <div class="claim__container text-slate-500 text-sm mb-2 flex flex-col items-center">
-                                {{-- Game Prizes --}}
-                                @if(isset($activeClaims))
-                                    @foreach($activeClaims as $claim)
-                                        <div class="claim__item mb-6">
-                                            <div class="flex items-center justify-between space-x-6">
-                                                <div> {{ $claim->user_name }} </div>
-                                                <div> Status: {{ $claim->status }} </div>
-                                            </div>
-                                            <div class="ticket">
-                                                @php $ticket = json_decode($claim->object, true); @endphp
-                                                @foreach ($ticket as $row)
-                                                    <div class="row flex gap-1 mt-2">
-                                                        @foreach ($row as $cell)
-                                                            <div class="column w-8 h-8 flex justify-center items-center">
-                                                                @if (is_array($cell))
-                                                                    @if($cell['checked'] == 1)
-                                                                        @php
-                                                                            $class = 'checked';
-                                                                        @endphp
-                                                                    @elseif($cell['checked'] == 0)
-                                                                        @php
-                                                                            $class = 'unchecked';
-                                                                        @endphp
-                                                                    @endif
-                                                                    <span class="w-full h-full text-xs p-2 {{$class}}"> {{ $cell['value'] }} </span>
-                                                                @elseif (is_int($cell) && $cell == 0 )
-                                                                    <span class="cell w-full h-full text-xs p-2 {{$class}}"></span>
-                                                                @endif
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                @endforeach
-                                            </div>
+                        <div class="claim-list">
+                            @if(isset($activeClaims))
+                                @foreach($activeClaims as $claim)
+                                    <div class="claim-items mb-6">
+                                        <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
+                                            <div> {{ $claim->user_name }} </div>
+                                            <div> Prize: {{ $claim->prize_name }} </div>
+                                            <div> Ticket No: {{ $claim->ticket_id }} </div>
+                                            <div> Status: <span class="text-green-500">{{ strtoupper($claim->status) }}</span> </div>
                                         </div>
-                                    @endforeach
-                                @endif
-                                {{-- end Game Prizes --}}
-                            </div>
+                                        <div class="">
+                                            @php $ticket = json_decode($claim->object, true); @endphp
+                                            @foreach ($ticket as $row)
+                                                <div class="row ">
+                                                    @foreach ($row as $cell)
+                                                        @if (is_array($cell))
+                                                            @if($cell['checked'] == 1)
+                                                                @php
+                                                                    $class = 'checked';
+                                                                @endphp
+                                                            @elseif($cell['checked'] == 0)
+                                                                @php
+                                                                    $class = 'unchecked';
+                                                                @endphp
+                                                            @endif
+                                                            <div class="cell text-lg md:text-xl {{$class}}">
+                                                                <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
+                                                            </div>
+                                                        @elseif (is_int($cell) && $cell == 0 )
+                                                            <div class="cell unchecked">
+                                                                <span class="flex justify-center items-center"></span>
+                                                            </div>
+                                                        @endif
+
+
+                                                    @endforeach
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </article>
                 </div>
@@ -316,5 +320,92 @@ https://codepen.io/MillerTime/pen/NevqWJ
         <!-- End: Tabs component -->
     </div>
     {{-- end Tabs --}}
+
+
+
+
+    <style>
+
+        /* Claim List */
+        /* Claim List */
+        /* Claim List */
+/* Claim List */
+/* Claim List */
+/* Claim List */
+.claim-list {
+    width: 100%; /* Ensure the container spans the full width */
+}
+.claim-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensure the container spans the full width */
+}
+
+.claim-items .mb-6 {
+    margin-bottom: 1.5rem; /* Adjust the margin-bottom as needed */
+}
+
+.claim-items .row {
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Ensure the row spans the full width */
+}
+
+.claim-items .cell {
+    flex: 0 0 auto;
+    width: 100%; /* Ensure the cell spans the full width */
+    margin: 0.2rem; /* Adjust the padding as needed */
+    border: 1px solid #ccc;
+    max-width: 75px;
+    max-height: 75px;
+    text-align: center;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+}
+
+.claim-items .cell span {
+    font-size: 0.8em; /* Adjust the font size as needed */
+    display: block; /* Ensure the span occupies the full width of the cell */
+}
+
+/* Media Queries for Responsiveness */
+@media (min-width: 768px) {
+    .claim-items .cell {
+        flex: 0 0 auto;
+        width: 100%; /* Ensure the cell spans the full width */
+        padding-top: 100%; /* Set the padding top to create a square */
+        position: relative;
+        border: 1px solid #ccc;
+        box-sizing: border-box; /* Ensure padding and border are included in the width */
+    }
+
+    .claim-items .cell span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.8em; /* Adjust the font size as needed */
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .claim-items .cell {
+        max-width: 40px; /* Further adjust the maximum width for even smaller screens */
+        max-height: 40px; /* Further adjust the maximum hmax-height for even smaller screens */
+    }
+}
+
+
+   </style>
+
+
+
+
+
+
 
 </div>

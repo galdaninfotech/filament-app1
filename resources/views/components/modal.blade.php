@@ -1,17 +1,17 @@
 @props(['name', 'title'])
 
-<div x-data="{ 
-        isShowing : false , 
+<div x-data="{
+        isShowing : false ,
         name : '{{ $name }}',
-    }" 
+    }"
     x-show="isShowing"
-    x-on:open-modal.window="isShowing = ($event.detail.name === name)" 
+    x-on:open-modal.window="isShowing = ($event.detail.name === name)"
     x-on:close-modal.window="isShowing = false"
     x-on:keydown.escape.window="isShowing = false"
     x-transition.duration
-    style="display:none;" 
+    style="display:none;"
     class="fixed z-50 inset-0 h-screen flex items-center justify-center">
-    
+
     {{-- Gray Background --}}
     <!-- <div x-on:click="isShowing = false" class="fixed inset-0 bg-gray-500 opacity-40"></div> -->
 
@@ -26,7 +26,7 @@
                 </svg>
             </button>
         </div>
-        
+
         <div class="p-4">
             {{ $body }}
         </div>

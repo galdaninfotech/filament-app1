@@ -23,10 +23,22 @@ Broadcast::channel('claim-channel', function(){
 });
 
 Broadcast::channel('winner-channel', function(){
+    // dd('public');
     return true;
 });
 
 Broadcast::channel('winner-channel.{userId}', function ($user, $userId) {
+    // dd('private');
     return $user->id === $userId;
+});
+
+
+
+// Videos Channels
+Broadcast::channel('video-channel', function ($user) {
+    return ['id' => $user->id, 'name' => $user->name];
+});
+Broadcast::channel('agora-online-channel', function ($user) {
+    return ['id' => $user->id, 'name' => $user->name];
 });
 

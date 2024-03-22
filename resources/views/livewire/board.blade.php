@@ -1,8 +1,13 @@
 <div>
-<div class="px-4 py-4 ">
+    @php use Carbon\Carbon; @endphp
+    <div class="px-4 py-4 ">
         <h5 id="game-status">Game : {{ $activeGame->name }}</h5>
+        <h5 id="game-status">Start Time : {{ $activeGame->start }}</h5>
+        <h5 id="game-status">Time Lapse : {{ Carbon::createFromTimeStamp(strtotime($activeGame->start))->diffForHumans() }}</h5>
+        <h5 id="game-status">End Time: </h5>
 
         <h5 id="game-status">Game Status : {{ $currentGameStatus }}</h5>
+
         <br>
 
         <button wire:click="draw" @click="$dispatch('new-number')" class="fi-btn-label button">
@@ -13,9 +18,20 @@
             {{ __('Set Prizes') }}
         </button>
 
+        <button wire:click="pauseGame" class="fi-btn-label button">
+            {{ __('Pause Game') }}
+        </button>
+
         <h5 id="new-number"> New Number: {{ $newNumber }} </h5>
 
         <h5 id="count"> Numbers Count: {{ $count }}</h5>
+        <h5 id="count"> No. Of Prizes: {{ $noOfPrizes }}</h5>
+        <h5 id="count"> Prize Types: {{ $noOfPrizeTypes }}</h5>
+        <h5 id="count"> No. Of Online Users: {{ $noOfLoggedInUsers }}</h5>
+        <h5 id="count"> No. Of Players: {{ $noOfPlayers }}</h5>
+        <h5 id="count"> Tickets Sold: {{ $noOfTicketsSold }}</h5>
+        <h5 id="count"> Total Ticket Amount: {{ $noOfTicketsSold * $activeGame->ticket_price }}</h5>
+        <h5 id="count"> Total Prize Amount: {{ $totalPrizeAmount }}</h5>
 
     </div>
 

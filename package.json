@@ -17,7 +17,15 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "agora-extension-ai-denoiser": "^1.1.0",
+        "agora-extension-spatial-audio": "^1.0.0-beta1",
+        "agora-extension-virtual-background": "^1.2.0",
+        "agora-rtc-sdk-ng": "^4.20.1",
+        "cors-anywhere": "^0.4.4",
         "laravel-echo": "^1.15.3",
-        "pusher-js": "^8.4.0-rc2"
+        "pusher-js": "^8.4.0-rc2",
+        "webrtc-adapter": "^8.2.3",
+        "vue": "^3.0.5",
+        "vue-loader": "^16.1.2"
     }
 }

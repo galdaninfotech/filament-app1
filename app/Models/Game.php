@@ -18,7 +18,6 @@ class Game extends Model
     protected $casts = [
         'start' => 'datetime',
         'end' => 'datetime',
-        'status' => 'boolean',
     ];
 
     public function users()

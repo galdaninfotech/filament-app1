@@ -64,7 +64,8 @@ class GameSeeder extends Seeder
         DB::table('game_prize')->insert([
             'game_id' => 2,
             'prize_id' => 1,
-            'prize_amount' => 80000,
+            'name' => 'Full House',
+            'prize_amount' => 40000,
             'quantity' => 1,
             'active' => 1,
             'comment' => 'Some comment here..',
@@ -73,6 +74,7 @@ class GameSeeder extends Seeder
         DB::table('game_prize')->insert([
             'game_id' => 2,
             'prize_id' => 2,
+            'name' => 'Top Line',
             'prize_amount' => 7000,
             'quantity' => 5,
             'active' => 1,
@@ -82,6 +84,7 @@ class GameSeeder extends Seeder
         DB::table('game_prize')->insert([
             'game_id' => 2,
             'prize_id' => 3,
+            'name' => 'Bottom Line',
             'prize_amount' => 7000,
             'quantity' => 1,
             'active' => 1,

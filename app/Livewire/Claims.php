@@ -74,10 +74,10 @@ class Claims extends Component
 
     public function updateClaimWinner($claim_id) {
         $claim = Claim::find($claim_id)
-        ->update([
-            'status' => 'Winner',
-            'is_winner' => 1,
-        ]);
+            ->update([
+                'status' => 'Winner',
+                'is_winner' => 1,
+            ]);
 
         // on successful update fire an event
         if($claim) {
@@ -106,10 +106,19 @@ class Claims extends Component
 
     public function updateClaimBoggy($claim_id) {
         $claim = Claim::find($claim_id)
-            ->update([
-                'is_boogy' => 1
-            ]);
+        ->update([
+            'status' => 'Boggy',
+            'is_boggy' => 1,
+        ]);
+
+        // on successful update fire an event
+        if($claim) {
+            // event(new BoggyEvent([$this->selectedClaimWithDetails[0]->user_id, $this->selectedClaimWithDetails[0]]));
+            $this->render();
+        }
     }
+
+    
 
     public function render()
     {

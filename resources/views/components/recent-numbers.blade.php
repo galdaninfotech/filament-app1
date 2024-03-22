@@ -1,12 +1,12 @@
 @props(['numbers'])
-<div class="slider" x-data="{start: true, end: false}" x-init="$refs.slider.scrollLeft = $refs.slider.scrollWidth - $refs.slider.offsetWidth">
+<div class="slider px-4" x-data="{start: true, end: false}" x-init="$refs.slider.scrollLeft = $refs.slider.scrollWidth - $refs.slider.offsetWidth">
     <div class="slider__nav">
-        <button class="slider__nav__button" x-on:click="$refs.slider.scrollBy({left: $refs.slider.offsetWidth * -1, behavior: 'smooth'});" x-bind:class="start ? '' : 'slider__nav__button--active'">Previous</button>
+        <button class="slider__nav__button" x-on:click="$refs.slider.scrollBy({left: $refs.slider.offsetWidth * -1, behavior: 'smooth'});" x-bind:class="start ? '' : 'slider__nav__button--active'">Prev</button>
         <button class="slider__nav__button" x-on:click="$refs.slider.scrollBy({left: $refs.slider.offsetWidth, behavior: 'smooth'});" x-bind:class="end ? '' : 'slider__nav__button--active'">Next</button>
     </div>
     <div id="slider__content" class="slider__content" x-ref="slider" x-on:scroll.debounce="$refs.slider.scrollLeft == 0 ? start = true : start = false;">
         @foreach($numbers as $key => $number)
-            <div class="slider__item @if($loop->last) animate__animated animate__bounceIn new-number @endif">
+            <div class="slider__item @if($loop->last) animate__animated animate__bounceIn new-number @endif bg-gray-800">
                 {{ $number }}
             </div>
         @endforeach
@@ -16,22 +16,22 @@
 
 <style>
 :root {
-  --scrollcolor: #ddd;
-  --scrollbackground: #444;
+  --scrollcolor: #1f2937;
+  --scrollbackground: #dbdbdb;
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
+/* /* body { */
   background: #203239;
-}
+} */
 
 .slider {
   width: 90%;
   max-width: 1280px;
-  margin: 20px auto;
+  margin: 5px auto;
 }
 
 .slider__content {
@@ -75,7 +75,7 @@ body {
 @keyframes bounceIn {
     0% {
         /* transform: scale(0.1); */
-        opacity: 0.4;
+        opacity: 0.7;
     }
 
     100% {
@@ -85,10 +85,10 @@ body {
 }
 
 .animate__bounceIn {
-    background: darkcyan;
+    background: rgb(1, 48, 48);
     color: white;
     animation-name: bounceIn;
-    animation-duration: 2000ms; /* Adjust duration as needed */
+    animation-duration: 3000ms; /* Adjust duration as needed */
     animation-iteration-count: infinite;
 }
 

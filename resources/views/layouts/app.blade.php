@@ -11,16 +11,24 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
+
+        {{-- Bladewind --}}
         <link href="{{ asset('vendor/bladewind/css/animate.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('vendor/bladewind/css/bladewind-ui.min.css') }}" rel="stylesheet" />
         <script src="{{ asset('vendor/bladewind/js/helpers.js') }}"></script>
 
-        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/css/fireworks.css', 'resources/js/fireworks.js', 'resources/js/app.js'])
+        @vite([
+            'resources/css/app.css',
+            'resources/css/fireworks.css',
+            'resources/js/video.js',
+            'resources/js/app.js',
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        ])
+
+        @stack('scripts')
 
         <!-- Styles -->
         @filamentStyles
@@ -60,5 +68,7 @@
         <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/fscreen%401.0.1.js'></script>
         <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/Stage%400.1.4.js'></script>
         <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/329180/MyMath.js'></script>
+
+
     </body>
 </html>

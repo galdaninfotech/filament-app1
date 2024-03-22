@@ -10,7 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\PaymentController;
+use App\Models\Game;
+use App\Livewire\Tickets;
+use App\Livewire\TestTicket;
+use App\Livewire\PlayerPayment;
+use App\Models\User;
+
 // use RealRashid\SweetAlert\Facades\Alert;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,26 +43,20 @@ Route::middleware([
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->name('dashboard');
+
+        Route::get('/agora-chat', function () {
+            return view('agora-chat');
+        });
+
+        // Update toggle state of numbers
+        Route::post('/updateChecked', [Tickets::class, 'updateChecked']);
+
+        Route::get('/test-ticket', TestTicket::class);
 });
 
-
-
-Route::get('send-email', function(){
-    $mailData = [
-        "name" => "Test NAME",
-        "email" => "email.email.com",
-        "message" => "message"
-    ];
-
-    Mail::to("hello@example.com")->send(new TestMail($mailData));
-
-    // dd("Mail Sent Successfully!");
-});
 
 // Route::post('/pusher/auth', 'PusherAuthController@authenticate');
 Route::post('/pusher/auth', function(Request $request) {
-
-    // dd($request);
     $socketId = $request->post('socket_id');
     $channelName = $request->post('channel_name');
 
@@ -71,5 +73,19 @@ Route::post('/pusher/auth', function(Request $request) {
     } else {
         abort(401, 'Unauthenticated.');
     }
-    // echo $pusher->socket_auth('winner-channel.2', '28167.375585');
 });
+
+// Video Call Endpoints
+Route::post('/agora/token', 'App\Http\Controllers\AgoraVideoController@token');
+Route::post('/agora/call-user', 'App\Http\Controllers\AgoraVideoController@callUser');
+
+
+// Payment Page
+Route::get('/player-payment', PlayerPayment::class);
+// Payment With Omnipay for paypal
+Route::get('/payment', [PaymentController::class, 'payment'])->name('payment');
+Route::get('/success', [PaymentController::class, 'success']);
+Route::get('/error', [PaymentController::class, 'error']);
+
+// Test Routes
+// Route::post('/updateChecked', [Tickets::class, 'updateChecked']);
