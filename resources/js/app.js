@@ -137,22 +137,12 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 
 
 
+
+
+// ----------------------------------------- WINNER EVENT SUBSCRIPTIONS -------------------------------------------------------
 // Subscribe to the Private Winner Channel:
-const channelName = `private-winner-channel.${userId}`;
+const channelName = `.private-winner-channel.${userId}`;
 const privateChannel = pusher.subscribe(channelName);
-privateChannel.bind('winner-event', function(data) {
-    console.log(data.message[1]);
-    alert('You Won!!!!!');
-    startFireworks();
-
-    Swal.fire({
-        position: "top-end",
-        title: "You Won!" + data.message[1].prize_name,
-        showConfirmButton: false,
-        timer: 2500
-    });
-});
-
 
   var callback = (eventName, data) => {
     console.log(
@@ -161,44 +151,44 @@ privateChannel.bind('winner-event', function(data) {
       )}`
     );
   };
-  // bind to all events on the channel
-//   privateChannel.bind_global(callback);
-//   privateChannel.bind('winner-event', function(data) {
-//     alert('cccccccccccccccccccccccccccccccccccccccccccc');
-//       console.log(data.message[1]);
-//       startFireworks();
-
-//       Swal.fire({
-//           position: "top-end",
-//           title: "You Won!" + data.message[1].prize_name,
-//           showConfirmButton: false,
-//           timer: 2500
-//       });
-//   });
-
-
-  // Subscribe to the Public Winner Channel
-  var publicWinnerChannel = pusher.subscribe('winner-channel');
-  publicWinnerChannel.bind('winner-event', function(data) {
-      console.log(data.message);
-
+//   bind to all events on the channel
+  privateChannel.bind_global(callback);
+  privateChannel.bind('winner-event', function(data) {
+    // alert('cccccccccccccccccccccccccccccccccccccccccccc');
+      console.log(data.message[1]);
       Swal.fire({
           position: "top-end",
-          title: "New Winner : " + data.message[1].user_name,
+          title: "You Won!" + data.message[1].prize_name,
           showConfirmButton: false,
           timer: 2500
       });
 
-      // increment the claims count by adding 1
-      const spanElement = document.getElementById('winners-count');
-      let currentNumber = parseInt(spanElement.textContent);
-      let newNumber = currentNumber + 1;
-      spanElement.textContent = newNumber.toString();
-
-      // update winners list
-      const prizeName = data.message[1].prize_name;
-      const userName = data.message[1].user_name;
-      const el = document.querySelector('td[data-prize="'+prizeName+'"]');
-      el.innerText = userName;
-
+      startFireworks();
   });
+
+
+  // Subscribe to the Public Winner Channel
+//   var publicWinnerChannel = pusher.subscribe('winner-channel');
+//   publicWinnerChannel.bind('winner-event', function(data) {
+//       console.log(data.message);
+
+//       Swal.fire({
+//           position: "top-end",
+//           title: "New Winner : " + data.message[1].user_name,
+//           showConfirmButton: false,
+//           timer: 2500
+//       });
+
+//       // increment the claims count by adding 1
+//       const spanElement = document.getElementById('winners-count');
+//       let currentNumber = parseInt(spanElement.textContent);
+//       let newNumber = currentNumber + 1;
+//       spanElement.textContent = newNumber.toString();
+
+//       // update winners list
+//       const prizeName = data.message[1].prize_name;
+//       const userName = data.message[1].user_name;
+//       const el = document.querySelector('td[data-prize="'+prizeName+'"]');
+//       el.innerText = userName;
+
+//   });
