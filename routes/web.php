@@ -48,8 +48,8 @@ Route::middleware([
             return view('agora-chat');
         });
 
-        // Update toggle state of numbers
-        Route::post('/updateChecked', [Tickets::class, 'updateChecked']);
+        Route::post('/updateChecked', [Tickets::class, 'updateChecked']); // Update toggle state of numbers
+        Route::post('/toggleAutoMode', [Tickets::class, 'toggleAutoMode']); // toggle automode
 
         Route::get('/test-ticket', TestTicket::class);
 });

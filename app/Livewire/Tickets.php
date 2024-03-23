@@ -38,11 +38,6 @@ class Tickets extends Component
     // protected $loadingStates = [];
     public $loading = false; // Add loading flag
 
-    public $ticket_id;
-    public $row;
-    public $column;
-
-
     public function updateNewTickets($noOfTicketsToGenerate) {
         $table = new Table();
         $table->generate();
@@ -51,7 +46,6 @@ class Tickets extends Component
     }
     public function mount() {
         // Alert::success('Success Title', 'Success Messagezzzzzzzzzzzzzzzzzzzzzzzzzzzz');
-
 
         $this->user = Auth::user();
         $this->autoMode = $this->user->automode;
@@ -88,15 +82,8 @@ class Tickets extends Component
                 'users.name as user_name',
             )
                 ->get();
-        // dd($this->game_prizes);
         Alert::toast('Game Status : ' . $this->activeGame->status,'success');
 
-        // $claim = Claim::where('ticket_id', 4)->where('status', 'Open')->first();
-        // dd($claim);
-
-        $this->ticket_id = request()->input('ticket_id');
-        $this->row = request()->input('row');
-        $this->column = request()->input('column');
     }
 
     public function generateTicket($noOfTickets) {
@@ -140,43 +127,14 @@ class Tickets extends Component
         $row = request()->input('row');
         $column = request()->input('column');
 
+        // Update the ticket object
         $ticket = Ticket::find($ticket_id);
         $ticketObject = $ticket->object;
         $ticketObject[$row][$column]['checked'] = !$ticketObject[$row][$column]['checked'];
-
-        // Update the ticket object
         $ticket->object = $ticketObject;
-        // $ticket->comment = 'Updated';
         $ticket->save();
 
     }
-
-    // public function updateChecked(Request $request, $ticket_id, $row, $column)
-    // {
-    //     // $ticketId = $request->input('ticket_id');
-    //     // return $ticketId;
-    //     return $request;
-    //     // dd($request);
-    //     // Set loading flag to true when update starts
-    //     $this->loading = true;
-
-    //     $ticket = Ticket::find($ticket_id);
-    //     $ticketObject = $ticket->object;
-    //     $ticketObject[$row][$column]['checked'] = !$ticketObject[$row][$column]['checked'];
-
-    //     // Update the ticket object
-    //     $ticket->object = $ticketObject;
-    //     // $ticket->comment = 'Updated';
-    //     $ticket->save();
-    //     // $this->mount();
-
-    //     // Set loading flag to false when update finishes
-    //     $this->loading = false;
-
-    //     // Dispatch event to refresh component
-    //     // $this->dispatch('refreshComponent');
-
-    // }
 
     public function refresh()
     {
@@ -226,8 +184,7 @@ class Tickets extends Component
                     'prizes.name as prize_name',
             )
             ->get();
-        // dd($newClaim);
-        // $this->dispatch('claim-event', $newClaim);
+
         Session::flash('message', 'Success! Claim sent. Game is paused for processing..');
         event(new ClaimEvent($newClaim));
 
@@ -251,19 +208,12 @@ class Tickets extends Component
 
     }
 
-    public function setAutoMode() {
-        $user = DB::table('users')
-              ->where('id', $this->user->id)
-              ->update(['automode' => 1]);
-    }
 
     public function toggleAutoMode() {
-        // Toggle Auto Mode
-        $this->user->update(['automode' => !$this->user->automode]);
-
-        // Update the $autoMode property after toggling and refresh
-        $this->autoMode = !$this->user->automode;
-        $this->redirect(request()->header('Referer'), navigate: true);
+        $user_id = request()->input('user_id');
+        $user = User::where('id', $user_id)->first();
+        $user->update(['automode' => !$user->automode]);
+        $this->autoMode = !$user->automode;
     }
 
     public function generateTambolaTicket(){

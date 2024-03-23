@@ -69,7 +69,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
             <div class="flex justify-center">
                 <div
                     role="tablist"
-                    class="inline-flex justify-center bg-slate-200 p-1 mb-4 min-[480px]:mb-12 rounded-2xl"
+                    class="inline-flex justify-center bg-slate-200 p-1 mb-4 min-[480px]:my-6 rounded-2xl"
                     @keydown.right.prevent.stop="$focus.wrap().next()"
                     @keydown.left.prevent.stop="$focus.wrap().prev()"
                     @keydown.home.prevent.stop="$focus.first()"
@@ -141,13 +141,13 @@ https://codepen.io/MillerTime/pen/NevqWJ
             </div>
 
             <!-- Tab panels -->
-            <div class="max-w-[640px] mx-auto">
+            <div class="max-w-[680px] mx-auto">
                 <div class="relative flex flex-col">
 
                     <!-- Panel #1 -->
                     <article
                         id="tabpanel-1"
-                        class="w-full bg-white rounded-2xl shadow-xl min-[480px]:flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-1"
@@ -169,7 +169,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #2 -->
                     <article
                         id="tabpanel-2"
-                        class="w-full bg-white rounded-2xl shadow-xl min-[480px]:flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-2"
@@ -181,7 +181,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 translate-y-12"
                     >
-                        <div class="flex flex-col justify-center p-5 pl-3">
+                        <div class="flex flex-col justify-center">
                             <div class="text-slate-500 text-sm line-clamp-3 mb-2">
                                 {{-- Drwan Numbers in sequence --}}
                                 <h2>Numbers in Sequence:</h2>
@@ -227,8 +227,8 @@ https://codepen.io/MillerTime/pen/NevqWJ
                         x-transition:leave-start="opacity-100 translate-y-0"
                         x-transition:leave-end="opacity-0 translate-y-12"
                     >
-                        <div class="flex flex-col justify-center p-5 pl-3">
-                            <div class="text-slate-500 text-sm line-clamp-3 mb-2">
+                        <div class="">
+                            <div class="text-slate-500 text-sm">
                                 {{-- All Prizes & Winners --}}
                                 @if(isset($allPrizes))
                                     <x-bladewind::table>
@@ -240,11 +240,15 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                         </x-slot>
                                         @php $index = 1; @endphp
                                         @foreach($allPrizes as $prize)
-                                            <tr data-prize="{{ $prize->prize_name }}">
+                                            <tr>
                                                 <td> {{ $index }} </td>
                                                 <td> {{ $prize->prize_name }} </td>
                                                 <td> {{ $prize->prize_amount }} </td>
-                                                <td> {{ $prize->user_name }} </td>
+                                                @if($prize->user_name != '')
+                                                    <td data-prize="{{ $prize->prize_name }}-{{ $prize->user_name }}"> {{ $prize->user_name }} </td>
+                                                @else
+                                                    <td data-prize="{{ $prize->prize_name }}"> - </td>
+                                                @endif
                                             </tr>
                                             @php $index++; @endphp
                                         @endforeach
@@ -258,7 +262,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #4 -->
                     <article
                         id="tabpanel-4"
-                        class="claim-list w-full bg-white rounded-2xl shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full bg-white rounded-2xl shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-4"
@@ -273,17 +277,17 @@ https://codepen.io/MillerTime/pen/NevqWJ
                         <div class="claim-list">
                             @if(isset($activeClaims))
                                 @foreach($activeClaims as $claim)
-                                    <div class="claim-items mb-6">
+                                    <div class="claim-item">
                                         <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
                                             <div> {{ $claim->user_name }} </div>
                                             <div> Prize: {{ $claim->prize_name }} </div>
                                             <div> Ticket No: {{ $claim->ticket_id }} </div>
                                             <div> Status: <span class="text-green-500">{{ strtoupper($claim->status) }}</span> </div>
                                         </div>
-                                        <div class="">
+                                        <div class="claim-ticket">
                                             @php $ticket = json_decode($claim->object, true); @endphp
                                             @foreach ($ticket as $row)
-                                                <div class="row ">
+                                                <div class="claim-row ">
                                                     @foreach ($row as $cell)
                                                         @if (is_array($cell))
                                                             @if($cell['checked'] == 1)
@@ -295,11 +299,11 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                                                     $class = 'unchecked';
                                                                 @endphp
                                                             @endif
-                                                            <div class="cell text-lg md:text-xl {{$class}}">
+                                                            <div class="claim-cell {{$class}}">
                                                                 <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
                                                             </div>
                                                         @elseif (is_int($cell) && $cell == 0 )
-                                                            <div class="cell unchecked">
+                                                            <div class="claim-cell unchecked">
                                                                 <span class="flex justify-center items-center"></span>
                                                             </div>
                                                         @endif
@@ -327,85 +331,73 @@ https://codepen.io/MillerTime/pen/NevqWJ
     <style>
 
         /* Claim List */
-        /* Claim List */
-        /* Claim List */
-/* Claim List */
-/* Claim List */
-/* Claim List */
-.claim-list {
-    width: 100%; /* Ensure the container spans the full width */
-}
-.claim-items {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%; /* Ensure the container spans the full width */
-}
+        .claim-list {
+            width: 100%; /* Ensure the container spans the full width */
+        }
+        .claim-item {
 
-.claim-items .mb-6 {
-    margin-bottom: 1.5rem; /* Adjust the margin-bottom as needed */
-}
+        }
 
-.claim-items .row {
-    display: flex;
-    justify-content: center;
-    width: 100%; /* Ensure the row spans the full width */
-}
+        .claim-item .mb-6 {
+            margin-bottom: 1.5rem; /* Adjust the margin-bottom as needed */
+        }
 
-.claim-items .cell {
-    flex: 0 0 auto;
-    width: 100%; /* Ensure the cell spans the full width */
-    margin: 0.2rem; /* Adjust the padding as needed */
-    border: 1px solid #ccc;
-    max-width: 75px;
-    max-height: 75px;
-    text-align: center;
-    box-sizing: border-box; /* Ensure padding and border are included in the width */
-}
+        .claim-item .claim-row {
+            display: flex;
+            justify-content: center;
+            width: 100%; /* Ensure the row spans the full width */
+        }
 
-.claim-items .cell span {
-    font-size: 0.8em; /* Adjust the font size as needed */
-    display: block; /* Ensure the span occupies the full width of the cell */
-}
+        .claim-item .claim-cell {
+            width: 100%; /* Ensure the cell spans the full width */
+            margin: 0.2rem; /* Adjust the padding as needed */
+            padding: 14px 0px;
+            max-width: 75px;
+            max-height: 75px;
+            text-align: center;
+            box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
 
-/* Media Queries for Responsiveness */
-@media (min-width: 768px) {
-    .claim-items .cell {
-        flex: 0 0 auto;
-        width: 100%; /* Ensure the cell spans the full width */
-        padding-top: 100%; /* Set the padding top to create a square */
-        position: relative;
-        border: 1px solid #ccc;
-        box-sizing: border-box; /* Ensure padding and border are included in the width */
-    }
+        .claim-item .claim-cell span {
+            font-size: 0.8em; /* Adjust the font size as needed */
+            display: block; /* Ensure the span occupies the full width of the cell */
+        }
 
-    .claim-items .cell span {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.8em; /* Adjust the font size as needed */
-    }
-}
+        .claim-item .claim-ticket {
+            margin-bottom: 20px;
+        }
 
-@media screen and (max-width: 576px) {
-    .claim-items .cell {
-        max-width: 40px; /* Further adjust the maximum width for even smaller screens */
-        max-height: 40px; /* Further adjust the maximum hmax-height for even smaller screens */
-    }
-}
+        /* Media Queries for Responsiveness */
+        @media (min-width: 768px) {
+            .claim-item .claim-cell {
+                width: 100%; /* Ensure the cell spans the full width */
+                padding-top: 6%; /* Set the padding top to create a square */
+                position: relative;
+                border: 1px solid #ccc;
+                box-sizing: border-box; /* Ensure padding and border are included in the width */
+            }
 
+            .claim-item .claim-cell span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 0.8em; /* Adjust the font size as needed */
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .claim-item .claim-cell {
+                max-width: 40px; /* Further adjust the maximum width for even smaller screens */
+                max-height: 40px; /* Further adjust the maximum hmax-height for even smaller screens */
+                padding: 8px 0px;
+            }
+        }
 
    </style>
-
-
-
-
-
-
 
 </div>

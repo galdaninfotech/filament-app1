@@ -70,17 +70,19 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 
       // Create a new claim item container
       const newClaimContainer = document.createElement('div');
-      newClaimContainer.classList.add('claim__item', 'mb-6');
+      newClaimContainer.classList.add('claim-item');
 
       // Create HTML structure for the claim
       newClaimContainer.innerHTML = `
-          <div class="flex items-center justify-between space-x-6">
-              <div>${claim.user_name}</div>
-              <div>Status: ${claim.status}</div>
-          </div>
-          <div class="ticket">
-              <!-- Ticket details here -->
-          </div>
+      <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
+          <div>${claim.user_name}</div>
+          <div>Prize : ${claim.prize_name}</div>
+          <div>Ticket No : ${claim.ticket_id}</div>
+          <div>Status : ${claim.status}</div>
+      </div>
+      <div class="claim-ticket">
+          <!-- Ticket details here -->
+      </div>
       `;
 
       // Parse ticket details from the claim object
@@ -88,28 +90,26 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 
       // Loop through ticketDetails to create ticket elements
       ticketDetails.forEach(row => {
-          const rowContainer = document.createElement('div');
-          rowContainer.classList.add('row', 'flex', 'gap-1', 'mt-2');
-
+          const rowContainer = document.createElement('div'); rowContainer.classList.add('claim-row');
           row.forEach(cell => {
-              const column = document.createElement('div');
-              column.classList.add('column', 'w-8', 'h-8', 'flex', 'justify-center', 'items-center');
+              const column = document.createElement('div'); column.classList.add('claim-cell');
               const span = document.createElement('span');
               if(cell.checked == 1) {
-                  span.classList.add('w-full', 'h-full', 'text-xs', 'p-2', 'checked');
-              } else {
-                  span.classList.add('w-full', 'h-full', 'text-xs', 'p-2', 'unchecked');
+                  span.classList.add('flex', 'justify-center', 'items-center', 'checked');
+              }
+              if (cell.checked == 0) {
+                span.classList.add('flex', 'justify-center', 'items-center', 'unchecked');
               }
               span.textContent = cell.value || '';
               column.appendChild(span);
               rowContainer.appendChild(column);
           });
 
-          newClaimContainer.querySelector('.ticket').appendChild(rowContainer);
+          newClaimContainer.querySelector('.claim-ticket').appendChild(rowContainer);
       });
 
-      // Append the new claim item container to the main container of claims
-      const claimContainer = document.querySelector('.claim__container');
+      // Append the new claim item to the claims list
+      const claimContainer = document.querySelector('.claim-list');
       claimContainer.appendChild(newClaimContainer);
   }
 
@@ -195,54 +195,10 @@ privateChannel.bind('winner-event', function(data) {
       let newNumber = currentNumber + 1;
       spanElement.textContent = newNumber.toString();
 
-      //TODO: update winners list
-
-      const winner = data.message[1];
-      const prizeName = winner.prize_name;
-
-      // Find all existing rows with matching prize_name
-      const existingRows = document.querySelectorAll(`#tabpanel-3 table tbody tr[data-prize="${prizeName}"]`);
-
-      // Flag to track if the winner has been updated
-      let winnerUpdated = false;
-
-      existingRows.forEach(row => {
-          // Check if winner is empty in the current row
-          const winnerCell = row.querySelector('td:nth-child(3)');
-          if (!winnerUpdated && !winnerCell.textContent.trim()) {
-              // Update the winner in the current row
-              winnerCell.textContent = winner.user_name;
-              winnerUpdated = true; // Set the flag to true indicating winner has been updated
-          }
-      });
-
-      // If winner hasn't been updated yet, create a new row
-      if (!winnerUpdated) {
-          // Find the first empty row index
-          let emptyRowIndex = 0;
-          const allRows = document.querySelectorAll('#tabpanel-3 table tbody tr');
-          allRows.forEach((row, index) => {
-              const winnerCell = row.querySelector('td:nth-child(3)');
-              if (!winnerCell.textContent.trim()) {
-                  emptyRowIndex = index;
-                  return;
-              }
-          });
-
-          // Create a new row
-          const newWinnerTr = document.createElement('tr');
-          newWinnerTr.setAttribute('data-prize', prizeName);
-          newWinnerTr.innerHTML = `
-              <td>${emptyRowIndex}</td>
-              <td>${winner.prize_name}</td>
-              <td>${winner.prize_amount}</td>
-              <td>${winner.user_name}</td>
-          `;
-
-          // Insert the new row at the found index
-          const tableBody = document.querySelector('#tabpanel-3 table > tbody');
-          const referenceRow = allRows[emptyRowIndex];
-          tableBody.insertBefore(newWinnerTr, referenceRow);
-      }
+      // update winners list
+      const prizeName = data.message[1].prize_name;
+      const userName = data.message[1].user_name;
+      const el = document.querySelector('td[data-prize="'+prizeName+'"]');
+      el.innerText = userName;
 
   });

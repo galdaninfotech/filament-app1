@@ -40,32 +40,14 @@
             </script>
 
 
-            <button wire:click="toggleAutoMode"
-                    wire:click="$refresh"
-                    wire:loading.attr="disabled"
-                    class="flext items-start relative p-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-
-                <!-- Show icon based on Auto Mode state -->
-                @if($autoMode == 1)
-                    <!-- Auto Mode is enabled, display icon indicating enabled state -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                    </svg>
-                @else
-                    <!-- Auto Mode is disabled, display icon indicating disabled state -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                @endif
-
-                <!-- Show loading indicator while toggling -->
-                <svg wire:loading wire:target="toggleAutoMode" class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400 animate-spin" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V2.5"></path>
+            <button class="flext items-start relative p-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                <svg id="automode-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 1) block @else hidden @endif h-6 w-6 text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-
-                <!-- Text indicating Auto Mode -->
-                <span class="ml-12">{{ __('Auto') }}</span>
+                <svg id="automode-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 0) block @else hidden @endif h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                <span onclick="handleAutoMode(event);" class="ml-12">{{ __('Auto') }}</span>
             </button>
         </div>
 
@@ -133,8 +115,6 @@
         </div>
 
 
-
-
     </div>
 
     <script>
@@ -148,47 +128,17 @@
                 .catch(err => console.warn("ERROR : " + err));
         }
 
-
-        // Livewire.on('refresh', () => {
-        //     window.setTimeout(() => {
-        //         // Stop the refresh animation after a delay
-        //         Livewire.emit('refreshEnd');
-        //     }, 1000); // Adjust the delay (in milliseconds) to match the duration of the animation
-        // });
-
-
-        // Intercepting fetch requests
-        // const originalFetch = window.fetch;
-
-        // window.fetch = function (...args) {
-        //     // Log the details of the request being made
-        //     console.log('Fetching:', args);
-        //     // alert('start');
-        //     // document.getElementById('ticket-cell').classList.toggle('checked');
-
-        //     // Make the original fetch request
-        //     return originalFetch.apply(this, args)
-        //         .then(response => {
-        //             // Log the response received
-        //             console.log('Response:', response);
-        //             // alert('end');
-        //             // document.getElementById('ticket-cell').classList.toggle('checked');
-        //             return response; // Return the response to the caller
-        //         })
-        //         .catch(error => {
-        //             // Log any errors that occur during the request
-        //             console.error('Error fetching:', error);
-        //             throw error; // Re-throw the error for handling by the caller
-        //         });
-        // };
-
-        // // Example usage: Making a fetch request
-        // fetch('https://api.example.com/data')
-        //     .then(response => response.json())
-        //     .then(data => console.log('Data received:', data))
-        //     .catch(error => console.error('Error:', error));
-
-
+        function handleAutoMode(event) {
+            event.preventDefault();
+            const el1 = document.getElementById('automode-enabled');
+            const el2 = document.getElementById('automode-disabled');
+            el1.classList.toggle('hidden');
+            el2.classList.toggle('hidden');
+            // alert('Auto Mode is not available!');
+            axios.post(`/toggleAutoMode`, { user_id: userId })
+                .then(response => response.status)
+                .catch(err => console.warn("ERROR : " + err));
+        }
 
     </script>
 
@@ -204,13 +154,12 @@
         }
 
 
-        /* Tickets */
-        /* Tickets */
        /* Tickets */
         .tickets-list {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            width: 100%;
         }
 
         .ticket {
