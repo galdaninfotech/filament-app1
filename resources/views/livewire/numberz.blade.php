@@ -46,6 +46,10 @@ https://codepen.io/MillerTime/pen/NevqWJ
     <livewire:video />
 </div>
 
+<button type="button" wire:click="$refresh">
+    Refresh
+</button>
+
 
     <div class="px-6 py-2 ">
         {{-- Session message --}}
@@ -289,26 +293,21 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                             @foreach ($ticket as $row)
                                                 <div class="claim-row ">
                                                     @foreach ($row as $cell)
-                                                        @if (is_array($cell))
-                                                            @if($cell['checked'] == 1)
-                                                                @php
-                                                                    $class = 'checked';
-                                                                @endphp
-                                                            @elseif($cell['checked'] == 0)
-                                                                @php
-                                                                    $class = 'unchecked';
-                                                                @endphp
+                                                        @if( $cell['value'] > 0)
+                                                            @if ($cell['checked'])
+                                                                <div class="claim-cell checked">
+                                                                    <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
+                                                                </div>
+                                                            @else
+                                                                <div class="claim-cell unchecked">
+                                                                    <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
+                                                                </div>
                                                             @endif
-                                                            <div class="claim-cell {{$class}}">
-                                                                <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
-                                                            </div>
-                                                        @elseif (is_int($cell) && $cell == 0 )
+                                                        @else
                                                             <div class="claim-cell unchecked">
                                                                 <span class="flex justify-center items-center"></span>
                                                             </div>
                                                         @endif
-
-
                                                     @endforeach
                                                 </div>
                                             @endforeach

@@ -6,6 +6,8 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
     authEndpoint: '/pusher/auth'
   });
 
+
+  // ----------------------------------------- NUMBERS EVENT SUBSCRIPTIONS -------------------------------------------------------
   var channel1 = pusher.subscribe('numbers-channel');
   channel1.bind('numbers-event', function(data) {
       console.log(JSON.stringify(data));
@@ -60,59 +62,12 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 
     let el = document.querySelector('#all-numbers > li.number-box:nth-child('+ newNumber +')');
     el.setAttribute("class", "number-box drawn w-10 h-10 bg-gray-300 flex justify-center items-center")
-  //   window.location.reload();
-  //   Livewire.dispatch('refreshComponent');
+
   }
 
-  function updateActiveClaims(data) {
-       // Assuming data.message[0] contains the newly received claim
-      const claim = data.message[0];
 
-      // Create a new claim item container
-      const newClaimContainer = document.createElement('div');
-      newClaimContainer.classList.add('claim-item');
 
-      // Create HTML structure for the claim
-      newClaimContainer.innerHTML = `
-      <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
-          <div>${claim.user_name}</div>
-          <div>Prize : ${claim.prize_name}</div>
-          <div>Ticket No : ${claim.ticket_id}</div>
-          <div>Status : ${claim.status}</div>
-      </div>
-      <div class="claim-ticket">
-          <!-- Ticket details here -->
-      </div>
-      `;
-
-      // Parse ticket details from the claim object
-      const ticketDetails = JSON.parse(claim.ticket);
-
-      // Loop through ticketDetails to create ticket elements
-      ticketDetails.forEach(row => {
-          const rowContainer = document.createElement('div'); rowContainer.classList.add('claim-row');
-          row.forEach(cell => {
-              const column = document.createElement('div'); column.classList.add('claim-cell');
-              const span = document.createElement('span');
-              if(cell.checked == 1) {
-                  span.classList.add('flex', 'justify-center', 'items-center', 'checked');
-              }
-              if (cell.checked == 0) {
-                span.classList.add('flex', 'justify-center', 'items-center', 'unchecked');
-              }
-              span.textContent = cell.value || '';
-              column.appendChild(span);
-              rowContainer.appendChild(column);
-          });
-
-          newClaimContainer.querySelector('.claim-ticket').appendChild(rowContainer);
-      });
-
-      // Append the new claim item to the claims list
-      const claimContainer = document.querySelector('.claim-list');
-      claimContainer.appendChild(newClaimContainer);
-  }
-
+  // ----------------------------------------- CLAIM EVENT SUBSCRIPTIONS -------------------------------------------------------
   //Listen for claim event and set game status
   var channel2 = pusher.subscribe('claim-channel');
   channel2.bind('claim-event', function(data) {
@@ -137,6 +92,57 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 
 
 
+  function updateActiveClaims(data) {
+    // Assuming data.message[0] contains the newly received claim
+   const claim = data.message[0];
+
+   // Create a new claim item container
+   const newClaimContainer = document.createElement('div');
+   newClaimContainer.classList.add('claim-item');
+
+   // Create HTML structure for the claim
+   newClaimContainer.innerHTML = `
+   <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
+       <div>${claim.user_name}</div>
+       <div>Prize : ${claim.prize_name}</div>
+       <div>Ticket No : ${claim.ticket_id}</div>
+       <div>Status : <span class="text-green-500">${claim.status}</span></div>
+   </div>
+   <div class="claim-ticket">
+       <!-- Ticket details here -->
+   </div>
+   `;
+
+   // Parse ticket details from the claim object
+   const ticketDetails = JSON.parse(claim.ticket);
+
+   // Loop through ticketDetails to create ticket elements
+   ticketDetails.forEach(row => {
+       const rowContainer = document.createElement('div'); rowContainer.classList.add('claim-row');
+       row.forEach(cell => {
+            const column = document.createElement('div')
+            const span = document.createElement('span');
+           if(cell.value > 0 && cell.checked == 1) {
+                column.classList.add('claim-cell', 'checked');
+           } else if(cell.value == 0 && cell.checked == 0) {
+                column.classList.add('claim-cell','unchecked', 'bg-[#d4d2d2]');
+           } else {
+                column.classList.add('claim-cell','unchecked', 'bg-[#d4d2d2]');
+           }
+           span.classList.add('flex', 'justify-center', 'items-center');
+           span.textContent = cell.value || '';
+           column.appendChild(span);
+           rowContainer.appendChild(column);
+       });
+
+       newClaimContainer.querySelector('.claim-ticket').appendChild(rowContainer);
+   });
+
+   // Append the new claim item to the claims list
+   const claimContainer = document.querySelector('.claim-list');
+   claimContainer.appendChild(newClaimContainer);
+}
+
 
 
 // ----------------------------------------- WINNER EVENT SUBSCRIPTIONS -------------------------------------------------------
@@ -154,7 +160,6 @@ const privateChannel = pusher.subscribe(channelName);
 //   bind to all events on the channel
   privateChannel.bind_global(callback);
   privateChannel.bind('winner-event', function(data) {
-    // alert('cccccccccccccccccccccccccccccccccccccccccccc');
       console.log(data.message[1]);
       Swal.fire({
           position: "top-end",
@@ -167,28 +172,28 @@ const privateChannel = pusher.subscribe(channelName);
   });
 
 
-  // Subscribe to the Public Winner Channel
-//   var publicWinnerChannel = pusher.subscribe('winner-channel');
-//   publicWinnerChannel.bind('winner-event', function(data) {
-//       console.log(data.message);
+//   Subscribe to the Public Winner Channel
+  var publicWinnerChannel = pusher.subscribe('winner-channel');
+  publicWinnerChannel.bind('winner-event', function(data) {
+      console.log(data.message);
 
-//       Swal.fire({
-//           position: "top-end",
-//           title: "New Winner : " + data.message[1].user_name,
-//           showConfirmButton: false,
-//           timer: 2500
-//       });
+      Swal.fire({
+          position: "top-end",
+          title: "New Winner : " + data.message[1].user_name,
+          showConfirmButton: false,
+          timer: 2500
+      });
 
-//       // increment the claims count by adding 1
-//       const spanElement = document.getElementById('winners-count');
-//       let currentNumber = parseInt(spanElement.textContent);
-//       let newNumber = currentNumber + 1;
-//       spanElement.textContent = newNumber.toString();
+      // increment the claims count by adding 1
+      const spanElement = document.getElementById('winners-count');
+      let currentNumber = parseInt(spanElement.textContent);
+      let newNumber = currentNumber + 1;
+      spanElement.textContent = newNumber.toString();
 
-//       // update winners list
-//       const prizeName = data.message[1].prize_name;
-//       const userName = data.message[1].user_name;
-//       const el = document.querySelector('td[data-prize="'+prizeName+'"]');
-//       el.innerText = userName;
+      // update winners list
+      const prizeName = data.message[1].prize_name;
+      const userName = data.message[1].user_name;
+      const el = document.querySelector('td[data-prize="'+prizeName+'"]');
+      el.innerText = userName;
 
-//   });
+  });

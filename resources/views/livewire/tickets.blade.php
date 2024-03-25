@@ -47,7 +47,17 @@
                 <svg id="automode-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 0) block @else hidden @endif h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
-                <span onclick="handleAutoMode(event);" class="ml-12">{{ __('Auto') }}</span>
+                <span onclick="handleAutoMode(event);" class="ml-8">{{ __('Auto Tick') }}</span>
+            </button>
+
+            <button class="flext items-start relative p-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                <svg id="automode-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 1) block @else hidden @endif h-6 w-6 text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <svg id="automode-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 0) block @else hidden @endif h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                <span onclick="handleAutoMode(event);" class="ml-8">{{ __('Auto Claim') }}</span>
             </button>
         </div>
 
@@ -77,33 +87,20 @@
                             <div class="row flex gap-1 sm:gap-2 mt-2">
                                 @for ($k = 0; $k < 9; $k++)
                                     <div
-                                        x-data="{
-                                            checked: @json(isset($ticket->object[$j][$k]['checked']) && $ticket->object[$j][$k]['checked'] == 1),
-                                            loading: false
-                                        }"
+                                        x-data="{ checked: @json(isset($ticket->object[$j][$k]['checked']) && $ticket->object[$j][$k]['checked'] == 1), loading: false }"
                                         :class="checked ? 'column checked w-9 h-9 flex justify-center items-center' : 'column bg-[#d4d2d2] w-9 h-9 flex justify-center items-center'"
                                         class="cell"
                                         id="ticket-cell"
-                                        onclick="toggleCheckedClass(this, {{ $ticket->id }}, {{ $j }}, {{ $k }})"
+                                        onclick="toggleCheckedClass(this, {{ $ticket->object[$j][$k]['value'] }}, {{ $ticket->id }}, {{ $j }}, {{ $k }})"
                                     >
-                                    {{-- {{ dd($ticket->object[$j][$k]) }} --}}
-                                        @isset($ticket->object[$j][$k]['checked'], $ticket->object[$j][$k]['value'])
+                                        @if($ticket->object[$j][$k]['value'] > 0)
                                             <div class="checkable_div">
                                                 <input type="checkbox" class="hidden" name="{{ $ticket->object[$j][$k]['id'] }}">
-                                                <span
-                                                    class="flex items-center justify-center w-full h-full text-lg md:text-2xl p-2 cursor-pointer"
-                                                    {{-- wire:click="updateChecked({{ $ticket->id }}, {{ $j }}, {{ $k }})" --}}
-                                                >
-                                                    <span wire:loading.remove wire:target="updateChecked({{ $ticket->id }}, {{ $j }}, {{ $k }})">{{ $ticket->object[$j][$k]['value'] }}</span>
-                                                    <span wire:loading wire:target="updateChecked({{ $ticket->id }}, {{ $j }}, {{ $k }})">
-                                                        <!-- Show loading spinner only when loading is true -->
-                                                        <svg aria-hidden="true" class="inline w-4 h-4 text-gray-400 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                        </svg>
-                                                    </span>
-                                                </span>
+                                                <span class="flex items-center justify-center w-full h-full text-lg md:text-2xl p-2 cursor-pointer">{{ $ticket->object[$j][$k]['value'] }}</span>
                                             </div>
-                                        @endisset
+                                        @else
+                                            <div class="uncheckable_div"><input type="checkbox" class="hidden" disable></div>
+                                        @endif
                                     </div>
                                 @endfor
                             </div>
@@ -118,14 +115,16 @@
     </div>
 
     <script>
-        function toggleCheckedClass(element, ticketId, j, k) {
-            console.log("CONSOLE : " + ticketId, j, k);
-            // Toggle 'checked' class
-            element.classList.toggle('checked');
-
-            axios.post(`/updateChecked`, { ticket_id: ticketId, row: j, column: k })
-                .then(response => response.status)
-                .catch(err => console.warn("ERROR : " + err));
+        function toggleCheckedClass(element, value, ticketId, j, k) {
+            console.log("CONSOLE : Value-" + value + ", TicketId-" + ticketId + ", j-" + j + ", k-" + k);
+            // Toggle 'checked' and update only when value is non zero
+            // console.log(value);
+            if(value > 0) {
+                element.classList.toggle('checked');
+                axios.post(`/updateChecked`, { ticket_id: ticketId, row: j, column: k })
+                    .then(response => response.status)
+                    .catch(err => console.warn("ERROR : " + err));
+            }
         }
 
         function handleAutoMode(event) {

@@ -84,7 +84,7 @@ class PaymentController extends Controller
                     $ticket = new Ticket();
                     $ticket->user_id = $user->id; // Associate the ticket with the logged-in user
                     $ticket->game_id = $game->id;
-                    $ticket->object = $newTicket['numbers'];
+                    $ticket->object = $newTicket['object'];
                     $ticket->status = 'Active';
                     $ticket->comment = 'Some comments here..';
                     $ticket->save();

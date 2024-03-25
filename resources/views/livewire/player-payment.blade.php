@@ -44,7 +44,7 @@
                             </label>
                         </div>
 
-                        @foreach ($ticket->numbers as $row)
+                        @foreach ($ticket->object as $row)
                             <div class="row flex justify-center">
                                 @foreach ($row as $cell)
                                     <div class="cell unchecked">

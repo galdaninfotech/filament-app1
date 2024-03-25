@@ -88,4 +88,6 @@ Route::get('/success', [PaymentController::class, 'success']);
 Route::get('/error', [PaymentController::class, 'error']);
 
 // Test Routes
-// Route::post('/updateChecked', [Tickets::class, 'updateChecked']);
+// Route::post('/api/receiveTickets', function(){
+//     return true;
+// });
