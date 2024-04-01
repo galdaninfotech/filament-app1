@@ -3,12 +3,12 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use Livewire\Attributes\On;
-
-use Illuminate\Support\Facades\Session;
 
 use App\Models\Prize;
 use App\Models\Ticket;
@@ -28,27 +28,24 @@ class Tickets extends Component
 {
     public $gamePrizes = [];
     public $remainingPrizes = [];
+    public $prizesForSelectInput = [];
     public $ticketSelected;
     public $prizeSelected;
     public $tickets = [];
     public $newTickets = [];
     public $user;
-    public $autoMode;
+    public $autoTick;
+    public $autoClaim;
     public  $activeGame;
-    // protected $loadingStates = [];
     public $loading = false; // Add loading flag
 
-    public function updateNewTickets($noOfTicketsToGenerate) {
-        $table = new Table();
-        $table->generate();
-        $tickets = array_slice($table->getTickets(), 0, $noOfTicketsToGenerate);
-        $this->newTickets = json_encode($tickets);
-    }
     public function mount() {
         // Alert::success('Success Title', 'Success Messagezzzzzzzzzzzzzzzzzzzzzzzzzzzz');
 
         $this->user = Auth::user();
-        $this->autoMode = $this->user->automode;
+        // $this->autoMode = $this->user->automode;
+        $this->autoTick = $this->user->autotick;
+        $this->autoClaim = $this->user->autoclaim;
         $this->activeGame = DB::table('games')->where('active', true)->first();
         $this->tickets = Ticket::whereBelongsTo($this->user)
             ->where('game_id', '=', $this->activeGame->id)
@@ -61,66 +58,13 @@ class Tickets extends Component
         $tickets = array_slice($table->getTickets(), 0, 2);
         $this->newTickets = json_encode($tickets);
 
-        $this->gamePrizes = DB::table('game_prize')
-            ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')
-            ->where('game_prize.quantity', '>', '0')
-            ->where('game_prize.game_id', '=', $this->activeGame->id)
-            ->select('game_prize.*', 'prizes.name')
+        $this->prizesForSelectInput = DB::table('prizes')
+            ->join('game_prize', 'prizes.id', 'game_prize.prize_id')
+            ->distinct('prizes.name')
             ->get();
 
-        $this->remainingPrizes = DB::table('winners')
-            ->join('game_prize', 'winners.game_prize_id', '=', 'game_prize.id')
-            ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
-            ->leftJoin('users', 'winners.user_id', '=', 'users.id')
-            ->where('user_id', null)
-            ->where('ticket_id', null)
-            ->where('claim_id', null)
-            ->select(
-                'winners.*',
-                'game_prize.prize_amount as prize_amount',
-                'prizes.name as prize_name',
-                'users.name as user_name',
-            )
-                ->get();
         Alert::toast('Game Status : ' . $this->activeGame->status,'success');
-
     }
-
-    public function generateTicket($noOfTickets) {
-        $table = new Table();
-        $table->generate();
-
-        $tickets = array_slice($table->getTickets(), 0, 2);
-        foreach ($tickets as $ticket) {
-            $this->user->tickets()->create([
-                'game_id' => $this->activeGame->id,
-                'user_id' => $this->user->id,
-                'object' => $ticket->numbers,
-                'status' => 'active',
-                'comment' => 'Some comments here..'
-            ]);
-        }
-
-        $this->tickets = Ticket::whereBelongsTo($this->user)
-                ->where('game_id', '=', $this->activeGame->id)
-                ->with('claims')
-                ->get();
-
-        return $this->redirect(request()->header('Referer'), navigate: true);
-
-    }
-
-    public function generateNewTickets($noOfTickets) {
-        $table = new Table();
-        $table->generate();
-        $tickets = array_slice($table->getTickets(), 0, $noOfTickets);
-        $this->newTickets = json_encode($tickets);
-
-        $this->mount();
-        $this->reset();
-        return $this->redirect(request()->header('Referer'), navigate: true);
-    }
-
 
     public function updateChecked() {
         $ticket_id = request()->input('ticket_id');
@@ -128,40 +72,39 @@ class Tickets extends Component
         $column = request()->input('column');
 
         // Update the ticket object
-        $ticket = Ticket::find($ticket_id);
+        $ticket = Ticket::where('id', $ticket_id)->first();
         $ticketObject = $ticket->object;
         $ticketObject[$row][$column]['checked'] = !$ticketObject[$row][$column]['checked'];
         $ticket->object = $ticketObject;
         $ticket->save();
 
-    }
+        $this->render();
 
-    public function refresh()
-    {
-        // Perform refreshing logic here
-        $this->dispatch('refresh'); // Emit a Livewire event to notify the component to start the refresh animation
     }
 
     public function updateTicketSelected($ticketSelected){
         $this->ticketSelected = $ticketSelected;
     }
 
-    public function claimPrize() {
-        if($this->hasClaim($this->ticketSelected))
-            return Session::put('status', 'Already claimed using ticket number : '. $this->ticketSelected);
+    public function claimPrize($ticketId) {
+        if($this->hasClaim($ticketId, $this->prizeSelected)) {
+            // Flash the status message with a 10-second expiration time
+            session()->now('status', strtoupper($this->getPrizeName($this->prizeSelected)) .' already claimed for ticket no.: ' . $this->ticketSelected, now()->addSeconds(5));
+            return;
+        }
 
-
+        //  create a new claim in the DB
         $claim = Claim::create([
-            'ticket_id'     => $this->ticketSelected,
+            'ticket_id'     => $ticketId,
             'game_prize_id' => $this->prizeSelected,
             'status'        => 'Open',
-            'comment'       => 'Some comment here..'
+            'remarks'       => 'Claim created by '.$this->user->name.' for TicketId ..'. strtoupper(substr($ticketId, 28, 8))
         ]);
 
         //set active game status to 'Paused'
         DB::table('games')->where('active', true)->update(['status' => 'Paused']);
 
-        //get active claims and fire event
+        //get the new claim with all details from DB, and fire an event
         $newClaim = DB::table('claims')
             ->join('game_prize', 'claims.game_prize_id', '=', 'game_prize.prize_id')
             ->join('tickets', 'claims.ticket_id', '=', 'tickets.id')
@@ -175,7 +118,7 @@ class Tickets extends Component
                     'claims.ticket_id',
                     'claims.game_prize_id',
                     'claims.status',
-                    'claims.comment',
+                    'claims.remarks',
                     'claims.created_at',
                     'game_prize.*',
                     'tickets.object as ticket',
@@ -203,87 +146,26 @@ class Tickets extends Component
                 ]);
         }
 
-        $this->mount();
-        $this->render();
-
     }
 
-
-    public function toggleAutoMode() {
-        $user_id = request()->input('user_id');
-        $user = User::where('id', $user_id)->first();
-        $user->update(['automode' => !$user->automode]);
-        $this->autoMode = !$user->automode;
+    public function toggleAutoTick() {
+        $user = User::where('id', request()->input('user_id'))->first();
+        $user->update(['autotick' => !$user->autotick]);
+        $this->autoTick = !$user->autotick;
     }
 
-    public function generateTambolaTicket(){
-        $empty_index=array();
-        $tambola=array();
-        for ($i=0; $i <3 ; $i++) {
-            $empty_index[$i][] = $this->UniqueRandomNumbersWithinRange(0,8,4);
-        }
-        while(array_intersect($empty_index[0][0],$empty_index[1][0],$empty_index[2][0])){
-            $empty_index[2][0] = $this->UniqueRandomNumbersWithinRange(0,8,4);
-        }
-        $n=0;
-        for ($i=0; $i <9 ; $i++) {
-            if(!in_array($i, $empty_index[0][0])&&!in_array($i, $empty_index[1][0])){
-                $empty_index[2][0][$n]=$i;
-                $n++;
-            }
-        }
-        $empty_count=count(array_unique($empty_index[2][0]));
-        while($empty_count<4){
-            for ($i=$empty_count; $i <4 ; $i++) {
-                $temp=rand(0,8);
-                while(in_array($temp,array_intersect($empty_index[0][0],$empty_index[1][0]))){
-                    $temp=rand(0,8);
-                }
-                $empty_index[2][0][$i]=$temp;
-                $empty_count=count(array_unique($empty_index[2][0]));
-            }
-        }
-        $list=array();
-        for ($row=0; $row <3 ; $row++) {
-            for ($col=0; $col <9 ; $col++) {
-                $min=$col*10+1;
-                $max=$col*10+10;
-                $tambola[$row][$col]['id']=$row.$col;
-                if(!in_array($col, $empty_index[$row][0])){
-                    $temp=rand($min,$max);
-                    while (in_array($temp, $list)) {
-                        $temp=rand($min,$max);
-                    }
-                    $list[]=$temp;
-                    $tambola[$row][$col]['value']=$temp;
-                }
-                else{
-                    $tambola[$row][$col]['value']='';
-                }
-                $tambola[$row][$col]['checked']=0;
-            }
-        }
-
-        $tickets = Ticket::whereBelongsTo($this->user)->get();
-
-        $tickets = $this->user->tickets()->create([
-            'user_id' => 1,
-            'object' => $tambola,
-            'status' => 'active',
-            'comment' => 'Some comments here..'
-        ]);
-
-        $this->tickets = Ticket::whereBelongsTo($this->user)->get();
+    public function toggleAutoClaim() {
+        $user = User::where('id', request()->input('user_id'))->first();
+        $user->update(['autoclaim' => !$user->autoclaim]);
+        $this->autoClaim = !$user->autoclaim;
     }
 
-    public function UniqueRandomNumbersWithinRange($min, $max, $quantity) {
-        $numbers = range($min, $max);
-        shuffle($numbers);
-        return array_slice($numbers, 0, $quantity);
-    }
+    public function hasClaim($ticketId, $game_prize_id) {
+        $claim = Claim::where('ticket_id', $ticketId)
+            ->where('status', 'Open')
+            ->where('game_prize_id', $game_prize_id)
+            ->first();
 
-    public function hasClaim($ticketId) {
-        $claim = Claim::where('ticket_id', $ticketId)->where('status', 'Open')->first();
         if ($claim)
             return true;
 
@@ -291,9 +173,12 @@ class Tickets extends Component
     }
 
     public function getPrizeName($game_prize_id) {
-        return $prizeName = DB::table('prizes')
+        $prizeName = DB::table('prizes')
             ->join('game_prize', 'prizes.id', 'game_prize.prize_id')
-            ->where('game_prize.id', $game_prize_id);
+            ->where('game_prize.id', $game_prize_id)
+            ->pluck('prizes.name');
+
+        return $prizeName[0];
     }
 
     public function render()

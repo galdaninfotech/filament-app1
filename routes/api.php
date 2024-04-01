@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Ticket;
 use App\Models\TicketRepository;
-
+use Illuminate\Support\Str;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -48,7 +48,7 @@ Route::post('/receiveTickets', function(Request $request) {
     // }
     foreach($newTickets as $ticket) {
         $generatedObject = []; // Initialize as an empty array for each ticket
-        
+
         foreach($ticket as $rowIndex => $row) { // Assuming $ticket is an array of rows
             $rowObject = []; // Initialize an empty array for each row
             foreach($row as $cellIndex => $cell) { // Assuming $row is an array of cells
@@ -64,13 +64,15 @@ Route::post('/receiveTickets', function(Request $request) {
             }
             $generatedObject[] = $rowObject; // Add the current row to the generated object for the ticket
         }
-    
+
         // Now, $generatedObject is an array of rows, where each row is an array of formatted cells
         // Save this structure as a JSON string in the database
         TicketRepository::create([
+            'id' => Str::uuid(),
             'object' => $generatedObject, // Convert the array structure to a JSON string
         ]);
     }
     $tickets = TicketRepository::all();
     return $tickets;
 });
+

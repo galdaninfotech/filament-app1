@@ -64,31 +64,91 @@ class GameSeeder extends Seeder
         DB::table('game_prize')->insert([
             'game_id' => 2,
             'prize_id' => 1,
-            'name' => 'Full House',
-            'prize_amount' => 40000,
+            'name' => 'Quick Five',
+            'prize_amount' => 7000,
             'quantity' => 1,
             'active' => 1,
-            'comment' => 'Some comment here..',
+            'comment' => 'Any 5 numbers',
         ]);
 
         DB::table('game_prize')->insert([
             'game_id' => 2,
             'prize_id' => 2,
-            'name' => 'Top Line',
+            'name' => 'Lucky Seven',
             'prize_amount' => 7000,
-            'quantity' => 5,
+            'quantity' => 1,
             'active' => 1,
-            'comment' => 'Some comment here..',
+            'comment' => 'Any 7 numbers',
         ]);
 
         DB::table('game_prize')->insert([
             'game_id' => 2,
             'prize_id' => 3,
+            'name' => 'Top Line',
+            'prize_amount' => 7000,
+            'quantity' => 5,
+            'active' => 1,
+            'comment' => 'All numbers in the top line',
+        ]);
+
+        DB::table('game_prize')->insert([
+            'game_id' => 2,
+            'prize_id' => 4,
+            'name' => 'Middle Line',
+            'prize_amount' => 7000,
+            'quantity' => 1,
+            'active' => 1,
+            'comment' => 'All numbers in the middle line',
+        ]);
+
+        DB::table('game_prize')->insert([
+            'game_id' => 2,
+            'prize_id' => 5,
             'name' => 'Bottom Line',
             'prize_amount' => 7000,
             'quantity' => 1,
             'active' => 1,
-            'comment' => 'Some comment here..',
+            'comment' => 'All numbers in the bottom line',
+        ]);
+
+        DB::table('game_prize')->insert([
+            'game_id' => 2,
+            'prize_id' => 6,
+            'name' => 'Ticket Corner',
+            'prize_amount' => 7000,
+            'quantity' => 1,
+            'active' => 1,
+            'comment' => 'First & last number in row 1, and First & last number in row 3',
+        ]);
+
+        DB::table('game_prize')->insert([
+            'game_id' => 2,
+            'prize_id' => 7,
+            'name' => 'Kings Corner',
+            'prize_amount' => 7000,
+            'quantity' => 1,
+            'active' => 1,
+            'comment' => 'First number in all 3 rows',
+        ]);
+
+        DB::table('game_prize')->insert([
+            'game_id' => 2,
+            'prize_id' => 8,
+            'name' => 'Queens Corner',
+            'prize_amount' => 7000,
+            'quantity' => 1,
+            'active' => 1,
+            'comment' => 'Last number in all 3 rows',
+        ]);
+
+        DB::table('game_prize')->insert([
+            'game_id' => 2,
+            'prize_id' => 9,
+            'name' => 'Full House',
+            'prize_amount' => 400000,
+            'quantity' => 1,
+            'active' => 1,
+            'comment' => 'All numbers in the ticket',
         ]);
 
     }

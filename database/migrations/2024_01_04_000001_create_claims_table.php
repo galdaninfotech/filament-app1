@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('claims', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('ticket_id');
+            $table->foreignUuid('ticket_id');
             $table->foreignId('game_prize_id');
             $table->string('status'); // Open, Winner, Boggy
-            $table->text('comment');
+            $table->text('remarks');
             $table->boolean('is_winner')->default(0);
             $table->boolean('is_boogy')->default(0);
 

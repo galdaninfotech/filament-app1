@@ -34,7 +34,7 @@
                 @foreach (json_decode($newTickets) as $ticket)
                     <div class="ticket mt-6">
                         <div class="flex items-center justify-between">
-                            <div class="">No : {{ $ticket->id }}</div>
+                            <div class="">No : ..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
                             <div class="hidden border-red-300 border-yellow-300 border-pink-300 border-purple-300 border-cyan-300 border-orange-300 border-green-300 border-black border-blue-300"></div>
                             <label class="inline-flex items-center cursor-pointer text-sm">
                                 <input type="checkbox" name="checkbox" class="text-primary-500 w-6 h-6 mr-2 rtl:ml-2 disabled:opacity-50 focus:ring-primary-500 border-2 border-primary-300 focus:ring-opacity-25 dark:bg-dark-700 bw-checkbox rounded-md"
@@ -48,9 +48,9 @@
                             <div class="row flex justify-center">
                                 @foreach ($row as $cell)
                                     <div class="cell unchecked">
-                                        @if (is_object($cell) && property_exists($cell, 'value'))
+                                        @if ($cell->value > 0)
                                             <span class="text-lg md:text-xl">{{ $cell->value }}</span>
-                                        @elseif (is_int($cell) && $cell == 0)
+                                        @else
                                             <span class="text-lg md:text-xl"></span>
                                         @endif
                                     </div>

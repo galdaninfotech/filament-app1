@@ -43,13 +43,6 @@ class Numberz extends Component
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
 
-        // $this->gamePrizes = DB::table('game_prize')
-        //             ->leftJoin('prizes', 'game_prize.prize_id', '=', 'prizes.id')
-        //             ->where('game_prize.quantity', '>', '0')
-        //             ->where('game_prize.game_id', '=', $this->activeGame->id)
-        //             ->select('game_prize.*', 'prizes.name')
-        //             ->get();
-
         $this->allPrizes = DB::table('winners')
                     ->join('game_prize', 'winners.game_prize_id', '=', 'game_prize.id')
                     ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
@@ -71,8 +64,6 @@ class Numberz extends Component
                     ->where('claim_id', '!=', null)
                     ->get();
 
-        // dd($this->allPrizes);
-
         $this->activeClaims = DB::table('claims')
             ->join('game_prize', 'claims.game_prize_id', '=', 'game_prize.prize_id')
             ->join('tickets', 'claims.ticket_id', '=', 'tickets.id')
@@ -86,7 +77,7 @@ class Numberz extends Component
                     'claims.ticket_id',
                     'claims.game_prize_id',
                     'claims.status',
-                    'claims.comment',
+                    'claims.remarks',
                     'claims.created_at',
                     'game_prize.*',
                     'tickets.object',
@@ -118,12 +109,12 @@ class Numberz extends Component
         $this->render();
     }
 
-    #[On('numbers-event')]
-    public function refreshComponent() {
-        dd('public function refreshComponent()- gggggggggggggggggggggggggggggggggggg');
-        $this->mount();
-        $this->render();
-    }
+    // #[On('numbers-event')]
+    // public function refreshComponent() {
+    //     dd('public function refreshComponent()- gggggggggggggggggggggggggggggggggggg');
+    //     $this->mount();
+    //     $this->render();
+    // }
 
     public function render()
     {

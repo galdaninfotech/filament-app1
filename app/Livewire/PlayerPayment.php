@@ -14,51 +14,23 @@ class PlayerPayment extends Component
 
     public function mount() {
         $this->activeGame = DB::table('games')->where('active', true)->first();
+        $this->newTickets = $tickets = TicketRepository::take(6)->get();
+    }
 
+    public function updateNewTickets($noOfTicketsToGenerate = 6) {
+        $this->newTickets = TicketRepository::whereBetween('id', [18, 23])
+                 ->orderBy('id')
+                 ->get();
 
-        // $table = new Table();
-        // $table->generate();
-        // $tickets = array_slice($table->getTickets(), 0, 6);
-
-        // // Create a new structure to hold ticket data along with ticketId
-        // $formattedTickets = [];
-        // foreach ($tickets as $index => $ticket) {
-        //     $formattedTickets[] = [
-        //         'id' => $this->generateRandomString($length = 8),
-        //         'isSelected' => 0,
-        //         'numbers' => $ticket->numbers,
-        //     ];
+        // foreach ($this->newTickets as $ticket) {
+        //     $ticket->delete();
         // }
-
-        $tickets = TicketRepository::take(6)->get();
-        // dd($tickets[0]['object']);
-        $this->newTickets = $tickets;
-
-        // $this->newTickets = json_encode($formattedTickets);
-
     }
 
-    public function updateNewTickets($noOfTicketsToGenerate = 1) {
-        $table = new Table();
-        $table->generate();
-        $tickets = array_slice($table->getTickets(), 0, $noOfTicketsToGenerate);
-
-        // Create a new structure to hold ticket data along with id
-        $formattedTickets = [];
-        foreach ($tickets as $index => $ticket) {
-            $formattedTickets[] = [
-                'id' => $this->generateRandomString($length = 8),
-                'isSelected' => 0,
-                'numbers' => $ticket->numbers,
-            ];
-        }
-        $this->newTickets = json_encode($formattedTickets);
-    }
-
-    function generateRandomString($length = 10) {
-        return strtoupper(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length));
-        // return strtoupper(substr(uniqid(),5));
-    }
+    // function generateRandomString($length = 10) {
+    //     return strtoupper(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length));
+    //     // return strtoupper(substr(uniqid(),5));
+    // }
 
     public function render()
     {

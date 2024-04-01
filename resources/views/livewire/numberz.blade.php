@@ -46,7 +46,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
     <livewire:video />
 </div>
 
-<button type="button" wire:click="$refresh">
+<button type="button" wire:click="$refresh" class="px-4">
     Refresh
 </button>
 
@@ -90,7 +90,10 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                 @click="activeTab = 1"
                                 @focus="activeTab = 1"
                             >
-                        <span>TICKETS</span>
+                        <span class="hidden mr-1 md:block">TICKETS</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+                        </svg>
                         <span class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
                         {{ $tickets->count() }}</span>
                     </button>
@@ -105,7 +108,10 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                 @click="activeTab = 2"
                                 @focus="activeTab = 2"
                             >
-                            <span>NUMBERS</span>
+                            <span class="hidden mr-1 md:block">NUMBERS</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                            </svg>
                         <span id="numbers-count" class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
                         {{ $count }}</span>
                     </button>
@@ -120,10 +126,16 @@ https://codepen.io/MillerTime/pen/NevqWJ
                             @click="activeTab = 3"
                             @focus="activeTab = 3"
                         >
-                        <span>PRIZES</span>
+                        <span class="hidden mr-1 md:block">PRIZES</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 0 1 2.916.52 6.003 6.003 0 0 1-5.395 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
+                        </svg>
                         <span class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
                         {{$allPrizes->count()}}</span>
-                        <span>/WINNERS</span>
+                        <span class="hidden mr-1 md:block">WINNERS</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+                        </svg>
                         <span id="winners-count" class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
                         {{ $allWinners->count() }}</span>
                     </button>
@@ -137,7 +149,10 @@ https://codepen.io/MillerTime/pen/NevqWJ
                             @click="activeTab = 4"
                             @focus="activeTab = 4"
                         >
-                        <span>CLAIMS</span>
+                        <span class="hidden mr-1 md:block">CLAIMS</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                        </svg>
                         <span id="active-claims" class="inline-flex items-center justify-center w-4 h-4 text-[px] text-blue-800 bg-blue-200 rounded-full">
                         {{ $activeClaims->count() }}</span>
                     </button>
@@ -151,7 +166,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #1 -->
                     <article
                         id="tabpanel-1"
-                        class="w-full bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-1"
@@ -173,7 +188,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #2 -->
                     <article
                         id="tabpanel-2"
-                        class="w-full bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-2"
@@ -203,7 +218,6 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                 @php
                                     $drawnNumbers = $drawnNumbers[0]->sort();
                                     $drawnNumbers = $drawnNumbers->values();
-                                    // dd($drawnNumbers);
                                 @endphp
                                 <ul id="all-numbers" class="w-full flex gap-2 flex-wrap justify-between mt-2 mb-6">
                                     @for ($i = 1; $i <= 90; $i++)
@@ -219,7 +233,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #3 -->
                     <article
                         id="tabpanel-3"
-                        class="w-full bg-white rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-3"
@@ -235,13 +249,16 @@ https://codepen.io/MillerTime/pen/NevqWJ
                             <div class="text-slate-500 text-sm">
                                 {{-- All Prizes & Winners --}}
                                 @if(isset($allPrizes))
-                                    <x-bladewind::table>
-                                        <x-slot name="header">
-                                            <th>#</th>
-                                            <th>Prize</th>
-                                            <th>Amount</th>
-                                            <th>Winner</th>
-                                        </x-slot>
+                                    <table id="prize-winner-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Prize</th>
+                                                <th>Amount</th>
+                                                <th>Winner</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                         @php $index = 1; @endphp
                                         @foreach($allPrizes as $prize)
                                             <tr>
@@ -256,7 +273,8 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                             </tr>
                                             @php $index++; @endphp
                                         @endforeach
-                                    </x-bladewind::table>
+                                        </tbody>
+                                    </table>
                                 @endif
                                 {{-- end Game Prizes --}}
                             </div>
@@ -266,7 +284,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #4 -->
                     <article
                         id="tabpanel-4"
-                        class="w-full bg-white rounded-2xl shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white rounded-2xl shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-4"
@@ -284,8 +302,8 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                     <div class="claim-item">
                                         <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
                                             <div> {{ $claim->user_name }} </div>
-                                            <div> Prize: {{ $claim->prize_name }} </div>
-                                            <div> Ticket No: {{ $claim->ticket_id }} </div>
+                                            <div> <span class="hidden md:inline-block">Prize:</span> {{ $claim->prize_name }} </div>
+                                            <div> ..{{ strtoupper(substr($claim->ticket_id, 28, 8)) }} </div>
                                             <div> Status: <span class="text-green-500">{{ strtoupper($claim->status) }}</span> </div>
                                         </div>
                                         <div class="claim-ticket">
@@ -329,12 +347,48 @@ https://codepen.io/MillerTime/pen/NevqWJ
 
     <style>
 
+        /* Prize/Winner table */
+        #prize-winner-table {
+        line-height: 1.5;
+        min-width: 100%;
+        }
+        #prize-winner-table th {
+        padding: 1rem;
+        background-color: #F3F4F6;
+        color: #374151;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-align: left;
+        text-transform: uppercase;
+        border-bottom-width: 2px;
+        }
+        #prize-winner-table td {
+        padding: 1rem;
+        background-color: #ffffff;
+        font-size: 0.875rem;
+        line-height: 1rem;
+        border-bottom-width: 1px;
+        border-color: #E5E7EB; ;
+        }
+
+        #prize-winner-table td > span {
+        display: inline-block;
+        position: relative;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        color: #064E3B;
+        font-weight: 600;
+        line-height: 1.25;
+        }
+
+
         /* Claim List */
         .claim-list {
             width: 100%; /* Ensure the container spans the full width */
-        }
-        .claim-item {
-
         }
 
         .claim-item .mb-6 {
@@ -358,7 +412,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
         }
 
         .claim-item .claim-cell span {
-            font-size: 0.8em; /* Adjust the font size as needed */
+            font-size: 1em; /* Adjust the font size as needed */
             display: block; /* Ensure the span occupies the full width of the cell */
         }
 

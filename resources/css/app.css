@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+body {
+    font-family: "Trebuchet MS", "Adobe Clean", adobe-clean;
+    font-weight: 300;
+    font-style: normal;
+
+    color: #4B4B4B;
+    font-size: 11px;
+}
+h5 {
+    font-family: "Fjalla One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: smaller;
+}
+
+.number {
+    font-family: "Oswald", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
 [x-cloak] {
     display: none;
 }

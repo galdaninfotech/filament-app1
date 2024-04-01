@@ -9,7 +9,7 @@
                     <th class="py-2">Prize</th>
                     <th class="py-2">Ticket</th>
                     <th class="py-2">Status</th>
-                    <th class="py-2">Comment</th>
+                    <th class="py-2">Remarks</th>
                     <th class="py-2">Time</th>
                     <th class="py-2">Action</th>
                 </tr>
@@ -19,12 +19,12 @@
                     <tr class="">
                         <td class="py-2 text-gray-900"> {{ $claim->claim_id }} </td>
                         <td class="py-2"> {{ $claim->prize_name }} </td>
-                        <td class="py-2"> {{ $claim->ticket_id }} </td>
+                        <td class="py-2"> ..{{ strtoupper(substr($claim->ticket_id, 28, 8)) }} </td>
                         <td class="py-2"> {{ $claim->status }} </td>
-                        <td class="py-2"> {{ $claim->comment }} </td>
+                        <td class="py-2"> {{ $claim->remarks }} </td>
                         <td class="py-2"> {{ Carbon::createFromTimeStamp(strtotime($claim->created_at))->diffForHumans() }} </td>
                         <td class="py-2">
-                            <button 
+                            <button
                                 x-data
                                 wire:click="updateSelectedClaimWithDetails({{ $claim->claim_id }})"
                                 @click="$dispatch('open-modal', { name: 'claim-modal' })"
@@ -59,7 +59,7 @@
                                 <div class="claim-details flex items_center justify-content space-x-6 text-xs">
                                     <div class="left p-2">
                                         <span class="block"> Claim No: {{$selectedClaimWithDetails[0]->claim_id}} </span>
-                                        <span class="block"> Ticket No: {{$selectedClaimWithDetails[0]->ticket_id}} </span>
+                                        <span class="block"> Ticket No: ..{{strtoupper(substr($selectedClaimWithDetails[0]->ticket_id, 28, 8))}} </span>
                                         <span class="block"> Game Prize No: {{$selectedClaimWithDetails[0]->prize_name}} </span>
                                         <span class="block"> Claim Status: {{$selectedClaimWithDetails[0]->status}} </span>
                                         <span class="block"> Claimed At: {{ Carbon::createFromTimeStamp(strtotime($claim->created_at))->diffForHumans() }} </span>
@@ -68,7 +68,7 @@
                                         <span class="block"> Player: {{$selectedClaimWithDetails[0]->user_name}} </span>
                                         <span class="block"> Game: {{$selectedClaimWithDetails[0]->game_id}} </span>
                                         <span class="block"> Prize Amount: {{$selectedClaimWithDetails[0]->prize_amount}} </span>
-                                        <span class="block"> Comment: {{$selectedClaimWithDetails[0]->comment}} </span>
+                                        <span class="block"> Remarks: {{$selectedClaimWithDetails[0]->remarks}} </span>
                                     </div>
                                 </div>
 
@@ -136,5 +136,5 @@
         }
     </style>
 
-    
+
 </div>

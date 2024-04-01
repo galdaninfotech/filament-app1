@@ -34,7 +34,7 @@ class Claims extends Component
                 'claims.ticket_id',
                 'claims.game_prize_id',
                 'claims.status',
-                'claims.comment',
+                'claims.remarks',
                 'claims.created_at',
                 'game_prize.*',
                 'tickets.object',
@@ -60,7 +60,7 @@ class Claims extends Component
                 'claims.ticket_id',
                 'claims.game_prize_id',
                 'claims.status',
-                'claims.comment',
+                'claims.remarks',
                 'claims.created_at',
                 'game_prize.*',
                 'tickets.object',
@@ -118,7 +118,7 @@ class Claims extends Component
         }
     }
 
-    
+
 
     public function render()
     {

@@ -14,8 +14,13 @@ class PrizeSeeder extends Seeder
     public function run(): void
     {
         DB::table('prizes')->insert([
-            'name' => 'Full House',
-            'description' => 'Full House',
+            'name' => 'Quick Five',
+            'description' => 'Quick Five',
+        ]);
+
+        DB::table('prizes')->insert([
+            'name' => 'Lucky Seven',
+            'description' => 'Lucky Seven',
         ]);
 
         DB::table('prizes')->insert([
@@ -34,14 +39,26 @@ class PrizeSeeder extends Seeder
         ]);
 
         DB::table('prizes')->insert([
-            'name' => 'Lucky Seven',
-            'description' => 'Lucky Seven',
+            'name' => 'Ticket Corner',
+            'description' => 'line1 = first & last, line3 = first & last',
         ]);
 
         DB::table('prizes')->insert([
-            'name' => 'Ticket Corners',
-            'description' => 'line1 = first & last, line3 = first & last',
+            'name' => 'Kings Corner',
+            'description' => 'First number of all three rows',
         ]);
+
+        DB::table('prizes')->insert([
+            'name' => 'Queens Corner',
+            'description' => 'Last number of all three rows',
+        ]);
+
+        DB::table('prizes')->insert([
+            'name' => 'Full House',
+            'description' => 'Full House',
+        ]);
+
+
     }
 }
 

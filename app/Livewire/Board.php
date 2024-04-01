@@ -9,11 +9,15 @@ use App\Models\GameNumber;
 use App\Models\Ticket;
 use App\Models\Winner;
 use App\Models\User;
+use App\Models\Claim;
+use App\Events\ClaimEvent;
+use App\Classes\AutoMode\AutoMode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 use App\Events\NumbersEvent;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Session;
 
 class Board extends Component
 {
@@ -24,7 +28,6 @@ class Board extends Component
     public $currentGameStatus;
     public $count = 0;
     public $user;
-    // public $gamePrizes;
     public $isPrizesSet = false;
     public $noOfPrizes;
     public $noOfPrizeTypes;
@@ -58,14 +61,12 @@ class Board extends Component
 
         $this->noOfTicketsSold = DB::table('tickets')->where('game_id',  $this->activeGame->id)->count();
         $this->totalPrizeAmount = DB::table('game_prize')->where('game_id',  $this->activeGame->id)->sum('prize_amount');
-
     }
 
     public function draw() {
         if($this->count >= 90) { dd('All Numbers Out!'); }
 
-        // dd($this->currentGameStatus);
-        // update active game status
+        // TASK 1: update game status
         if($this->currentGameStatus == 'Starting Shortly') {
             DB::table('games')->where('active', true)->update(['status' => 'Started']);
         } else if($this->currentGameStatus == 'Started') {
@@ -74,72 +75,41 @@ class Board extends Component
             DB::table('games')->where('active', true)->update(['status' => 'Started']);
         }
         $this->mount();
-        // dd($this->currentGameStatus);
 
-
-
+        // TASK 2: get new number & update it
         $numbersCollection = Number::select('number')
                     ->whereNotIn('number', $this->drawnNumbers[0])
                     ->pluck('number');
-
-        // Convert to array, shuffle, get the first number and set $this->newNumber
         $numbersArray = $numbersCollection->toArray();
         $numbersArray = Arr::shuffle($numbersArray);
         $newNumber = Arr::first($numbersArray);
         $this->newNumber = $newNumber;
 
-        //Insert into DB
+        // TASK 3: Insert into DB
         DB::table('game_number')->insert([
             'game_id' => $this->activeGame->id,
             'number_id' => $this->newNumber,
             'declared_at' => now(),
         ]);
 
-        //Update $this->drawnNumbers & $this->count
+        // TASK 4: drawnNumbers & count
         $numbersCollection = DB::table('game_number')->where('game_id', $this->activeGame->id)->pluck('number_id');
         $this->drawnNumbers = Arr::prepend($this->drawnNumbers, $numbersCollection);
         $this->count = $numbersCollection->count();
 
+        // TASK 5: broadcast the new number
         broadcast(new NumbersEvent([$newNumber, $this->count, $this->drawnNumbers, $this->currentGameStatus]))->toOthers();
         Alert::toast('New Number : '.$newNumber, 'success');
 
-        // get users who has enabled AutoMode
-        $users = User::where('automode', 1)->get();
-        foreach ($users as $user) {
-            $tickets = Ticket::where('game_id', $this->activeGame->id)
-                ->where('user_id', $user->id)
-                ->get();
-
-            foreach ($tickets as $ticket) {
-                $ticketObject = $ticket->object; // No need to decode if it's already an array
-                $modified = false; // Flag to track if any modifications were made to the ticket
-
-                for ($j = 0; $j < 3; $j++) {
-                    for ($k = 0; $k < 9; $k++) {
-                        // Check if the ticket object is an array and matches the new number
-                        if (is_array($ticketObject[$j][$k]) && $ticketObject[$j][$k]['value'] == $this->newNumber) {
-                            // Update the 'checked' attribute of the ticket object
-                            $ticketObject[$j][$k]['checked'] = 1;
-                            $modified = true; // Set the flag to true since modifications were made
-                        }
-                    }
-                }
-
-                // If modifications were made, save the updated ticket
-                if ($modified) {
-                    $ticket->object = $ticketObject; // No need to encode if it's already an array
-                    $ticket->save();
-                    $this->mount();
-                }
-            }
+        //TASK 6: AutoMode
+        if($this->user->autotick) {
+            $autoMode = new AutoMode($newNumber);
+            $autoMode->updateAutoTickTickets();
+            $autoMode->updateAutoClaimTickets();
         }
-
-        $this->dispatch('numbers-event');
-
     }
 
     public function setPrizes(){
-        // dd(Winner::first());
         if(Winner::first())
             dd('Prizes Alreadt Set!!');
 
@@ -178,25 +148,6 @@ class Board extends Component
         $this->currentGameStatus = 'Paused';
         //send GamePausedEvent
     }
-
-    // public function populateWinnersTable(){
-    //     // dd($this->gamePrizes);
-    //     foreach($this->gamePrizes as $gamePrize) {
-    //         if($gamePrize->quantity > 1) {
-    //             for($i = 0; $i < $gamePrize->quantity; $i++) {
-    //                 Winner::create([
-    //                     'game_prize_id' => $gamePrize->id,
-    //                     'game_id' => $gamePrize->game_id,
-    //                 ]);
-    //             }
-    //         } else {
-    //             Winner::create([
-    //                 'game_prize_id' => $gamePrize->id,
-    //                 'game_id' => $gamePrize->game_id,
-    //             ]);
-    //         }
-    //     }
-    // }
 
     public function render()
     {

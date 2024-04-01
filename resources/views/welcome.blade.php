@@ -23,7 +23,7 @@
     </head>
     <body class="antialiased">
 
-        
+
 
         <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             @if (Route::has('login'))
@@ -40,10 +40,19 @@
                 </div>
             @endif
 
-            
 
 
-            
+
+
+        </div>
+
+        <div class=”col-md-12 row-block”>
+
+<a href="{{url('auth/google')}}" class="btn bth-lg-primaty btn-block">
+
+          <strong>Login With Google</strong>
+
+          </a>
         </div>
     </body>
 </html>

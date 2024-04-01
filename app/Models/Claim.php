@@ -15,7 +15,7 @@ class Claim extends Model
         'ticket_id',
         'game_prize_id',
         'status',
-        'comment',
+        'remarks',
         'is_winner',
         'is_boogy',
         'winner_id',

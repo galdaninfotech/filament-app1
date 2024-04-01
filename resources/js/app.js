@@ -26,10 +26,8 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
 
     document.getElementById('game-status').innerHTML = 'Game Status : ' + data.message[3];
 
-     // Play the corresponding audio file
+     // Play the corresponding audio file number
      var audio = new Audio('/storage/58-micmonster.mp3');
-
-    // Play the audio
     audio.play().catch(error => {
         // Autoplay was prevented, handle the error (e.g., show a play button)
         console.error('Autoplay prevented:', error.message);
@@ -85,9 +83,14 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
     let newNumber = currentNumber + 1;
     spanElement.textContent = newNumber.toString();
 
-    updateActiveClaims(data);
+    updateActiveClaims(data); // update the claims
 
     document.getElementById('game-status').innerHTML = 'Game Status : Paused';
+    var audio = new Audio('D:\\laragon\\www\\filament-app1\\storage\\58-micmonster.mp3');
+    audio.play().catch(error => {
+        // Autoplay was prevented, handle the error (e.g., show a play button)
+        console.error('Autoplay prevented:', error.message);
+    });
   });
 
 

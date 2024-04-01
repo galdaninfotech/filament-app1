@@ -23,9 +23,52 @@
                     <tr class="grid grid-cols-2 border-b-1" style="border-bottom: 1px dotted #b9b9b9; padding-bottom: 4px; margin-bottom: 4px;">
 
                         <td>Claim ID : </td><td class="claim-id">{{ $claim->id }}</td>
-                        <td>Prize Claimed ID : </td><td>{{ $claim->game_prize_id }}</td>
-                        <td>Prize Name : </td><td>{{ $claim->game_prize_id }}</td>
-                        <td>Status : </td><td><span class="text-green-500">{{ strtoupper($claim->status) }}</span></td>
+                        @php
+                            // dd($claim);
+                            switch ($claim->game_prize_id) {
+                                case '1':
+                                    echo '<td>Prize : </td><td>Full House</td>';
+                                    break;
+
+                                case '2':
+                                    echo '<td>Prize : </td><td>Top Line</td>';
+                                    break;
+
+                                case '3':
+                                    echo '<td>Prize : </td><td>Bottom Line</td>';
+                                    break;
+
+                                case '4':
+                                    echo '<td>Prize : </td><td>Bottom Line</td>';
+                                    break;
+
+                                case '5':
+                                    echo '<td>Prize : </td><td>Quick Five</td>';
+                                    break;
+
+                                case '6':
+                                    echo '<td>Prize : </td><td>Ticket Corner</td>';
+                                    break;
+
+                                case '7':
+                                    echo '<td>Prize : </td><td>Kings Corner</td>';
+                                    break;
+
+                                case '8':
+                                    echo '<td>Prize : </td><td>Queens Corner</td>';
+                                    break;
+
+                                default:
+                                    echo '<td>Prize : </td><td> - </td>';
+                                    break;
+                            }
+                        @endphp
+                        <td>Status : </td><td><span
+                            @if ($claim->status == "Open") class="text-green-500" @endif
+                            @if ($claim->status == "Winner") class="text-green-500" @endif
+                            @if ($claim->status == "Boggy") class="text-red-500" @endif
+                            >{{ strtoupper($claim->status) }}</span></td>
+                        <td>Remarks : </td><td><span>{{ $claim->remarks }}</span></td>
                     </tr>
                 @endforeach
             </table>

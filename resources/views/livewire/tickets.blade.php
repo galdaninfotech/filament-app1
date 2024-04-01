@@ -5,7 +5,7 @@
         </script>
     @endonce
 
-    <button type="button" wire:click="$refresh">
+    <button type="button" wire:click="$refresh" class="px-4">
         Refresh
     </button>
 
@@ -19,7 +19,7 @@
             @php $disabled = $activeGame->status == 'Starting Shortly' ? false : true; @endphp
 
             <a href="{{ url('player-payment') }}"
-                class="flex items-center justify-center p-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 @if($disabled)bg-gray-300 cursor-not-allowed @endif"
+                class="inline-flex items-center p-2 m-1 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 rounded-md @if($disabled)bg-gray-300 cursor-not-allowed @endif"
                 @if($disabled) onclick="handleBuyTickets(event);" @endif
                 style="@if($disabled) background-color: #e5e5e5; @endif"
                 >
@@ -39,26 +39,48 @@
                 }
             </script>
 
+<button class="inline-flex items-center p-2 m-1 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 rounded-md">
+	<svg id="autotick-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoTick == 1) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-green-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    <svg id="autotick-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoTick == 0) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-red-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
 
-            <button class="flext items-start relative p-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-                <svg id="automode-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 1) block @else hidden @endif h-6 w-6 text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+	<span onclick="handleAutoTick(event);">{{ __('Auto Tick') }}</span>
+</button>
+
+<button class="inline-flex items-center p-2 m-1 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 rounded-md">
+	<svg id="autotick-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoTick == 1) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-green-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    <svg id="autotick-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoTick == 0) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-red-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+    <span onclick="handleAutoTick(event);" class="ml-1">{{ __('Auto Claim') }}</span>
+</button>
+</br>
+
+
+            {{-- <button class="flext items-start relative text-sm text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                <svg id="autotick-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoTick == 1) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-green-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-                <svg id="automode-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 0) block @else hidden @endif h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg id="autotick-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoTick == 0) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-red-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
-                <span onclick="handleAutoMode(event);" class="ml-8">{{ __('Auto Tick') }}</span>
+                <span onclick="handleAutoTick(event);" class="ml-8">{{ __('Auto Tick') }}</span>
             </button>
 
-            <button class="flext items-start relative p-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
-                <svg id="automode-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 1) block @else hidden @endif h-6 w-6 text-green-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button class="flext items-start relative text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+                <svg id="autoclaim-enabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoClaim == 1) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-green-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-                <svg id="automode-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoMode == 0) block @else hidden @endif h-6 w-6 text-red-400 absolute left-4 top-1/2 transform -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg id="autoclaim-disabled" xmlns="http://www.w3.org/2000/svg" class="@if ($autoClaim == 0) block @else hidden @endif h-5 w-5 md:w-6 md:h-6 text-red-400 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
-                <span onclick="handleAutoMode(event);" class="ml-8">{{ __('Auto Claim') }}</span>
-            </button>
+                <span onclick="handleAutoClaim(event);" class="ml-8">{{ __('Auto Claim') }}</span>
+            </button> --}}
         </div>
 
         @if(Session::has('message'))
@@ -78,10 +100,23 @@
                                     <x-ticket-details :claims="$ticket->claims"></x-ticket-details>
                                 </div>
                                 <div class="text-right">
-                                    @include('includes.claim-prize')
+
+                                    <button
+                                        x-data
+                                        @click="$dispatch('open-modal', { name: 'claim' })"
+                                        {{-- wire:click="updateTicketSelected({{ $ticket->id }})" --}}
+                                        class="bg-gray-800 text-white active:bg-pink-600 font-bold text-xs px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        data-ticket-id="{{ $ticket->id }}"
+                                        onclick="getTicketId(this)"
+                                    >
+                                        {{ __('Claim Prize') }}
+                                    </button>
+                                    {{-- @include('includes.claim-prize') --}}
+
                                 </div>
                             </div>
-                            <div class="ticket-id">{{ $ticket->id }}-{{ strtoupper(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(8/strlen($x)) )),1,8)) }}</div>
+                            {{-- <div class="ticket-id">{{ $ticket->id }}-{{ strtoupper(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(8/strlen($x)) )),1,8)) }}</div> --}}
+                            <div class="ticket-id">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
                         </div>
                         @for ($j = 0; $j < 3; $j++)
                             <div class="row flex gap-1 sm:gap-2 mt-2">
@@ -91,12 +126,12 @@
                                         :class="checked ? 'column checked w-9 h-9 flex justify-center items-center' : 'column bg-[#d4d2d2] w-9 h-9 flex justify-center items-center'"
                                         class="cell"
                                         id="ticket-cell"
-                                        onclick="toggleCheckedClass(this, {{ $ticket->object[$j][$k]['value'] }}, {{ $ticket->id }}, {{ $j }}, {{ $k }})"
+                                        onclick='toggleCheckedClass(this, {{ $ticket->object[$j][$k]["value"] }}, {{"'$ticket->id'" }}, {{ $j }}, {{ $k }})'
                                     >
                                         @if($ticket->object[$j][$k]['value'] > 0)
                                             <div class="checkable_div">
                                                 <input type="checkbox" class="hidden" name="{{ $ticket->object[$j][$k]['id'] }}">
-                                                <span class="flex items-center justify-center w-full h-full text-lg md:text-2xl p-2 cursor-pointer">{{ $ticket->object[$j][$k]['value'] }}</span>
+                                                <span class="flex items-center justify-center w-full h-full number text-md md:text-2xl p-2 cursor-pointer">{{ $ticket->object[$j][$k]['value'] }}</span>
                                             </div>
                                         @else
                                             <div class="uncheckable_div"><input type="checkbox" class="hidden" disable></div>
@@ -111,12 +146,14 @@
             @endif
         </div>
 
-
     </div>
+
+    @include('includes.claim-prize')
 
     <script>
         function toggleCheckedClass(element, value, ticketId, j, k) {
-            console.log("CONSOLE : Value-" + value + ", TicketId-" + ticketId + ", j-" + j + ", k-" + k);
+            console.log('-------'+ticketId+'-------');
+            console.log('CONSOLE : Value-' + value + ', TicketId-' + ticketId + ', j-' + j + ', k-' + k);
             // Toggle 'checked' and update only when value is non zero
             // console.log(value);
             if(value > 0) {
@@ -127,14 +164,26 @@
             }
         }
 
-        function handleAutoMode(event) {
+        function handleAutoTick(event) {
             event.preventDefault();
-            const el1 = document.getElementById('automode-enabled');
-            const el2 = document.getElementById('automode-disabled');
+            const el1 = document.getElementById('autotick-enabled');
+            const el2 = document.getElementById('autotick-disabled');
             el1.classList.toggle('hidden');
             el2.classList.toggle('hidden');
-            // alert('Auto Mode is not available!');
-            axios.post(`/toggleAutoMode`, { user_id: userId })
+
+            axios.post(`/toggleAutoTick`, { user_id: userId })
+                .then(response => response.status)
+                .catch(err => console.warn("ERROR : " + err));
+        }
+
+        function handleAutoClaim(event) {
+            event.preventDefault();
+            const el1 = document.getElementById('autoclaim-enabled');
+            const el2 = document.getElementById('autoclaim-disabled');
+            el1.classList.toggle('hidden');
+            el2.classList.toggle('hidden');
+
+            axios.post(`/toggleAutoClaim`, { user_id: userId })
                 .then(response => response.status)
                 .catch(err => console.warn("ERROR : " + err));
         }
@@ -171,7 +220,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 0 8px;
         }
 
         .ticket-details {
@@ -193,11 +241,11 @@
 
         .cell {
             flex: 0 0 auto;
-            width: calc(80% / 9);
+            width: calc(90% / 9);
             padding-top: calc(80% / 9);
             position: relative;
-            border: 1px solid #ccc;
-            margin: 0 2px; /* Adjust margin based on your design */
+            /* border: 1px solid #ccc; */
+            /* margin: 0 2px; Adjust margin based on your design */
             max-width: 75px;
             max-height: 75px;
         }

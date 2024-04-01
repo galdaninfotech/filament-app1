@@ -13,9 +13,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('automode')
+            $table->integer('autotick')
                 ->after('two_factor_confirmed_at')
                 ->default(0);
+            $table->integer('autoclaim')
+                ->after('autotick')
+                ->default(0);
+
+            $table->string('google_id')->nullable()
+                ->after('autoclaim');
         });
     }
 
@@ -25,7 +31,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('automode');
+            $table->dropColumn('autotick');
+            $table->dropColumn('autoclaim');
         });
     }
 };
