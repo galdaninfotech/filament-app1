@@ -6,7 +6,7 @@
     </div>
     <div id="slider__content" class="slider__content" x-ref="slider" x-on:scroll.debounce="$refs.slider.scrollLeft == 0 ? start = true : start = false;">
         @foreach($numbers as $key => $number)
-            <div class="slider__item @if($loop->last) animate__animated animate__bounceIn new-number @endif bg-gray-800">
+            <div class="slider__item number @if($loop->last) animate__animated animate__bounceIn new-number @endif bg-gray-800">
                 {{ $number }}
             </div>
         @endforeach

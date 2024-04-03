@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap'); */
 
 body {
-    font-family: "Trebuchet MS", "Adobe Clean", adobe-clean;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: 300;
     font-style: normal;
 
@@ -21,10 +22,18 @@ h5 {
 }
 
 .number {
-    font-family: "Oswald", sans-serif;
+    /* font-family: "Oswald", sans-serif; */
+    font-family: 'Manrope', 'Menlo', 'Roboto Mono', 'Ubuntu Mono', monospace;
     font-optical-sizing: auto;
     font-weight: 500;
     font-style: normal;
+    font-size: 16;
+}
+
+.ticket-id {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 11px;
 }
 
 [x-cloak] {
@@ -32,13 +41,14 @@ h5 {
 }
 
 /* Numbers */
-.drawn, .checked {
-    background-color: #00FF00; /* Green background for drawn numbers */
+.drawn {
+    /* background-color: #00FF00; */
+    /* background-color: #5be196; */
     color: #fff;
 }
-.unchecked, span.cell {
-    background-color: #d4d2d2; /* Green background for drawn numbers */
-}
+/* .unchecked, span.cell {
+    background-color: #d4d2d2;
+} */
 
 .toggle-label {
     position: relative;
@@ -88,3 +98,4 @@ h5 {
 
 
   /* Tickets */
+

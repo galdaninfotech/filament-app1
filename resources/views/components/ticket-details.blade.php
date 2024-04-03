@@ -1,6 +1,6 @@
 <div>
-    <div x-data="{ open1: false }">
-        <button @click="open1 = true" class="flex items-center bg-gray-800 text-white active:bg-pink-600 font-bold text-xs px-2 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
+    <div x-data="{ open1: false }" class="ticket-detail-modal">
+        <button @click="open1 = true" class="ticket-details-button bg-teal-500 flex items-center rounded-sm hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button"
             >Details
                 <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -16,7 +16,7 @@
                 x-transition:leave="transition ease-in duration-300"
                 x-transition:leave-start="opacity-100 transform scale-100"
                 x-transition:leave-end="opacity-0 transform scale-90"
-                class="shadow-md p-5 rounded max-w-sm ml-2 bg-gray-200"
+                class="shadow-md p-2 rounded max-w-full bg-gray-200"
             >
             <table>
                 @foreach($claims as $claim)
@@ -27,23 +27,23 @@
                             // dd($claim);
                             switch ($claim->game_prize_id) {
                                 case '1':
-                                    echo '<td>Prize : </td><td>Full House</td>';
+                                    echo '<td>Prize : </td><td>Quick Five</td>';
                                     break;
 
                                 case '2':
-                                    echo '<td>Prize : </td><td>Top Line</td>';
+                                    echo '<td>Prize : </td><td>Lucky Seven</td>';
                                     break;
 
                                 case '3':
-                                    echo '<td>Prize : </td><td>Bottom Line</td>';
+                                    echo '<td>Prize : </td><td>Top Line</td>';
                                     break;
 
                                 case '4':
-                                    echo '<td>Prize : </td><td>Bottom Line</td>';
+                                    echo '<td>Prize : </td><td>Middle Line</td>';
                                     break;
 
                                 case '5':
-                                    echo '<td>Prize : </td><td>Quick Five</td>';
+                                    echo '<td>Prize : </td><td>Bottom Line</td>';
                                     break;
 
                                 case '6':
@@ -56,6 +56,10 @@
 
                                 case '8':
                                     echo '<td>Prize : </td><td>Queens Corner</td>';
+                                    break;
+
+                                case '9':
+                                    echo '<td>Prize : </td><td>Full House</td>';
                                     break;
 
                                 default:
@@ -76,3 +80,12 @@
         </div>
     </div>
 </div>
+
+<style>
+    .ticket-detail-modal {
+        /* position: absolute;
+        z-index: 999999;
+        width: 91%;
+        min-height: 100px; */
+    }
+</style>

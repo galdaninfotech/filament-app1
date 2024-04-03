@@ -42,6 +42,10 @@ https://codepen.io/MillerTime/pen/NevqWJ
 
 
 -->
+<x-dropdown-link href="{{ route('logout') }}"
+                                         @click.prevent="$root.submit();">
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
 <div class="px-4 md:px-6">
     <livewire:video />
 </div>
@@ -73,7 +77,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
             <div class="flex justify-center">
                 <div
                     role="tablist"
-                    class="inline-flex justify-center bg-slate-200 p-1 mb-4 min-[480px]:my-6 rounded-2xl"
+                    class="inline-flex justify-center w-full bg-slate-200 p-1 mb-4 min-[480px]:my-6 rounded-sm"
                     @keydown.right.prevent.stop="$focus.wrap().next()"
                     @keydown.left.prevent.stop="$focus.wrap().prev()"
                     @keydown.home.prevent.stop="$focus.first()"
@@ -166,7 +170,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #1 -->
                     <article
                         id="tabpanel-1"
-                        class="w-full px-2 bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-1"
@@ -188,7 +192,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #2 -->
                     <article
                         id="tabpanel-2"
-                        class="w-full px-2 bg-white rounded-2xl shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white shadow-xl items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-2"
@@ -207,7 +211,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                 <ul id="drawn-numbers-sequance" class="w-full flex gap-2 flex-wrap justify-between mt-2 mb-6">
                                     @if(isset($drawnNumbers[0]))
                                         @foreach($drawnNumbers[0] as $number)
-                                            <li class="w-10 h-10 bg-gray-300 flex justify-center items-center">{{ $number }}</li>
+                                            <li class="number w-10 h-10 bg-gray-300 flex justify-center items-center">{{ $number }}</li>
                                         @endforeach
                                     @endif
                                 </ul>
@@ -221,7 +225,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                 @endphp
                                 <ul id="all-numbers" class="w-full flex gap-2 flex-wrap justify-between mt-2 mb-6">
                                     @for ($i = 1; $i <= 90; $i++)
-                                        <li class="number-box {{ $drawnNumbers->contains($i) ? 'drawn w-10 h-10 bg-gray-300 flex justify-center items-center' : 'w-10 h-10 bg-gray-300 flex justify-center items-center' }}">{{ $i }}</li>
+                                        <li class="number number-box {{ $drawnNumbers->contains($i) ? 'drawn w-10 h-10 bg-gray-300 flex justify-center items-center' : 'w-10 h-10 bg-gray-300 flex justify-center items-center' }}">{{ $i }}</li>
                                     @endfor
                                 </ul>
 
@@ -233,7 +237,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #3 -->
                     <article
                         id="tabpanel-3"
-                        class="w-full px-2 bg-white rounded-2xl shadow-xl focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white shadow-xl focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-3"
@@ -284,7 +288,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
                     <!-- Panel #4 -->
                     <article
                         id="tabpanel-4"
-                        class="w-full px-2 bg-white rounded-2xl shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
+                        class="w-full px-2 bg-white shadow-xl flex items-stretch focus-visible:outline-none focus-visible:ring focus-visible:ring-indigo-300"
                         role="tabpanel"
                         tabindex="0"
                         aria-labelledby="tab-4"
@@ -299,11 +303,11 @@ https://codepen.io/MillerTime/pen/NevqWJ
                         <div class="claim-list">
                             @if(isset($activeClaims))
                                 @foreach($activeClaims as $claim)
-                                    <div class="claim-item">
+                                    <div class="claim-item" style="background: {{ $claim->color }}">
                                         <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
                                             <div> {{ $claim->user_name }} </div>
                                             <div> <span class="hidden md:inline-block">Prize:</span> {{ $claim->prize_name }} </div>
-                                            <div> ..{{ strtoupper(substr($claim->ticket_id, 28, 8)) }} </div>
+                                            <div class="ticket-id"> ..{{ strtoupper(substr($claim->ticket_id, 28, 8)) }} </div>
                                             <div> Status: <span class="text-green-500">{{ strtoupper($claim->status) }}</span> </div>
                                         </div>
                                         <div class="claim-ticket">
@@ -313,12 +317,12 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                                     @foreach ($row as $cell)
                                                         @if( $cell['value'] > 0)
                                                             @if ($cell['checked'])
-                                                                <div class="claim-cell checked">
-                                                                    <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
+                                                                <div class="claim-cell yellow">
+                                                                    <span class="number flex justify-center items-center"> {{ $cell['value'] }} </span>
                                                                 </div>
                                                             @else
                                                                 <div class="claim-cell unchecked">
-                                                                    <span class="flex justify-center items-center"> {{ $cell['value'] }} </span>
+                                                                    <span class="number flex justify-center items-center"> {{ $cell['value'] }} </span>
                                                                 </div>
                                                             @endif
                                                         @else
@@ -391,6 +395,15 @@ https://codepen.io/MillerTime/pen/NevqWJ
             width: 100%; /* Ensure the container spans the full width */
         }
 
+        .claim-item {
+            /* background: honeydew; */
+            padding-top: 10px;
+            border-bottom: 1px dashed;
+        }
+        .claim-item:last-child {
+            border-bottom: 0;
+        }
+
         .claim-item .mb-6 {
             margin-bottom: 1.5rem; /* Adjust the margin-bottom as needed */
         }
@@ -400,15 +413,23 @@ https://codepen.io/MillerTime/pen/NevqWJ
             justify-content: center;
             width: 100%; /* Ensure the row spans the full width */
         }
+        .claim-row:last-child {
+            border-bottom: 1px solid #555;
+        }
 
         .claim-item .claim-cell {
             width: 100%; /* Ensure the cell spans the full width */
-            margin: 0.2rem; /* Adjust the padding as needed */
+            /* margin: 0.2rem; */
+            border-left: 1px solid #555;
+            border-top: 1px solid #555;
             padding: 14px 0px;
             max-width: 75px;
             max-height: 75px;
             text-align: center;
             box-sizing: border-box; /* Ensure padding and border are included in the width */
+        }
+        .claim-item .claim-cell:last-child {
+            border-right: 1px solid #555;
         }
 
         .claim-item .claim-cell span {

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('ticket_repositories', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->json('object');
+            $table->string('color')->default('aliceblue');
+            $table->string('on_color')->default('#5be196');
             $table->timestamps();
         });
     }

@@ -96,9 +96,6 @@ Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->n
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 
-
-
-
 // Test Routes
 Route::get('/checkTicket', function(){
     $ticket = Ticket::find(9);

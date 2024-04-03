@@ -5,7 +5,7 @@
         </script>
     @endonce
 
-    <x-bladewind.centered-content size="big" class="p-6">
+    <x-bladewind.centered-content size="big" class="p-4">
         @php
         // Serialize the tickets into a query string
             $serializedTickets = http_build_query(['newTickets' => json_decode($newTickets)]);
@@ -21,23 +21,25 @@
                 wire:click.prevent="updateNewTickets(document.getElementById('noOfTicketsInput').value)"
                 class="flex items-center justify-center py-2 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
                 >
-                Get Tickets
+                Generate Tickets
             </button>
         </div>
 
-        <a href="#" onclick="payNow()" class="flex items-center justify-center p-6 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
+        <a href="#" onclick="payNow()" class="flex items-center justify-center p-6 mb-4 text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-4 py-2 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">
             {{ __('PAY NOW') }}
         </a>
 
-        <div class="tickets-list mt-4">
-            @if (isset($newTickets))
-                @foreach (json_decode($newTickets) as $ticket)
-                    <div class="ticket mt-6">
-                        <div class="flex items-center justify-between">
-                            <div class="">No : ..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
+
+        @if (isset($newTickets))
+            <div class="tickets-list mt-4 py-2">
+                @foreach (json_decode($newTickets) as $key => $ticket)
+                    <div class="ticket bg-[{{ $ticket->color }}]">
+                        <div class="flex items-center justify-between mb-1">
+                            <div class="sno">#{{ $key + 1 }}</div>
+                            <div class="ticket-id">No : ..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
                             <div class="hidden border-red-300 border-yellow-300 border-pink-300 border-purple-300 border-cyan-300 border-orange-300 border-green-300 border-black border-blue-300"></div>
                             <label class="inline-flex items-center cursor-pointer text-sm">
-                                <input type="checkbox" name="checkbox" class="text-primary-500 w-6 h-6 mr-2 rtl:ml-2 disabled:opacity-50 focus:ring-primary-500 border-2 border-primary-300 focus:ring-opacity-25 dark:bg-dark-700 bw-checkbox rounded-md"
+                                <input type="checkbox" name="checkbox" class="text-primary-500 w-4.5 h-4.5 mr-2 mb-1 rtl:ml-2 disabled:opacity-50 focus:ring-primary-500 border-2 border-primary-300 focus:ring-opacity-25 dark:bg-dark-700 bw-checkbox rounded-md"
                                 value=""
                                 data-ticket="{{ json_encode($ticket) }}">
                                 Select Ticket
@@ -47,7 +49,7 @@
                         @foreach ($ticket->object as $row)
                             <div class="row flex justify-center">
                                 @foreach ($row as $cell)
-                                    <div class="cell unchecked">
+                                    <div class="cell number unchecked">
                                         @if ($cell->value > 0)
                                             <span class="text-lg md:text-xl">{{ $cell->value }}</span>
                                         @else
@@ -59,8 +61,9 @@
                         @endforeach
                     </div>
                 @endforeach
-            @endif
-        </div>
+            </div>
+        @endif
+
 
     </x-bladewind.centered-content>
 
@@ -100,20 +103,36 @@
             margin: 0 auto; /* Center align the tickets */
         }
 
+        .ticket {
+            border-bottom: 1px dashed;
+            padding: 18px 8px;
+        }
+        .ticket:last-child {
+            border-bottom: 0;
+        }
+
         .row {
             display: flex;
             justify-content: center; /* Center content horizontally */
         }
+        .row:last-child {
+            border-bottom: 1px solid #888;
+        }
 
         .cell {
             width: calc(100% / 9); /* Set width for each cell dynamically based on the container's width */
-            padding-top: calc(80% / 9); /* Set height for each cell dynamically based on the width */
+            padding-top: calc(92% / 9); /* Set height for each cell dynamically based on the width */
             position: relative; /* Position each cell relative to its container */
-            border: 1px solid #ccc; /* Add border for cell */
-            margin: 0.25rem; /* Add margin for spacing between cells */
+            border-left: 1px solid #888;
+            border-top: 1px solid #888;
+            /* margin: 0.25rem; Add margin for spacing between cells */
             max-width: 75px; /* Set maximum width for cell */
             max-height: 75px; /* Set maximum height for cell */
             flex: 1; /* Allow cells to grow and shrink to fit the container */
+        }
+
+        .cell:last-child {
+            border-right: 1px solid #888;
         }
 
         .cell > span {

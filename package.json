@@ -28,6 +28,12 @@
         "pusher-js": "^8.4.0-rc2",
         "webrtc-adapter": "^8.2.3",
         "vue": "^3.0.5",
-        "vue-loader": "^16.1.2"
+        "vue-loader": "^16.1.2",
+        "laravel/socialite": "^5.12"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laravel\\Socialite\\": "src/"
+        }
     }
 }

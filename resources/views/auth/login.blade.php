@@ -42,7 +42,7 @@
                 <x-button class="ms-4">
                     {{ __('Log in') }}
                 </x-button>
-                
+
             </div>
         </form>
 

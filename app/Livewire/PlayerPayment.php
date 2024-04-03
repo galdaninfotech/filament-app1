@@ -15,16 +15,33 @@ class PlayerPayment extends Component
     public function mount() {
         $this->activeGame = DB::table('games')->where('active', true)->first();
         $this->newTickets = $tickets = TicketRepository::take(6)->get();
+        foreach ($this->newTickets as $ticket) {
+            $ticket->delete();
+        }
     }
 
-    public function updateNewTickets($noOfTicketsToGenerate = 6) {
-        $this->newTickets = TicketRepository::whereBetween('id', [18, 23])
-                 ->orderBy('id')
-                 ->get();
+    public function updateNewTickets($noOfTickets = 6) {
+        $number = $noOfTickets;
+        if($number < 6) {
+            $noOfTables = 1;
+            $noOfExtraTickets = 0;
+         } else {
+            $noOfTables = intdiv($number, 6);
+            $noOfExtraTickets = fmod($number, 6);
+            if(fmod($number, 6) > 0) {
+               $noOfTables++;
+            }
+         }
+         $noOfTicketsToGenerate = $noOfTables * 6;
+        // dd($noOfTables, $noOfTicketsToGenerate);
+        $newTickets = TicketRepository::take($noOfTicketsToGenerate)->get();
+        // Delete the tickets from DB
+        foreach ($newTickets as $ticket) {
+            $ticket->delete();
+        }
+        // Take only that is required
+        $this->newTickets = $newTickets->take($number);
 
-        // foreach ($this->newTickets as $ticket) {
-        //     $ticket->delete();
-        // }
     }
 
     // function generateRandomString($length = 10) {

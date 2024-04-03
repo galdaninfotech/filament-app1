@@ -46,6 +46,17 @@ Route::post('/receiveTickets', function(Request $request) {
     // if($flattenedTickets->count() !== $flattenedTickets->unique()->count()) {
     //     return response()->json(['error' => 'Invalid ticket set. Numbers must not be repeated.'], 400);
     // }
+
+    // Set ticket color
+    $colors = [
+        "0"=>"aliceblue",
+        "1"=>"seagreen",
+        "2"=>"ivory",
+        "3"=>"honeydew"
+    ];
+    $colorKey = array_rand($colors);
+    // bg-[aliceblue] bg-[seagreen] bg-[ivory] bg-[honeydew]
+    
     foreach($newTickets as $ticket) {
         $generatedObject = []; // Initialize as an empty array for each ticket
 
@@ -69,6 +80,8 @@ Route::post('/receiveTickets', function(Request $request) {
         // Save this structure as a JSON string in the database
         TicketRepository::create([
             'id' => Str::uuid(),
+            'color' => $key = $colors[$colorKey],
+            'on_color' => $key = 'yellow',
             'object' => $generatedObject, // Convert the array structure to a JSON string
         ]);
     }

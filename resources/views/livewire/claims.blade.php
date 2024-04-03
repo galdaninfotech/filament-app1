@@ -132,7 +132,7 @@
             background-color: #00FF00; /* Green background for drawn numbers */
         }
         .unchecked, .cell {
-            background-color: #d4d2d2; /* Green background for drawn numbers */
+           
         }
     </style>
 

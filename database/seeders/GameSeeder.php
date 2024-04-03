@@ -145,7 +145,7 @@ class GameSeeder extends Seeder
             'game_id' => 2,
             'prize_id' => 9,
             'name' => 'Full House',
-            'prize_amount' => 400000,
+            'prize_amount' => 40000,
             'quantity' => 1,
             'active' => 1,
             'comment' => 'All numbers in the ticket',

@@ -17,6 +17,8 @@ return new class extends Migration {
             $table->json('object');
             $table->string('status'); // Active, Disqualified, Old
             $table->text('comment');
+            $table->string('color')->default('aliceblue');
+            $table->string('on_color')->default('#5be196');
 
             $table->timestamps();
         });

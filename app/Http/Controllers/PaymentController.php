@@ -87,6 +87,8 @@ class PaymentController extends Controller
                     $ticket->object = $newTicket['object'];
                     $ticket->status = 'Active';
                     $ticket->comment = 'Some comments here..';
+                    $ticket->color = $newTicket['color'];
+                    $ticket->on_color = $newTicket['on_color'];
                     $ticket->save();
                 }
 

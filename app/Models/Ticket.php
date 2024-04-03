@@ -13,7 +13,7 @@ class Ticket extends Model
     use Searchable;
     use HasUuids;
 
-    protected $fillable = ['game_id', 'user_id', 'object', 'status', 'comment'];
+    protected $fillable = ['game_id', 'user_id', 'object', 'status', 'comment', 'color', 'on_color'];
 
     protected $searchableFields = ['*'];
 

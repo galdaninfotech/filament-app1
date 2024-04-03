@@ -81,6 +81,8 @@ class Numberz extends Component
                     'claims.created_at',
                     'game_prize.*',
                     'tickets.object',
+                    'tickets.color',
+                    'tickets.on_color',
                     'users.name as user_name',
                     'prizes.name as prize_name',
             )
