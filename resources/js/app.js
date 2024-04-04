@@ -103,13 +103,15 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
    const newClaimContainer = document.createElement('div');
    newClaimContainer.classList.add('claim-item');
 
+   newClaimContainer.setAttribute('style', 'background: ' + claim.ticket_color);
+
    // Create HTML structure for the claim
    newClaimContainer.innerHTML = `
    <div class="flex items-center text-xs mb-1 w-full" style="justify-content: space-between">
        <div>${claim.user_name}</div>
-       <div>Prize : ${claim.prize_name}</div>
-       <div>Ticket No : ${claim.ticket_id}</div>
-       <div>Status : <span class="text-green-500">${claim.status}</span></div>
+       <div><span class="hidden md:inline-block">Prize: </span> ${claim.prize_name}</div>
+       <div class="ticket-id"> .. ${claim.ticket_id.toUpperCase().substr(28, 8)}</div>
+       <div>Status : <span class="text-green-500">${claim.status.toUpperCase()}</span></div>
    </div>
    <div class="claim-ticket">
        <!-- Ticket details here -->
@@ -128,9 +130,9 @@ var pusher = new Pusher('c64c2df76cdf6f1f4e73', {
            if(cell.value > 0 && cell.checked == 1) {
                 column.classList.add('claim-cell', 'checked');
            } else if(cell.value == 0 && cell.checked == 0) {
-                column.classList.add('claim-cell','unchecked', 'bg-[#d4d2d2]');
+                column.classList.add('claim-cell','unchecked');
            } else {
-                column.classList.add('claim-cell','unchecked', 'bg-[#d4d2d2]');
+                column.classList.add('claim-cell','unchecked');
            }
            span.classList.add('flex', 'justify-center', 'items-center');
            span.textContent = cell.value || '';
@@ -171,7 +173,11 @@ const privateChannel = pusher.subscribe(channelName);
           timer: 2500
       });
 
+      // Update claim's status in ticket details
+      document.getElementById(data.message[1].ticket_id).textContent = "WINNER";
+
       startFireworks();
+
   });
 
 

@@ -42,6 +42,7 @@ class AutoMode {
                 ->get();
 
             foreach ($tickets as $ticket) {
+                $this->unTickAllNumbers($ticket); // untick number all old numbers
                 $this->tickAllNumbers($ticket); // Update all old numbers
                 $ticketObject = $ticket->object; // No need to decode if it's already an array
                 $modified = false; // Flag to track if any modifications were made to the ticket
@@ -65,6 +66,22 @@ class AutoMode {
                 }
             }
         }
+    }
+
+    public function unTickAllNumbers($ticket) {
+        // Tick all numbers the ticket object
+        $ticketObject = $ticket->object;
+        for ($i = 0; $i < 3; $i++) {
+            for ($j = 0; $j < 9; $j++) {
+                if($ticketObject[$i][$j]['value'] > 0) {
+                    if(in_array($ticketObject[$i][$j]['value'], $this->drawnNumbers)) {
+                        $ticketObject[$i][$j]['checked'] = 0;
+                    }
+                }
+            }
+        }
+        $ticket->object = $ticketObject;
+        $ticket->save();
     }
 
     public function tickAllNumbers($ticket) {
@@ -91,26 +108,6 @@ class AutoMode {
                     $functionName = 'check' . str_replace(' ', '', $prize);
                     call_user_func([$this, $functionName], $ticket, $user);
                 }
-
-                // if(in_array('Quick Five', $this->gamePrizes)){
-                //     $this->checkQuickFive($ticket, $user);
-                // } else if(in_array('Lucky Seven', $this->gamePrizes)){
-                //     $this->checkLuckySeven($ticket, $user);
-                // } else if(in_array('Top Line', $this->gamePrizes)){
-                //     $this->checkTopLine($ticket, $user);
-                // } else if(in_array('Middle Line', $this->gamePrizes)){
-                //     $this->checkMiddleline($ticket, $user);
-                // } else if(in_array('Bottom Line', $this->gamePrizes)){
-                //     $this->checkBottomLine($ticket, $user);
-                // } else if(in_array('Ticket Corner', $this->gamePrizes)){
-                //     $this->checkTicketCorner($ticket, $user);
-                // } else if(in_array('Kings Corner', $this->gamePrizes)){
-                //     $this->checkKingsCorner($ticket, $user);
-                // } else if(in_array('Queens Corner', $this->gamePrizes)){
-                //     $this->checkQueensCorner($ticket, $user);
-                // } else if(in_array('Full House', $this->gamePrizes)){
-                //     $this->checkFullHouse($ticket, $user);
-                // }
             }
         }
     }

@@ -74,28 +74,35 @@
                 @foreach ($tickets as $ticket)
                     <div class="ticket px-2 pb-5 bg-[{{ $ticket->color }}]">
                         <div class="ticket-header">
-                            <div class="grid grid-cols-2 gap-1">
+                            <div class="flex items-center justify-between">
+                                <div class="ticket-id">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
+                                
                                 <div class="text-[11px] divide-y divide-gray-400 divide-dotted">
                                     <x-ticket-details :claims="$ticket->claims"></x-ticket-details>
                                 </div>
-                                <div class="text-right">
 
-                                    <button
+                                <button
                                         x-data
                                         @click="$dispatch('open-modal', { name: 'claim' })"
                                         {{-- wire:click="updateTicketSelected({{ $ticket->id }})" --}}
                                         class="bg-teal-500 rounded-sm shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                         data-ticket-id="{{ $ticket->id }}"
-                                        onclick="getTicketId(this)"
+                                        onclick="getTicketIdForClaim(this)"
                                     >
-                                        {{ __('Claim Prize') }}
-                                    </button>
-                                    {{-- @include('includes.claim-prize') --}}
-
-                                </div>
+                                        {{ __('Claim') }}
+                                </button>
+                                <button
+                                        x-data
+                                        @click="$dispatch('open-modal', { name: 'send' })"
+                                        class="send-button bg-teal-500 rounded-sm shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        data-ticket-id="{{ $ticket->id }}"
+                                        onclick="getTicketIdForSend(this)"
+                                    >
+                                        {{ __('Send') }}
+                                </button>
                             </div>
                             {{-- <div class="ticket-id">{{ $ticket->id }}-{{ strtoupper(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(8/strlen($x)) )),1,8)) }}</div> --}}
-                            <div class="ticket-id">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
+                            {{-- <div class="ticket-id">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div> --}}
                         </div>
                         @for ($j = 0; $j < 3; $j++)
                             <div class="row flex ">
@@ -125,9 +132,10 @@
             @endif
         </div>
 
-    </div>
+    {{-- </div>{{ dd($emailsForSelectInput) }} --}}
 
     @include('includes.claim-prize')
+    @include('includes.send-ticket')
 
     <script>
         function toggleCheckedClass(element, value, checked, ticketId, j, k) {
@@ -288,6 +296,16 @@
             width: 100%;
             text-align: center;
             font-size: 0.8em; /* Adjust the font size as needed */
+        }
+
+        /* .ticket-id {
+            position: absolute;
+            right: 80px;
+        } */
+
+        .send-button {
+            position: absolute;
+            right: 12px;
         }
 
 

@@ -47,14 +47,18 @@ class Numberz extends Component
                     ->join('game_prize', 'winners.game_prize_id', '=', 'game_prize.id')
                     ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')
                     ->leftJoin('users', 'winners.user_id', '=', 'users.id')
+                    ->leftJoin('claims', 'winners.claim_id', '=', 'claims.id')
+                    ->leftJoin('tickets', 'claims.ticket_id', '=', 'tickets.id')
+                    // ->where('winners.ticket_id', '=', 'tickets.id')
                     ->select(
                         'winners.*',
                         'game_prize.prize_amount as prize_amount',
                         'prizes.name as prize_name',
                         'users.name as user_name',
+                        'tickets.object as ticket_object',
                     )
                     ->get();
-
+// dd($this->allPrizes);
         $this->allWinners = DB::table('winners')
                     ->join('game_prize', 'winners.game_prize_id', '=', 'game_prize.id')
                     ->join('prizes', 'game_prize.prize_id', '=', 'prizes.id')

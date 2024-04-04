@@ -67,7 +67,7 @@
                                     break;
                             }
                         @endphp
-                        <td>Status : </td><td><span
+                        <td>Status : </td><td><span id="{{ $claim->ticket_id }}"
                             @if ($claim->status == "Open") class="text-green-500" @endif
                             @if ($claim->status == "Winner") class="text-green-500" @endif
                             @if ($claim->status == "Boggy") class="text-red-500" @endif

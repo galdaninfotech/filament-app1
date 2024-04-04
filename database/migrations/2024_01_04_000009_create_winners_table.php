@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('game_prize_id');
             $table->foreignId('game_id');
             $table->foreignId('user_id')->nullable();  //nullable because we populate this table as winners declared
-            $table->foreignId('ticket_id')->nullable();
+            $table->foreignUuid('ticket_id')->nullable();
             $table->foreignId('claim_id')->nullable();
 
             $table->timestamps();
@@ -30,3 +30,4 @@ return new class extends Migration {
         Schema::dropIfExists('winners');
     }
 };
+

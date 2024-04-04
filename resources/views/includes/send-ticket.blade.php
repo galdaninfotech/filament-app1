@@ -1,7 +1,7 @@
 
 
  {{-- Modal Dialog --}}
- <x-modal name="claim" title="Claim a prize" >
+ <x-modal name="send" title="Claim a prize" >
     <x-slot:body>
         <section class="px-8 bg-white dark:bg-gray-900">
             <div class="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
@@ -12,28 +12,28 @@
                     </div>
                 @endif
 
-                <form id="claim-form" wire:submit="claimPrize()" x-on:received-claim.window="isShowing = false" class="flex flex-col items-center justify-center">
+                <form id="send-form" wire:submit="sendTicketToFriend()" x-on:received-send.window="isShowing = false" class="flex flex-col items-center justify-center">
                     @csrf
                     <select
-                        id="select-prize"
-                        name="prize"
-                        wire:model="prizeSelected"
+                        id="select-email"
+                        name="email"
+                        wire:model="userIdSelected"
                         wire:loading.remove
                         class="block mt-1 w-full rounded-md"
                         required
                         >
-                        <option value=""> Select Prize </option>
+                        <option value=""> Select Friend's Email </option>
 
-                        {{-- {{ dd($remainingPrizes) }} --}}
-                        @foreach ($prizesForSelectInput as $prize)
-                            <option value="{{ $prize->id }}" @selected(old($prize->name) == $prize->name)>
-                                {{ $prize->name }}
+                        {{-- {{ dd($emailsForSelectInput) }} --}}
+                        @foreach ($emailsForSelectInput as $email)
+                            <option value="{{ $email->id }}" @selected(old($email->email) == $email->email)>
+                                {{ $email->email }}
                             </option>
                         @endforeach
                     </select>
 
                     <div wire:loading.remove class="flex items-center justify-end mt-4">
-                        <x-button class="ms-4"> {{ __('Claim Now') }} </x-button>
+                        <x-button class="ms-4"> {{ __('Send Now') }} </x-button>
                     </div>
                     <div class="hidden mt-4" wire:loading>
                         <svg aria-hidden="true" class="inline w-10 h-10 text-gray-400 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,11 +47,11 @@
 </x-modal>
 
 <script>
-    function getTicketIdForClaim(button) {
+    function getTicketIdForSend(button) {
         // set wire:submit="send-ticket-id" on the form element
         const ticketId = button.getAttribute('data-ticket-id');
-        const formElement =  document.getElementById('claim-form');
-        formElement.setAttribute('wire:submit', 'claimPrize("'+ ticketId +'")');
+        const formElement =  document.getElementById('send-form');
+        formElement.setAttribute('wire:submit', 'sendTicketToFriend("'+ ticketId +'")');
     }
 
 

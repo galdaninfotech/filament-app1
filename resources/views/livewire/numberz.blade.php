@@ -42,20 +42,16 @@ https://codepen.io/MillerTime/pen/NevqWJ
 
 
 -->
-<x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
-                                    {{ __('Log Out') }}
-                                </x-dropdown-link>
 <div class="px-4 md:px-6">
     <livewire:video />
 </div>
 
-<button type="button" wire:click="$refresh" class="px-4">
+{{-- <button type="button" wire:click="$refresh" class="px-4">
     Refresh
-</button>
+</button> --}}
 
 
-    <div class="px-6 py-2 ">
+    <div class="px-6 py-2 hidden">
         {{-- Session message --}}
         @if(Session::has('status'))
             <x-bladewind::alert type="success"> {{ Session::get('status') }} </x-bladewind.alert>
@@ -265,15 +261,29 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                         <tbody>
                                         @php $index = 1; @endphp
                                         @foreach($allPrizes as $prize)
+
+                                        @if($index == 5)
+                                            {{-- {{ dd($prize->ticket_object) }} --}}
+                                        @endif
                                             <tr>
                                                 <td> {{ $index }} </td>
                                                 <td> {{ $prize->prize_name }} </td>
                                                 <td> {{ $prize->prize_amount }} </td>
-                                                @if($prize->user_name != '')
-                                                    <td data-prize="{{ $prize->prize_name }}-{{ $prize->user_name }}"> {{ $prize->user_name }} </td>
-                                                @else
-                                                    <td data-prize="{{ $prize->prize_name }}"> - </td>
-                                                @endif
+                                                <td
+                                                    data-prize="{{ $prize->prize_name }}-{{ $prize->user_name }}"
+                                                    data-id="{{ $prize->ticket_id }}"
+                                                    >
+                                                    <button onclick="showModal('no-cancel')" >{{ $prize->user_name }}</button>
+                                                    <x-bladewind.modal
+                                                        title="No Cancel Button"
+                                                        name="no-cancel"
+                                                        cancel_button_label=""
+                                                        show_close_icon="true"
+                                                        >
+                                                        {{ $prize->ticket_object }}
+
+                                                    </x-bladewind.modal>
+                                                </td>
                                             </tr>
                                             @php $index++; @endphp
                                         @endforeach
@@ -369,7 +379,7 @@ https://codepen.io/MillerTime/pen/NevqWJ
         border-bottom-width: 2px;
         }
         #prize-winner-table td {
-        padding: 1rem;
+        padding: 1rem 0.1rem;
         background-color: #ffffff;
         font-size: 0.875rem;
         line-height: 1rem;

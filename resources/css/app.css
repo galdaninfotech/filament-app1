@@ -41,6 +41,9 @@ h5 {
 }
 
 /* Numbers */
+.yellow {
+background: yellow;
+}
 .drawn {
     /* background-color: #00FF00; */
     /* background-color: #5be196; */

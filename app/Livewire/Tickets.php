@@ -29,8 +29,10 @@ class Tickets extends Component
     public $gamePrizes = [];
     public $remainingPrizes = [];
     public $prizesForSelectInput = [];
+    public $emailsForSelectInput = [];
     public $ticketSelected;
     public $prizeSelected;
+    public $userIdSelected;
     public $tickets = [];
     public $newTickets = [];
     public $user;
@@ -63,6 +65,10 @@ class Tickets extends Component
             ->distinct('prizes.name')
             ->get();
 
+        $this->emailsForSelectInput = DB::table('users')
+            ->select('id', 'name', 'email')
+            ->get();
+
         Alert::toast('Game Status : ' . $this->activeGame->status,'success');
     }
 
@@ -87,6 +93,7 @@ class Tickets extends Component
     }
 
     public function claimPrize($ticketId) {
+        // dd($ticketId);
         if($this->hasClaim($ticketId, $this->prizeSelected)) {
             // Flash the status message with a 10-second expiration time
             session()->now('status', strtoupper($this->getPrizeName($this->prizeSelected)) .' already claimed for ticket no.: ' . $this->ticketSelected, now()->addSeconds(5));
@@ -123,6 +130,7 @@ class Tickets extends Component
                     'game_prize.*',
                     'tickets.object as ticket',
                     'tickets.id as ticket_id',
+                    'tickets.color as ticket_color',
                     'users.name as user_name',
                     'prizes.name as prize_name',
             )
@@ -179,6 +187,16 @@ class Tickets extends Component
             ->pluck('prizes.name');
 
         return $prizeName[0];
+    }
+
+    public function sendTicketToFriend($ticketId) {
+        
+        $ticket = Ticket::where('id', $ticketId)->first();
+        $ticket->user_id = $this->userIdSelected;
+        $ticket->save();
+
+
+        // dd($ticketId, $this->userIdSelected, $ticket);
     }
 
     public function render()
