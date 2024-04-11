@@ -3,9 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\AuthController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
 use App\Models\TicketRepository;
 use Illuminate\Support\Str;
+
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\TokenController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,6 +22,27 @@ use Illuminate\Support\Str;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// Api
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('auth/user', [TokenController::class, 'user']);
+    // Route::get('user/posts', [PostController::class, 'index']);
+    Route::delete('auth/token/delete', [TokenController::class, 'destroy']);
+});
+Route::post('user/register', [RegisterController::class, 'store']);
+Route::post('auth/token', [TokenController::class, 'store']);
+
+
+// Route::post('/auth/register', [AuthController::class, 'createUser']);
+// Route::post('/auth/login', [AuthController::class, 'loginUser']);
+// Route::get('/user', function(){
+//     $user = Auth::user();
+//     return $user;
+// });
+// Api End
+
+
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -47,16 +74,18 @@ Route::post('/receiveTickets', function(Request $request) {
     //     return response()->json(['error' => 'Invalid ticket set. Numbers must not be repeated.'], 400);
     // }
 
-    // Set ticket color
+    // Set ticket color (#dbffff #fff0f0 #eef3fd #fff5e2 #ddf8f9 #eedbff)
     $colors = [
-        "0"=>"aliceblue",
-        "1"=>"seagreen",
-        "2"=>"ivory",
-        "3"=>"honeydew"
+        "0"=>"#dbffff",
+        "1"=>"#fff0f0",
+        "2"=>"#eef3fd",
+        "3"=>"#fff5e2",
+        "4"=>"#ddf8f9",
+        "5"=>"#eedbff"
     ];
     $colorKey = array_rand($colors);
-    // bg-[aliceblue] bg-[seagreen] bg-[ivory] bg-[honeydew]
-    
+    // bg-[#dbffff] bg-[#fff0f0] bg-[#eef3fd] bg-[#fff5e2] bg-[#ddf8f9] bg-[#eedbff]
+
     foreach($newTickets as $ticket) {
         $generatedObject = []; // Initialize as an empty array for each ticket
 

@@ -35,6 +35,7 @@ class Board extends Component
     public $noOfPlayers;
     public $noOfTicketsSold;
     public $totalPrizeAmount;
+    public $manualNumber;
 
     public function mount() {
         $this->user = Auth::user();
@@ -64,6 +65,7 @@ class Board extends Component
     }
 
     public function draw() {
+        // dd($this->manualNumber);
         if($this->count >= 90) { dd('All Numbers Out!'); }
 
         // TASK 1: update game status
@@ -76,14 +78,20 @@ class Board extends Component
         }
         $this->mount();
 
-        // TASK 2: get new number & update it
-        $numbersCollection = Number::select('number')
+        // TASK 2: get or generate new number & update it
+        if($this->manualNumber > 0 ){
+            // TODO: check if manual number is correct
+            $this->newNumber = $this->manualNumber;
+        } else {
+            $numbersCollection = Number::select('number')
                     ->whereNotIn('number', $this->drawnNumbers[0])
                     ->pluck('number');
-        $numbersArray = $numbersCollection->toArray();
-        $numbersArray = Arr::shuffle($numbersArray);
-        $newNumber = Arr::first($numbersArray);
-        $this->newNumber = $newNumber;
+            $numbersArray = $numbersCollection->toArray();
+            $numbersArray = Arr::shuffle($numbersArray);
+            $newNumber = Arr::first($numbersArray);
+            $this->newNumber = $newNumber;
+
+        }
 
         // TASK 3: Insert into DB
         DB::table('game_number')->insert([
@@ -98,12 +106,17 @@ class Board extends Component
         $this->count = $numbersCollection->count();
 
         // TASK 5: broadcast the new number
-        broadcast(new NumbersEvent([$newNumber, $this->count, $this->drawnNumbers, $this->currentGameStatus]))->toOthers();
-        Alert::toast('New Number : '.$newNumber, 'success');
+        // if($connected = @fsockopen("www.google.com", 80)) {
+        //     broadcast(new NumbersEvent([$this->newNumber, $this->count, $this->drawnNumbers, $this->currentGameStatus]))->toOthers();
+        // } else {
+        //     Alert::toast('No Connection : '.$this->newNumber, 'danger');
+        // }
+        broadcast(new NumbersEvent([$this->newNumber, $this->count, $this->drawnNumbers, $this->currentGameStatus]))->toOthers();
+        Alert::toast('New Number : '.$this->newNumber, 'success');
 
         //TASK 6: AutoMode
         if($this->user->autotick) {
-            $autoMode = new AutoMode($newNumber);
+            $autoMode = new AutoMode($this->newNumber);
             $autoMode->updateAutoTickTickets();
             $autoMode->updateAutoClaimTickets();
         }

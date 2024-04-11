@@ -261,29 +261,36 @@ https://codepen.io/MillerTime/pen/NevqWJ
                                         <tbody>
                                         @php $index = 1; @endphp
                                         @foreach($allPrizes as $prize)
-
-                                        @if($index == 5)
-                                            {{-- {{ dd($prize->ticket_object) }} --}}
-                                        @endif
                                             <tr>
                                                 <td> {{ $index }} </td>
                                                 <td> {{ $prize->prize_name }} </td>
                                                 <td> {{ $prize->prize_amount }} </td>
-                                                <td
-                                                    data-prize="{{ $prize->prize_name }}-{{ $prize->user_name }}"
-                                                    data-id="{{ $prize->ticket_id }}"
-                                                    >
-                                                    <button onclick="showModal('no-cancel')" >{{ $prize->user_name }}</button>
-                                                    <x-bladewind.modal
-                                                        title="No Cancel Button"
-                                                        name="no-cancel"
-                                                        cancel_button_label=""
-                                                        show_close_icon="true"
+                                                @if($prize->user_name != '')
+                                                    <td
+                                                        data-prize="{{ $prize->prize_name }}-{{ $prize->user_name }}"
+                                                        data-id="{{ $prize->ticket_id }}"
                                                         >
-                                                        {{ $prize->ticket_object }}
-
-                                                    </x-bladewind.modal>
-                                                </td>
+                                                        <div data-tooltip="
+                                                            @isset($prize->ticket_object)
+                                                                @foreach(json_decode($prize->ticket_object) as $row)
+                                                                    @foreach($row as $cell)
+                                                                        @if($cell->value > 0)
+                                                                            {{ $cell->value }}
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endforeach
+                                                            @endisset
+                                                            "
+                                                            class="z-50 ">
+                                                            {{ $prize->user_name }}
+                                                        </div>
+                                                    </td>
+                                                @else
+                                                    <td data-prize="{{ $prize->prize_name }}">
+                                                        <button onclick="showModal('no-cancel')" > - </button>
+                                                        @include('includes.view-winner-ticket-modal')
+                                                    </td>
+                                                @endif
                                             </tr>
                                             @php $index++; @endphp
                                         @endforeach

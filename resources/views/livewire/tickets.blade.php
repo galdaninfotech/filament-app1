@@ -1,4 +1,5 @@
 <div>
+
     @once
         <script>
             const userId = {{ auth()->id() }};
@@ -75,31 +76,34 @@
                     <div class="ticket px-2 pb-5 bg-[{{ $ticket->color }}]">
                         <div class="ticket-header">
                             <div class="flex items-center justify-between">
-                                <div class="ticket-id">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
-                                
-                                <div class="text-[11px] divide-y divide-gray-400 divide-dotted">
-                                    <x-ticket-details :claims="$ticket->claims"></x-ticket-details>
+                                <div class="left flex">
+                                    <div class="text-[11px] divide-y divide-gray-400 divide-dotted">
+                                        <x-ticket-details :claims="$ticket->claims"></x-ticket-details>
+                                    </div>
+                                    <button
+                                            x-data
+                                            @click="$dispatch('open-modal', { name: 'claim' })"
+                                            {{-- wire:click="updateTicketSelected({{ $ticket->id }})" --}}
+                                            class="bg-teal-500 rounded-sm shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            data-ticket-id="{{ $ticket->id }}"
+                                            onclick="getTicketIdForClaim(this)"
+                                        >
+                                            {{ __('Claim') }}
+                                    </button>
                                 </div>
+                                <div class="right flex">
+                                    <div class="ticket-id ml-2">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div>
 
-                                <button
-                                        x-data
-                                        @click="$dispatch('open-modal', { name: 'claim' })"
-                                        {{-- wire:click="updateTicketSelected({{ $ticket->id }})" --}}
-                                        class="bg-teal-500 rounded-sm shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                        data-ticket-id="{{ $ticket->id }}"
-                                        onclick="getTicketIdForClaim(this)"
-                                    >
-                                        {{ __('Claim') }}
-                                </button>
-                                <button
-                                        x-data
-                                        @click="$dispatch('open-modal', { name: 'send' })"
-                                        class="send-button bg-teal-500 rounded-sm shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                        data-ticket-id="{{ $ticket->id }}"
-                                        onclick="getTicketIdForSend(this)"
-                                    >
-                                        {{ __('Send') }}
-                                </button>
+                                    <button
+                                            x-data
+                                            @click="$dispatch('open-modal', { name: 'send' })"
+                                            class="send-button bg-teal-500 rounded-sm shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                            data-ticket-id="{{ $ticket->id }}"
+                                            onclick="getTicketIdForSend(this)"
+                                        >
+                                            {{ __('Send') }}
+                                    </button>
+                                </div>
                             </div>
                             {{-- <div class="ticket-id">{{ $ticket->id }}-{{ strtoupper(substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(8/strlen($x)) )),1,8)) }}</div> --}}
                             {{-- <div class="ticket-id">..{{ strtoupper(substr($ticket->id, 28, 8)) }}</div> --}}
@@ -183,7 +187,7 @@
     </script>
 
     <style>
-        .yellow {
+        .drawn, .yellow {
             background: yellow;
         }
         /* .oc-5be196 {
@@ -222,9 +226,9 @@
         }
 
         .ticket-header {
-            display: flex;
+            /* display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: center; */
         }
 
         .ticket-details {
@@ -303,10 +307,10 @@
             right: 80px;
         } */
 
-        .send-button {
+        /* .send-button {
             position: absolute;
             right: 12px;
-        }
+        } */
 
 
 

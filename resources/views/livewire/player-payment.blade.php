@@ -90,6 +90,7 @@
                 var noOfTickets = selectedTickets.length;
                 var amount = noOfTickets * ticketPrice;
                 var url = "{{ url('payment') }}?tickets=" +'['+ encodeURIComponent(selectedTickets.join(','))+']' + "&amount=" + amount + "&noOfTickets=" + noOfTickets;
+                console.log(url);
                 window.location.href = url;
             }
 
